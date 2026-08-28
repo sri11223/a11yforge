@@ -1,0 +1,17 @@
+{
+  "id": "inj-skip-link",
+  "source": "injected",
+  "expectedUsable": "The skip link moves focus to the main content.",
+  "violations": [
+    {
+      "id": "dead-skip-link",
+      "wcag": "2.4.1",
+      "type": "behavioral",
+      "selector": "a.skip",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Point href at an existing id (#content) or set <main id=\"main-content\">.",
+      "notes": "Skip link target does not exist (Layer B)."
+    }
+  ]
+}

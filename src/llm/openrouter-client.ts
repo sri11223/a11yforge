@@ -77,14 +77,16 @@ export async function complete<T = string>(opts: CompleteOptions<T>): Promise<T 
   const mode = resolveMode();
 
   let raw: string;
-  if (mode === "replay") {
-    const recorded = readCassette(hash);
-    if (recorded === null) {
-      throw new Error(
-        `No cassette for request ${hash} (model=${model}). Re-record with A11YFORGE_MODE=record.`,
-      );
-    }
-    raw = recorded;
+  // "auto" replays an existing cassette and records a live call only when missing —
+  // idempotent and avoids re-spending on already-recorded requests.
+  const cached = mode === "replay" || mode === "auto" ? readCassette(hash) : null;
+  if (mode === "replay" && cached === null) {
+    throw new Error(
+      `No cassette for request ${hash} (model=${model}). Re-record with A11YFORGE_MODE=record.`,
+    );
+  }
+  if (cached !== null) {
+    raw = cached;
   } else {
     const res = await client().chat.completions.create({
       model,
@@ -94,7 +96,7 @@ export async function complete<T = string>(opts: CompleteOptions<T>): Promise<T 
       ...(opts.jsonMode ? { response_format: { type: "json_object" } } : {}),
     });
     raw = res.choices[0]?.message?.content ?? "";
-    if (mode === "record") writeCassette(hash, keyInput, raw);
+    if (mode === "record" || mode === "auto") writeCassette(hash, keyInput, raw);
   }
 
   if (!opts.schema) return raw;

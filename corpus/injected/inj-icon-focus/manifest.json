@@ -1,0 +1,17 @@
+{
+  "id": "inj-icon-focus",
+  "source": "injected",
+  "expectedUsable": "The play control is reachable and operable by keyboard.",
+  "violations": [
+    {
+      "id": "not-focusable",
+      "wcag": "2.1.1",
+      "type": "behavioral",
+      "selector": ".ib",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Use a <button> or add tabindex=0 plus Enter/Space handling.",
+      "notes": "role=button with a name but no tabindex (Layer B)."
+    }
+  ]
+}

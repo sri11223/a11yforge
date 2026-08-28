@@ -1,0 +1,17 @@
+{
+  "id": "inj-div-button",
+  "source": "injected",
+  "expectedUsable": "The FAQ toggle works with Enter/Space, not just mouse.",
+  "violations": [
+    {
+      "id": "no-keyboard-activation",
+      "wcag": "2.1.1",
+      "type": "behavioral",
+      "selector": ".q",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Use a <button>, or add keydown handling for Enter/Space.",
+      "notes": "role=button focusable but click-only (Layer B)."
+    }
+  ]
+}

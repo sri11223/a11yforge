@@ -1,0 +1,17 @@
+{
+  "id": "inj-alt-filename-heading",
+  "source": "injected",
+  "expectedUsable": "The headshot's alt is meaningful (or empty because the adjacent name covers it).",
+  "violations": [
+    {
+      "id": "filename-alt-grounded",
+      "wcag": "1.1.1",
+      "type": "semantic",
+      "selector": "img[src=\"assets/IMG_5521.jpg\"]",
+      "informative": true,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Use alt=\"\" (the adjacent <h3> name is the alternative) or alt=\"Jordan Lee\".",
+      "notes": "Filename alt with an adjacent name heading (Layer C)."
+    }
+  ]
+}

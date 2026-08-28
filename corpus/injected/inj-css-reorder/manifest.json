@@ -1,0 +1,17 @@
+{
+  "id": "inj-css-reorder",
+  "source": "injected",
+  "expectedUsable": "Visual step order matches the DOM/reading order.",
+  "violations": [
+    {
+      "id": "visual-order",
+      "wcag": "1.3.2",
+      "type": "behavioral",
+      "selector": "main div",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Order steps in the DOM; remove the CSS order overrides.",
+      "notes": "CSS order reverses the reading sequence (Layer B)."
+    }
+  ]
+}

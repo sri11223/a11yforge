@@ -12,7 +12,7 @@ import { join } from "node:path";
  * saved for later replay. See docs/BRAINSTORM.md §7.
  */
 
-export type CassetteMode = "replay" | "record" | "live";
+export type CassetteMode = "replay" | "record" | "live" | "auto";
 
 export interface CassetteKeyInput {
   model: string;
@@ -58,6 +58,6 @@ export function writeCassette(hash: string, request: CassetteKeyInput, response:
 
 export function resolveMode(): CassetteMode {
   const raw = (process.env.A11YFORGE_MODE ?? "replay").toLowerCase();
-  if (raw === "record" || raw === "live" || raw === "replay") return raw;
+  if (raw === "record" || raw === "live" || raw === "replay" || raw === "auto") return raw;
   return "replay";
 }

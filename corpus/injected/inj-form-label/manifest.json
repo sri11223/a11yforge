@@ -1,0 +1,17 @@
+{
+  "id": "inj-form-label",
+  "source": "injected",
+  "expectedUsable": "The email field has a persistent programmatic label.",
+  "violations": [
+    {
+      "id": "missing-label",
+      "wcag": "4.1.2",
+      "type": "mechanical",
+      "selector": "form input",
+      "informative": null,
+      "expectedCatchingLayer": "A",
+      "expectedFix": "Associate a <label> or add an accessible name.",
+      "notes": "Placeholder-only input; pa11y flags a missing name (Layer A)."
+    }
+  ]
+}

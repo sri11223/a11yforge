@@ -55,6 +55,12 @@ export interface AdvancedOptions {
   maxRetries?: number;
   memory?: FixMemory;
   pageId?: string;
+  /**
+   * Ablation gate: which layers the agent can SEE and verify against. A shallower
+   * config (e.g. ["A"]) cannot detect or check the layers it omits, so it ships
+   * false-compliances a deeper config catches. Defaults to the full ["A","B","C"].
+   */
+  layers?: Layer[];
 }
 
 const key = (f: { wcag?: string; selector?: string }) => `${f.wcag ?? "?"}|${f.selector ?? ""}`;
@@ -113,18 +119,20 @@ function orderFindings(fs: Finding[]): Finding[] {
 export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Promise<AdvancedResult> {
   const maxRetries = opts.maxRetries ?? 3;
   const memory: FixMemory = opts.memory ?? new Map();
+  const gate = opts.layers ?? (["A", "B", "C"] as Layer[]);
+  const inGate = (f: Finding) => gate.includes(f.layer);
   let working = html;
   const fixes: AdvFix[] = [];
   const reviewQueue: ReviewItem[] = [];
   let memoryHits = 0;
 
   const initial = await scanAll(working, { browser: opts.browser });
-  const targets = orderFindings(allFindings(initial));
+  const targets = orderFindings(allFindings(initial).filter(inGate));
 
   for (const target of targets) {
     // Re-scan: a previous whole-page fix may already have resolved this.
     const cur = await scanAll(working, { browser: opts.browser });
-    const curAll = allFindings(cur);
+    const curAll = allFindings(cur).filter(inGate);
     const stillPresent = curAll.some((g) => key(g) === key(target));
     if (!stillPresent) {
       fixes.push({ layer: target.layer, wcag: target.wcag, selector: target.selector, strategy: "rule", outcome: "true-fix", attempts: 0, iterations: [], note: "resolved by an earlier fix" });
@@ -174,7 +182,7 @@ export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Pro
       }
 
       const vscan = await scanAll(candidate, { browser: opts.browser });
-      const vall = allFindings(vscan);
+      const vall = allFindings(vscan).filter(inGate);
       const targetResolved = !vall.some((g) => key(g) === key(target));
       const newFindings = vall.filter((g) => !curAll.some((h) => h.id === g.id)).map((g) => `${g.wcag}@${g.selector}`);
       const accepted = targetResolved && newFindings.length === 0;

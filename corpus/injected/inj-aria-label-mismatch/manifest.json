@@ -1,0 +1,17 @@
+{
+  "id": "inj-aria-label-mismatch",
+  "source": "injected",
+  "expectedUsable": "The field's accessible name matches its visible label.",
+  "violations": [
+    {
+      "id": "aria-label-mismatch",
+      "wcag": "2.5.3",
+      "type": "semantic",
+      "selector": "#cc",
+      "informative": null,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Remove the contradicting aria-label so it falls back to the visible label.",
+      "notes": "aria-label contradicts the visible <label> (Layer C)."
+    }
+  ]
+}

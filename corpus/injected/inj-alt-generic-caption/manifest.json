@@ -1,0 +1,17 @@
+{
+  "id": "inj-alt-generic-caption",
+  "source": "injected",
+  "expectedUsable": "The image's alt is meaningful (or empty because the caption covers it).",
+  "violations": [
+    {
+      "id": "generic-alt-grounded",
+      "wcag": "1.1.1",
+      "type": "semantic",
+      "selector": "img[src=\"assets/dawn.jpg\"]",
+      "informative": true,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Use alt=\"\" since the descriptive figcaption is the text alternative.",
+      "notes": "Generic alt but a descriptive caption grounds the fix (Layer C)."
+    }
+  ]
+}

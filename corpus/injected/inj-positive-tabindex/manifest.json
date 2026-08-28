@@ -1,0 +1,17 @@
+{
+  "id": "inj-positive-tabindex",
+  "source": "injected",
+  "expectedUsable": "Tab order follows the visual/reading order of the form.",
+  "violations": [
+    {
+      "id": "positive-tabindex",
+      "wcag": "2.4.3",
+      "type": "behavioral",
+      "selector": "form",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Remove the positive tabindex attributes; rely on DOM order.",
+      "notes": "tabindex 2/1/3 scrambles focus order (Layer B)."
+    }
+  ]
+}
