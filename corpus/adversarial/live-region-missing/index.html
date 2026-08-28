@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fern &amp; Fable — Ceramic mug</title>
+  <style>
+    :root { --ink:#161616; --muted:#4a4a4a; --brand:#7a3b12; --line:#e2ddd5; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif; color:var(--ink); background:#fff; }
+    a { color:var(--brand); }
+    .site { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid var(--line); }
+    .brand { font-weight:700; font-size:18px; text-decoration:none; color:var(--ink); }
+    nav a { margin-left:20px; text-decoration:none; }
+    main { max-width:900px; margin:0 auto; padding:40px 24px; display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+    @media (max-width:720px){ main{ grid-template-columns:1fr; } }
+    .photo { background:#f1ece4; border-radius:14px; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; color:var(--muted); }
+    h1 { font-size:26px; margin:0 0 6px; }
+    .price { font-size:22px; font-weight:700; margin:0 0 16px; }
+    p.desc { color:var(--muted); }
+    .qty { display:flex; align-items:center; gap:10px; margin:18px 0; }
+    .qty label { font-weight:600; }
+    .qty input { width:64px; padding:8px; border:1px solid #b3b3ba; border-radius:8px; font-size:16px; }
+    button { background:var(--brand); color:#fff; border:0; border-radius:8px; padding:12px 20px; font-size:16px; cursor:pointer; }
+    button:focus-visible { outline:3px solid #ffbf47; outline-offset:2px; }
+    /* The confirmation appears visually but is injected into a plain <div> with no
+       aria-live / role=status, so assistive tech is never notified. */
+    .cart-status { margin-top:16px; min-height:24px; color:#0a5c2e; font-weight:600; }
+    footer { grid-column:1/-1; border-top:1px solid var(--line); padding:24px; color:var(--muted); margin-top:20px; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="/">Fern &amp; Fable</a>
+    <nav aria-label="Primary">
+      <a href="/shop">Shop</a>
+      <a href="/story">Our story</a>
+      <a href="/cart">Cart</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="photo">Product photo</div>
+
+    <div>
+      <h1>Stoneware mug — Ochre</h1>
+      <div class="price">$28.00</div>
+      <p class="desc">Hand-glazed 12&nbsp;oz stoneware, microwave and dishwasher safe. Each piece varies slightly.</p>
+
+      <div class="qty">
+        <label for="qty">Quantity</label>
+        <input id="qty" type="number" value="1" min="1" max="9">
+      </div>
+
+      <button id="add" type="button">Add to cart</button>
+
+      <!-- BUG: updated by JS but has no aria-live / role=status, so it is silent to SR users. -->
+      <div class="cart-status" id="cart-status"></div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; Fern &amp; Fable Ceramics. <a href="/shipping">Shipping</a> · <a href="/returns">Returns</a></p>
+  </footer>
+
+  <script>
+    let count = 0;
+    document.getElementById('add').addEventListener('click', () => {
+      const qty = Number(document.getElementById('qty').value) || 1;
+      count += qty;
+      // Visible confirmation only — no programmatic announcement.
+      document.getElementById('cart-status').textContent = `Added ${qty} to cart · ${count} item(s) total`;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Northwind Outfitters — Trail Gear</title>
+  <style>
+    :root { --ink:#1a1a1a; --muted:#4a4a4a; --brand:#0b4a8f; --line:#dcdce0; }
+    * { box-sizing: border-box; }
+    body { margin:0; font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif; color:var(--ink); background:#fff; }
+    a { color: var(--brand); }
+    .site { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid var(--line); }
+    .brand { font-weight:700; font-size:18px; text-decoration:none; color:var(--ink); }
+    nav a { margin-left:20px; text-decoration:none; }
+    main { max-width:820px; margin:0 auto; padding:40px 24px; }
+    h1 { font-size:30px; margin:0 0 8px; }
+    .lede { color:var(--muted); font-size:18px; margin:0 0 28px; }
+    .card { border:1px solid var(--line); border-radius:12px; padding:24px; margin:24px 0; }
+    .btn { background:var(--brand); color:#fff; border:0; border-radius:8px; padding:12px 18px; font-size:16px; cursor:pointer; }
+    .btn:focus-visible { outline:3px solid #ffbf47; outline-offset:2px; }
+    footer { border-top:1px solid var(--line); padding:24px; color:var(--muted); }
+
+    .overlay { position:fixed; inset:0; background:rgba(15,20,30,.55); display:none; align-items:center; justify-content:center; }
+    .overlay.open { display:flex; }
+    .modal { background:#fff; border-radius:14px; padding:28px; width:min(460px,92vw); box-shadow:0 20px 60px rgba(0,0,0,.3); }
+    .modal h2 { margin:0 0 6px; font-size:22px; }
+    .modal p { color:var(--muted); margin:0 0 18px; }
+    .modal label { display:block; font-weight:600; margin:0 0 6px; }
+    .modal input { width:100%; padding:11px 12px; border:1px solid #b9b9c0; border-radius:8px; font-size:16px; }
+    .modal .row { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
+    .modal .x { position:relative; float:right; margin:-8px -6px 0 0; font-size:22px; color:var(--muted); cursor:pointer; user-select:none; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="/">Northwind Outfitters</a>
+    <nav aria-label="Primary">
+      <a href="/gear">Gear</a>
+      <a href="/trails">Trails</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Backcountry gear, field-tested</h1>
+    <p class="lede">Packs, shells and boots built for long days on the trail. Join our list for restock alerts.</p>
+
+    <div class="card">
+      <h2>Never miss a restock</h2>
+      <p>Our small-batch items sell out fast. Get an email the moment they're back.</p>
+      <button class="btn" id="open-modal" type="button">Subscribe for alerts</button>
+    </div>
+
+    <p>Trusted by 40,000+ hikers. Free returns within 60 days on all orders.</p>
+  </main>
+
+  <footer>
+    <p>&copy; Northwind Outfitters. <a href="/privacy">Privacy</a> · <a href="/contact">Contact</a></p>
+  </footer>
+
+  <!-- Newsletter modal: proper ARIA roles/labels (axe-clean) but a real keyboard trap. -->
+  <div class="overlay" id="overlay">
+    <div class="modal" id="newsletter-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc">
+      <span class="x" id="modal-close" onclick="closeModal()">&times;</span>
+      <h2 id="modal-title">Restock alerts</h2>
+      <p id="modal-desc">Drop your email and we'll let you know the second your size is back.</p>
+      <label for="modal-email">Email address</label>
+      <input id="modal-email" type="email" placeholder="you@example.com" autocomplete="email">
+      <div class="row">
+        <button class="btn" id="modal-submit" type="button">Notify me</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById('overlay');
+    const modal = document.getElementById('newsletter-modal');
+
+    document.getElementById('open-modal').addEventListener('click', () => {
+      overlay.classList.add('open');
+      document.getElementById('modal-email').focus();
+    });
+
+    function closeModal() { overlay.classList.remove('open'); }
+
+    // BUG: hard focus trap. Tab is forced to cycle only inside the modal, there is
+    // no Escape handler, and the only close control (#modal-close) is a <span> that
+    // is not keyboard focusable. A keyboard/screen-reader user cannot get out.
+    document.addEventListener('keydown', (e) => {
+      if (!overlay.classList.contains('open')) return;
+      if (e.key !== 'Tab') return;
+      const focusable = modal.querySelectorAll('input, button');
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      // Note: no branch ever moves focus back to the page, and Escape is ignored.
+    });
+  </script>
+</body>
+</html>

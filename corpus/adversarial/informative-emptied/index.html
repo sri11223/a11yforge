@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Northstar Energy — 2024 impact report</title>
+  <style>
+    :root { --ink:#141414; --muted:#4a4a4a; --brand:#12603a; --line:#dde6e0; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.6 system-ui,Segoe UI,Roboto,sans-serif; color:var(--ink); background:#fff; }
+    a { color:var(--brand); }
+    .site { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid var(--line); }
+    .brand { font-weight:700; font-size:18px; text-decoration:none; color:var(--ink); }
+    nav a { margin-left:20px; text-decoration:none; }
+    main { max-width:760px; margin:0 auto; padding:40px 24px; }
+    h1 { font-size:30px; margin:0 0 8px; }
+    .lede { color:var(--muted); margin:0 0 24px; }
+    figure { margin:28px 0; }
+    .chart { width:100%; aspect-ratio:16/9; border-radius:12px; background:linear-gradient(180deg,#eef5f0,#e2efe8); display:flex; align-items:center; justify-content:center; color:var(--muted); border:1px solid var(--line); }
+    figcaption { font-size:14px; color:var(--muted); margin-top:8px; }
+    footer { border-top:1px solid var(--line); padding:24px; color:var(--muted); margin-top:40px; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="/">Northstar Energy</a>
+    <nav aria-label="Primary">
+      <a href="/reports">Reports</a>
+      <a href="/impact">Impact</a>
+      <a href="/investors">Investors</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>2024 impact report</h1>
+    <p class="lede">Our progress toward net-zero operations, by the numbers.</p>
+
+    <p>Carbon intensity fell for the fourth consecutive year as we brought new solar capacity online and retired two legacy gas plants.</p>
+
+    <figure>
+      <!-- BUG: this chart is INFORMATIVE (it is the data), but it has been marked
+           decorative with alt="" so a screen-reader user gets nothing. -->
+      <img class="chart" src="assets/emissions-2020-2024.svg" alt="">
+      <figcaption>Figure 1</figcaption>
+    </figure>
+
+    <p>The chart above shows Scope 1 and 2 emissions declining from 4.1M tonnes CO2e in 2020 to 2.3M tonnes in 2024 — a 44% reduction against a 2019 baseline.</p>
+  </main>
+
+  <footer>
+    <p>&copy; Northstar Energy. <a href="/downloads">Download full report (PDF)</a></p>
+  </footer>
+</body>
+</html>

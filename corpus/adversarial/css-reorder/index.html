@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meridian Cloud — Pricing</title>
+  <style>
+    :root { --ink:#161616; --muted:#4a4a4a; --brand:#0b4a8f; --line:#dcdce0; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif; color:var(--ink); background:#fff; }
+    a { color:var(--brand); }
+    .site { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid var(--line); }
+    .brand { font-weight:700; font-size:18px; text-decoration:none; color:var(--ink); }
+    nav a { margin-left:20px; text-decoration:none; }
+    main { max-width:1000px; margin:0 auto; padding:40px 24px; }
+    h1 { font-size:30px; margin:0 0 8px; text-align:center; }
+    .lede { color:var(--muted); text-align:center; margin:0 0 32px; }
+
+    /* Visual order is Starter -> Team -> Enterprise (left to right), but the CSS
+       `order` property overrides the DOM order, which is Enterprise, Starter, Team. */
+    .tiers { display:flex; gap:20px; align-items:stretch; }
+    .tier { flex:1; border:1px solid var(--line); border-radius:14px; padding:24px; display:flex; flex-direction:column; }
+    #tier-starter { order:1; }
+    #tier-team { order:2; }
+    #tier-enterprise { order:3; }
+    .tier h2 { margin:0 0 4px; font-size:20px; }
+    .price { font-size:32px; font-weight:700; margin:8px 0; }
+    .price span { font-size:14px; font-weight:400; color:var(--muted); }
+    .tier ul { padding-left:18px; color:var(--muted); margin:12px 0 20px; }
+    .cta { margin-top:auto; background:var(--brand); color:#fff; text-align:center; text-decoration:none; padding:12px; border-radius:8px; font-weight:600; }
+    .cta:focus-visible { outline:3px solid #ffbf47; outline-offset:2px; }
+    footer { border-top:1px solid var(--line); padding:24px; color:var(--muted); margin-top:40px; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="/">Meridian Cloud</a>
+    <nav aria-label="Primary">
+      <a href="/product">Product</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/docs">Docs</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Simple, scalable pricing</h1>
+    <p class="lede">Start free. Upgrade when your team grows. Cancel anytime.</p>
+
+    <!-- DOM order deliberately does NOT match the on-screen left-to-right order. -->
+    <section class="tiers" aria-label="Pricing plans">
+      <article class="tier" id="tier-enterprise">
+        <h2>Enterprise</h2>
+        <div class="price">Custom</div>
+        <ul>
+          <li>SSO &amp; SCIM</li>
+          <li>99.99% uptime SLA</li>
+          <li>Dedicated support</li>
+        </ul>
+        <a class="cta" href="/contact-sales">Contact sales</a>
+      </article>
+
+      <article class="tier" id="tier-starter">
+        <h2>Starter</h2>
+        <div class="price">$0<span>/mo</span></div>
+        <ul>
+          <li>1 project</li>
+          <li>Community support</li>
+          <li>1 GB storage</li>
+        </ul>
+        <a class="cta" href="/signup?plan=starter">Get started</a>
+      </article>
+
+      <article class="tier" id="tier-team">
+        <h2>Team</h2>
+        <div class="price">$29<span>/mo</span></div>
+        <ul>
+          <li>Unlimited projects</li>
+          <li>Email support</li>
+          <li>100 GB storage</li>
+        </ul>
+        <a class="cta" href="/signup?plan=team">Start Team trial</a>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; Meridian Cloud. <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a></p>
+  </footer>
+</body>
+</html>

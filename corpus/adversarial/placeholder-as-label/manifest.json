@@ -1,0 +1,17 @@
+{
+  "id": "placeholder-as-label",
+  "source": "adversarial",
+  "expectedUsable": "Every booking field has a persistent, programmatically associated label that stays visible and announced after the user starts typing.",
+  "violations": [
+    {
+      "id": "placeholder-only-label",
+      "wcag": "3.3.2",
+      "type": "behavioral",
+      "selector": "form input",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Add a real <label> (associated via for/id) for each input; keep the placeholder only as an example/format hint, not as the label.",
+      "notes": "A placeholder is used as the accessible name of last resort, so axe's label rule generally passes. But the placeholder disappears on input and is not a dependable label — Layer B flags that each field's accessible name derives solely from its placeholder with no associated <label>."
+    }
+  ]
+}

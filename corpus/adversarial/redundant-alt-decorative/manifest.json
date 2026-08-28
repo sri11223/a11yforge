@@ -1,0 +1,17 @@
+{
+  "id": "redundant-alt-decorative",
+  "source": "adversarial",
+  "expectedUsable": "The purely decorative divider is hidden from assistive tech (empty alt), so a screen-reader user isn't read a long, meaningless description mid-essay.",
+  "violations": [
+    {
+      "id": "decorative-image-verbose-alt",
+      "wcag": "1.1.1",
+      "type": "semantic",
+      "selector": "img.flourish",
+      "informative": false,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Set alt=\"\" (and optionally role=\"presentation\") so the decorative flourish is skipped by screen readers; it conveys no information.",
+      "notes": "The image is decorative but carries a long alt string, so axe's image-alt rule passes. This is the inverse of an empty-alt error: the fix is to REMOVE the alt content, not add more. Layer C flags the verbose alt on a ground-truth-decorative image as SR noise."
+    }
+  ]
+}

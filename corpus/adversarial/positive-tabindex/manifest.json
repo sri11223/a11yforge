@@ -1,0 +1,17 @@
+{
+  "id": "positive-tabindex",
+  "source": "adversarial",
+  "expectedUsable": "Tabbing through the contact form visits fields in their visual/reading order (first name, last name, email, reason, message, submit).",
+  "violations": [
+    {
+      "id": "positive-tabindex-order",
+      "wcag": "2.4.3",
+      "type": "behavioral",
+      "selector": "form",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Remove all positive tabindex attributes (tabindex=\"1\"..\"6\") and rely on DOM order for a natural focus sequence; use tabindex=\"0\"/\"-1\" only where genuinely needed.",
+      "notes": "Positive tabindex values scramble keyboard order to first->message->last->email->reason->submit. axe's tabindex heuristic is a best-practice rule (not a WCAG success criterion), so the WCAG-conformance scan reports zero violations while 2.4.3 Focus Order is actually broken."
+    }
+  ]
+}

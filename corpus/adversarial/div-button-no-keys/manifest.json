@@ -1,0 +1,17 @@
+{
+  "id": "div-button-no-keys",
+  "source": "adversarial",
+  "expectedUsable": "Each FAQ question can be expanded/collapsed with the keyboard (Enter or Space) once focused, not just by mouse click.",
+  "violations": [
+    {
+      "id": "custom-button-no-keyboard-activation",
+      "wcag": "2.1.1",
+      "type": "behavioral",
+      "selector": ".accordion .q",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Use a native <button>, or add a keydown handler that activates on Enter and Space, so the accordion is operable by keyboard as well as mouse.",
+      "notes": "role=button + tabindex=0 makes each header focusable with a valid name, so axe reports no violation. But activation is wired to onclick only; Enter/Space do nothing, so keyboard users can't open any answer. Layer B catches this by simulating key activation and observing no state change."
+    }
+  ]
+}

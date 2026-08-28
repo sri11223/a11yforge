@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orchard Co-op — Member handbook</title>
+  <style>
+    :root { --ink:#141414; --muted:#4a4a4a; --brand:#2f6b1f; --line:#dfe6d9; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.6 system-ui,Segoe UI,Roboto,sans-serif; color:var(--ink); background:#fff; }
+    a { color:var(--brand); }
+    .site { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid var(--line); }
+    .brand { font-weight:700; font-size:18px; text-decoration:none; color:var(--ink); }
+    nav a { margin-left:20px; text-decoration:none; }
+    main { max-width:760px; margin:0 auto; padding:40px 24px; }
+    h1 { font-size:30px; margin:0 0 8px; }
+    /* h4 is styled to look like a section heading, but it skips h2 and h3. */
+    h4 { font-size:22px; margin:28px 0 8px; }
+    p { color:var(--muted); margin:0 0 16px; }
+    footer { border-top:1px solid var(--line); padding:24px; color:var(--muted); margin-top:40px; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="/">Orchard Co-op</a>
+    <nav aria-label="Primary">
+      <a href="/join">Join</a>
+      <a href="/handbook">Handbook</a>
+      <a href="/events">Events</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Member handbook</h1>
+    <p>Everything you need to know about being part of the co-op, from shifts to shared harvests.</p>
+
+    <!-- BUG: jumps from h1 straight to h4, skipping h2 and h3. Visually fine,
+         but the heading outline is broken for screen-reader navigation. -->
+    <h4>Your monthly shift</h4>
+    <p>Every working member commits to one three-hour shift per month. Sign up on the board by the first Sunday.</p>
+
+    <h4>Sharing the harvest</h4>
+    <p>Surplus produce is divided evenly at the end of each week. Bring your own bags.</p>
+
+    <h4>Getting in touch</h4>
+    <p>Questions? Email the coordinators or drop by the office during market hours.</p>
+  </main>
+
+  <footer>
+    <p>&copy; Orchard Co-op. <a href="/bylaws">Bylaws</a></p>
+  </footer>
+</body>
+</html>

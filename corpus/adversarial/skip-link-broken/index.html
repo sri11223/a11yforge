@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Daily Ledger — Markets</title>
+  <style>
+    :root { --ink:#161616; --muted:#4a4a4a; --brand:#0b4a8f; --line:#dcdce0; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.6 Georgia,"Times New Roman",serif; color:var(--ink); background:#fff; }
+    a { color:var(--brand); }
+    .skip { position:absolute; left:-9999px; top:0; background:#111; color:#fff; padding:10px 14px; border-radius:0 0 8px 0; z-index:10; }
+    .skip:focus { left:0; }
+    .site { border-bottom:2px solid var(--ink); }
+    .masthead { display:flex; align-items:baseline; justify-content:space-between; max-width:1000px; margin:0 auto; padding:18px 24px; }
+    .brand { font-weight:700; font-size:24px; letter-spacing:.5px; text-decoration:none; color:var(--ink); font-family:Georgia,serif; }
+    nav { border-top:1px solid var(--line); }
+    nav ul { list-style:none; display:flex; gap:22px; max-width:1000px; margin:0 auto; padding:10px 24px; font-family:system-ui,sans-serif; font-size:14px; }
+    nav a { text-decoration:none; }
+    .layout { max-width:1000px; margin:0 auto; padding:32px 24px; display:grid; grid-template-columns:1fr 280px; gap:40px; }
+    @media (max-width:760px){ .layout{ grid-template-columns:1fr; } }
+    h1 { font-size:30px; margin:0 0 12px; }
+    article p { margin:0 0 16px; }
+    aside { font-family:system-ui,sans-serif; font-size:14px; color:var(--muted); border-left:1px solid var(--line); padding-left:20px; }
+    footer { border-top:1px solid var(--line); padding:24px; color:var(--muted); font-family:system-ui,sans-serif; font-size:14px; }
+  </style>
+</head>
+<body>
+  <!-- BUG: target is #main-content, but the <main> id is "content". The skip link
+       lands nowhere, so keyboard users cannot actually bypass the nav. -->
+  <a class="skip" href="#main-content">Skip to main content</a>
+
+  <header class="site">
+    <div class="masthead">
+      <a class="brand" href="/">The Daily Ledger</a>
+      <span style="font-family:system-ui,sans-serif;font-size:13px;color:#4a4a4a;">Tuesday edition</span>
+    </div>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="/markets">Markets</a></li>
+        <li><a href="/business">Business</a></li>
+        <li><a href="/tech">Technology</a></li>
+        <li><a href="/opinion">Opinion</a></li>
+        <li><a href="/world">World</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="layout">
+    <main id="content">
+      <article>
+        <h1>Markets steady as investors weigh rate path</h1>
+        <p>Equities held near record highs on Tuesday as traders parsed fresh signals on the central bank's next move, with volatility subdued across major indices.</p>
+        <p>Analysts pointed to resilient consumer spending and cooling inflation as reasons for cautious optimism heading into the second half.</p>
+        <p>Bond yields ticked lower, while the dollar was little changed against a basket of peers.</p>
+      </article>
+    </main>
+
+    <aside aria-label="Related">
+      <p><strong>Most read</strong></p>
+      <p><a href="/a1">Why small caps are lagging</a></p>
+      <p><a href="/a2">A quiet quarter for IPOs</a></p>
+    </aside>
+  </div>
+
+  <footer>
+    <p>&copy; The Daily Ledger. <a href="/about">About</a> · <a href="/contact">Contact</a></p>
+  </footer>
+</body>
+</html>

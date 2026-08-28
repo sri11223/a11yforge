@@ -1,0 +1,17 @@
+{
+  "id": "alt-is-filename",
+  "source": "adversarial",
+  "expectedUsable": "Each staff headshot has alt text naming the person shown (e.g. \"Dr. Amara Osei\"), not the image file name.",
+  "violations": [
+    {
+      "id": "filename-as-alt",
+      "wcag": "1.1.1",
+      "type": "semantic",
+      "selector": ".team .member img",
+      "informative": true,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Set each image's alt to the clinician's name (e.g. alt=\"Dr. Amara Osei\"); the adjacent heading gives the ground truth.",
+      "notes": "alt values are raw filenames (DSC_0042.jpg, IMG_20240118_final.jpg, headshot-v2-web.png). axe's image-alt rule passes because alt is non-empty; the deterministic filename-pattern backstop catches these without the LLM judge."
+    }
+  ]
+}

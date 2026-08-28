@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parcelly — Your orders</title>
+  <style>
+    :root { --ink:#141414; --muted:#4a4a4a; --brand:#1a4bd6; --line:#dfe3ea; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif; color:var(--ink); background:#fff; }
+    a { color:var(--brand); }
+    .site { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid var(--line); }
+    .brand { font-weight:700; font-size:18px; text-decoration:none; color:var(--ink); }
+    nav a { margin-left:20px; text-decoration:none; }
+    main { max-width:760px; margin:0 auto; padding:40px 24px; }
+    h1 { font-size:28px; margin:0 0 20px; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { text-align:left; padding:14px 12px; border-bottom:1px solid var(--line); }
+    th { font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+    /* Status is conveyed ONLY by the colour of the dot — no text, no shape. */
+    .dot { display:inline-block; width:14px; height:14px; border-radius:50%; }
+    .green { background:#188a42; }
+    .amber { background:#b8860b; }
+    .red { background:#c0392b; }
+    footer { border-top:1px solid var(--line); padding:24px; color:var(--muted); margin-top:40px; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="/">Parcelly</a>
+    <nav aria-label="Primary">
+      <a href="/orders">Orders</a>
+      <a href="/track">Track</a>
+      <a href="/help">Help</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Your orders</h1>
+
+    <table>
+      <caption class="sr-only" style="position:absolute;left:-9999px;">Order status</caption>
+      <thead>
+        <tr><th scope="col">Order</th><th scope="col">Date</th><th scope="col">Total</th><th scope="col">Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#10482</td><td>Aug 21</td><td>$54.00</td>
+          <!-- Colour alone communicates "delivered". A SR user (or colour-blind user) gets nothing. -->
+          <td><span class="dot green"></span></td>
+        </tr>
+        <tr>
+          <td>#10471</td><td>Aug 19</td><td>$18.50</td>
+          <td><span class="dot amber"></span></td>
+        </tr>
+        <tr>
+          <td>#10460</td><td>Aug 15</td><td>$132.00</td>
+          <td><span class="dot red"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <footer>
+    <p>&copy; Parcelly. <a href="/privacy">Privacy</a></p>
+  </footer>
+</body>
+</html>

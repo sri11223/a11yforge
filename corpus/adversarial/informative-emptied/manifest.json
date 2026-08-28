@@ -1,0 +1,17 @@
+{
+  "id": "informative-emptied",
+  "source": "adversarial",
+  "expectedUsable": "The emissions chart (which carries the report's core data) has descriptive alt text so a screen-reader user gets the same information a sighted reader gets from the figure.",
+  "violations": [
+    {
+      "id": "informative-image-empty-alt",
+      "wcag": "1.1.1",
+      "type": "semantic",
+      "selector": "img.chart",
+      "informative": true,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Add alt text describing the chart's data/trend (e.g. \"Line chart: Scope 1 and 2 emissions fell from 4.1M tonnes CO2e in 2020 to 2.3M in 2024\"). Do NOT leave alt empty — this image is informative, not decorative.",
+      "notes": "An informative chart has alt=\"\" (decorative), so axe's image-alt rule passes. This is also the canonical false-fix trap: 'satisfying the scanner' by emptying alt is exactly what the regression guard must reject. The deterministic backstop flags empty alt on a ground-truth-informative image."
+    }
+  ]
+}

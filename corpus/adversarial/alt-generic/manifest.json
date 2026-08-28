@@ -1,0 +1,27 @@
+{
+  "id": "alt-generic",
+  "source": "adversarial",
+  "expectedUsable": "Each informative image has alt text that conveys what the image actually shows (the project/work), not a placeholder word.",
+  "violations": [
+    {
+      "id": "hero-generic-alt",
+      "wcag": "1.1.1",
+      "type": "semantic",
+      "selector": "img.hero",
+      "informative": true,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Replace alt=\"image\" with a meaningful description of the hero image content.",
+      "notes": "alt is non-empty so axe's image-alt rule passes; the value is a generic placeholder that carries no information."
+    },
+    {
+      "id": "grid-generic-alt",
+      "wcag": "1.1.1",
+      "type": "semantic",
+      "selector": ".grid figure img",
+      "informative": true,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Give each project image alt text describing the work shown (e.g. the brand/packaging depicted), or defer to the visible figcaption if the image is purely illustrative.",
+      "notes": "Values are \"photo\"/\"image\"/\"picture\" — the deterministic wordlist backstop also flags these without needing the LLM judge."
+    }
+  ]
+}

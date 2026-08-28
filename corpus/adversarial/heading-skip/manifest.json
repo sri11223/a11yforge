@@ -1,0 +1,17 @@
+{
+  "id": "heading-skip",
+  "source": "adversarial",
+  "expectedUsable": "The heading outline is sequential (h1 → h2 …) so screen-reader users navigating by heading get a coherent document structure.",
+  "violations": [
+    {
+      "id": "skipped-heading-level",
+      "wcag": "1.3.1",
+      "type": "mechanical",
+      "selector": "main h4",
+      "informative": null,
+      "expectedCatchingLayer": "A",
+      "expectedFix": "Change the three section headings from <h4> to <h2> so the outline goes h1 → h2 without skipping levels; style with CSS rather than by choosing a level.",
+      "notes": "Included deliberately as a case Layer A DOES catch — this keeps us honest about the scanner's genuine value. pa11y/HTMLCS flags the skipped level under 1.3.1; note that axe's own heading-order rule is best-practice (not a WCAG SC), so this is caught by the pa11y engine in Layer A, not the WCAG-tagged axe pass."
+    }
+  ]
+}

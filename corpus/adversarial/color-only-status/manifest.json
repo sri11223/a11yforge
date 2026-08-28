@@ -1,0 +1,17 @@
+{
+  "id": "color-only-status",
+  "source": "adversarial",
+  "expectedUsable": "Each order's status (delivered / in transit / problem) is conveyed by text (or an accessible name), not by the colour of a dot alone.",
+  "violations": [
+    {
+      "id": "status-color-only",
+      "wcag": "1.4.1",
+      "type": "semantic",
+      "selector": "td .dot",
+      "informative": true,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Add a text label alongside each dot (e.g. \"Delivered\", \"In transit\", \"Delayed\") or give the indicator an accessible name/aria-label conveying the status. Colour must not be the only means.",
+      "notes": "The status cell contains only a coloured <span>. Contrast is fine and there is no non-text-content rule to trip, so axe is clean. Use of Colour (1.4.1) has no reliable automated axe test; Layer C flags that the status carries meaning by colour alone with no text alternative."
+    }
+  ]
+}

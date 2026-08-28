@@ -1,0 +1,17 @@
+{
+  "id": "live-region-missing",
+  "source": "adversarial",
+  "expectedUsable": "When the user adds the mug to the cart, a screen reader announces the confirmation (\"Added 1 to cart...\") without the user having to move focus to find it.",
+  "violations": [
+    {
+      "id": "status-not-announced",
+      "wcag": "4.1.3",
+      "type": "behavioral",
+      "selector": "#cart-status",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Give the confirmation container a live region: role=\"status\" (or aria-live=\"polite\") so the injected text is announced automatically. The element must exist in the DOM before the update.",
+      "notes": "The add-to-cart confirmation is injected into a plain <div> with no aria-live/role=status. Sighted users see it; screen-reader users hear nothing. No axe rule requires status messages, so the page is clean."
+    }
+  ]
+}

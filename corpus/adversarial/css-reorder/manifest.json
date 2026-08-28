@@ -1,0 +1,27 @@
+{
+  "id": "css-reorder",
+  "source": "adversarial",
+  "expectedUsable": "The visual left-to-right order of the pricing tiers (Starter, Team, Enterprise) matches the DOM/tab/reading order, so keyboard and screen-reader users encounter the plans in the same sequence a sighted user sees.",
+  "violations": [
+    {
+      "id": "focus-order-mismatch",
+      "wcag": "2.4.3",
+      "type": "behavioral",
+      "selector": ".tiers",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Reorder the DOM so tiers appear Starter, Team, Enterprise and remove the CSS `order` overrides (#tier-starter/#tier-team/#tier-enterprise), so visual order equals DOM order.",
+      "notes": "Visual order is Starter, Team, Enterprise via flexbox `order`, but DOM/tab order is Enterprise, Starter, Team. axe has no rule for CSS-induced order mismatch, so the page is clean."
+    },
+    {
+      "id": "meaningful-sequence",
+      "wcag": "1.3.2",
+      "type": "behavioral",
+      "selector": ".tiers",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Ensure the programmatic reading sequence conveys the same meaning as the visual sequence (fixed by the same DOM reorder).",
+      "notes": "A screen-reader user hears Enterprise first, then Starter, then Team — the reverse of the visual emphasis, distorting the intended plan comparison."
+    }
+  ]
+}

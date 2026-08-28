@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Summit FAQ — Support</title>
+  <style>
+    :root { --ink:#141414; --muted:#4a4a4a; --brand:#1f4ea8; --line:#dfe3ea; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif; color:var(--ink); background:#fff; }
+    a { color:var(--brand); }
+    .site { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid var(--line); }
+    .brand { font-weight:700; font-size:18px; text-decoration:none; color:var(--ink); }
+    nav a { margin-left:20px; text-decoration:none; }
+    main { max-width:720px; margin:0 auto; padding:40px 24px; }
+    h1 { font-size:28px; margin:0 0 20px; }
+    .accordion { border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+    .item { border-top:1px solid var(--line); }
+    .item:first-child { border-top:0; }
+    .q { display:flex; justify-content:space-between; align-items:center; padding:16px 18px; font-weight:600; cursor:pointer; }
+    .q:focus-visible { outline:3px solid #ffbf47; outline-offset:-3px; }
+    .q .chev { color:var(--muted); }
+    .a { padding:0 18px 16px; color:var(--muted); display:none; }
+    .item.open .a { display:block; }
+    footer { border-top:1px solid var(--line); padding:24px; color:var(--muted); margin-top:40px; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="/">Summit</a>
+    <nav aria-label="Primary">
+      <a href="/features">Features</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/support">Support</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Frequently asked questions</h1>
+
+    <div class="accordion">
+      <div class="item">
+        <!-- role=button + tabindex=0 (focusable, axe-clean) but only a click handler:
+             Enter/Space do nothing, so keyboard users cannot expand it. -->
+        <div class="q" role="button" tabindex="0" aria-expanded="false" aria-controls="a1" onclick="toggle(this)">
+          How do I reset my password?<span class="chev" aria-hidden="true">▾</span>
+        </div>
+        <div class="a" id="a1">Use the "Forgot password" link on the sign-in page and follow the emailed instructions.</div>
+      </div>
+
+      <div class="item">
+        <div class="q" role="button" tabindex="0" aria-expanded="false" aria-controls="a2" onclick="toggle(this)">
+          Can I change my plan later?<span class="chev" aria-hidden="true">▾</span>
+        </div>
+        <div class="a" id="a2">Yes — upgrade or downgrade anytime from Billing. Changes are prorated.</div>
+      </div>
+
+      <div class="item">
+        <div class="q" role="button" tabindex="0" aria-expanded="false" aria-controls="a3" onclick="toggle(this)">
+          Do you offer refunds?<span class="chev" aria-hidden="true">▾</span>
+        </div>
+        <div class="a" id="a3">We offer a 30-day money-back guarantee on annual plans.</div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; Summit. <a href="/status">System status</a></p>
+  </footer>
+
+  <script>
+    // BUG: activation is wired to click only. No keydown handler for Enter/Space.
+    function toggle(el) {
+      const item = el.closest('.item');
+      const open = item.classList.toggle('open');
+      el.setAttribute('aria-expanded', String(open));
+    }
+  </script>
+</body>
+</html>

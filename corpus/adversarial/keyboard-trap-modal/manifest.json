@@ -1,0 +1,27 @@
+{
+  "id": "keyboard-trap-modal",
+  "source": "adversarial",
+  "expectedUsable": "A keyboard or screen-reader user who opens the newsletter modal can dismiss it (Escape and an operable close button) and move focus back to the page.",
+  "violations": [
+    {
+      "id": "modal-keyboard-trap",
+      "wcag": "2.1.2",
+      "type": "behavioral",
+      "selector": "#newsletter-modal",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Allow dismissal without a trap: handle the Escape key to close, and let focus return to the invoking control (#open-modal). The focus trap itself is acceptable ONLY if a working keyboard exit exists.",
+      "notes": "Tab is force-cycled inside the dialog with no branch returning focus to the page; there is no keydown handler for Escape. axe cannot see JS focus behavior, so the page reports zero violations."
+    },
+    {
+      "id": "modal-close-not-operable",
+      "wcag": "2.1.1",
+      "type": "behavioral",
+      "selector": "#modal-close",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Make the close control a real <button> (focusable, activatable by Enter/Space) with an accessible name such as \"Close dialog\", instead of a click-only <span>.",
+      "notes": "The only close affordance is a <span> with an onclick handler: not in the tab order and not keyboard-activatable. The dialog itself has valid role/aria-modal/aria-labelledby, so axe passes."
+    }
+  ]
+}

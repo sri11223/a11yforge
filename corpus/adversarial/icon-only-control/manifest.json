@@ -1,0 +1,17 @@
+{
+  "id": "icon-only-control",
+  "source": "adversarial",
+  "expectedUsable": "The play controls are reachable and operable by keyboard (Tab to focus, Enter/Space to activate) and announced as buttons with a meaningful name.",
+  "violations": [
+    {
+      "id": "role-button-not-focusable",
+      "wcag": "2.1.1",
+      "type": "behavioral",
+      "selector": ".icon-btn",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Use a native <button> (preferred), or add tabindex=\"0\" plus keydown handling for Enter/Space, so the control is keyboard-reachable and operable. The accessible name is already present.",
+      "notes": "role=\"button\" with an aria-label gives it a valid accessible name, so axe's button-name rule passes. But without tabindex it is not in the tab order — a keyboard/SR user cannot reach or trigger it (2.1.1). Layer B catches the missing focusability."
+    }
+  ]
+}

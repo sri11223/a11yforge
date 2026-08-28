@@ -1,0 +1,17 @@
+{
+  "id": "aria-label-contradicts",
+  "source": "adversarial",
+  "expectedUsable": "The email field's accessible name matches its visible label (\"Email address\"), so a screen-reader user and a sighted user are filling in the same field.",
+  "violations": [
+    {
+      "id": "aria-label-overrides-visible-label",
+      "wcag": "2.5.3",
+      "type": "semantic",
+      "selector": "#email",
+      "informative": null,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Remove the contradictory aria-label=\"Phone number\" so the accessible name falls back to the visible <label> \"Email address\" (or make aria-label match the label).",
+      "notes": "The <label> is correctly associated (axe's label rule passes) but aria-label overrides the accessible name to \"Phone number\", contradicting the visible text. Because the applicable element is a text input, axe's label-content-name-mismatch (2.5.3) does not fire — Layer B surfaces the name/visible-text divergence and Layer C judges the contradiction."
+    }
+  ]
+}

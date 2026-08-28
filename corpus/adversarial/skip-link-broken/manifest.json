@@ -1,0 +1,17 @@
+{
+  "id": "skip-link-broken",
+  "source": "adversarial",
+  "expectedUsable": "Activating \"Skip to main content\" moves focus to the start of the main article, letting keyboard users bypass the masthead and section nav.",
+  "violations": [
+    {
+      "id": "skip-link-dead-target",
+      "wcag": "2.4.1",
+      "type": "behavioral",
+      "selector": "a.skip",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Point the skip link at an existing target: change href to \"#content\" (or change the <main> id to \"main-content\") so the anchor resolves and focus moves into <main>.",
+      "notes": "The skip link targets #main-content but the <main> id is \"content\", so activation does nothing. axe's skip-link check is a best-practice rule (not a WCAG SC), so the WCAG-conformance scan is clean while 2.4.1 Bypass Blocks is effectively broken."
+    }
+  ]
+}

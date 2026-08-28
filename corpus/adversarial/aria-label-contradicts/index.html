@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cedar &amp; Co — Create account</title>
+  <style>
+    :root { --ink:#141414; --muted:#4a4a4a; --brand:#5a3b8a; --line:#e2dce8; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif; color:var(--ink); background:#fff; }
+    a { color:var(--brand); }
+    .site { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid var(--line); }
+    .brand { font-weight:700; font-size:18px; text-decoration:none; color:var(--ink); }
+    nav a { margin-left:20px; text-decoration:none; }
+    main { max-width:460px; margin:0 auto; padding:40px 24px; }
+    h1 { font-size:26px; margin:0 0 6px; }
+    .lede { color:var(--muted); margin:0 0 24px; }
+    form { display:grid; gap:16px; }
+    .field { display:grid; gap:6px; }
+    label { font-weight:600; }
+    input { padding:11px 12px; border:1px solid #b3b3ba; border-radius:8px; font-size:16px; }
+    input:focus-visible { outline:3px solid #ffbf47; outline-offset:1px; }
+    button { background:var(--brand); color:#fff; border:0; border-radius:8px; padding:12px 18px; font-size:16px; cursor:pointer; }
+    .muted { color:var(--muted); font-size:14px; }
+    footer { border-top:1px solid var(--line); padding:24px; color:var(--muted); margin-top:40px; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="/">Cedar &amp; Co</a>
+    <nav aria-label="Primary">
+      <a href="/shop">Shop</a>
+      <a href="/help">Help</a>
+      <a href="/signin">Sign in</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Create your account</h1>
+    <p class="lede">Save your favourites and check out faster.</p>
+
+    <form>
+      <div class="field">
+        <label for="fullname">Full name</label>
+        <input id="fullname" type="text" autocomplete="name">
+      </div>
+
+      <div class="field">
+        <!-- BUG: the visible label says "Email address" but aria-label overrides the
+             accessible name to "Phone number". SR users are told the wrong field. -->
+        <label for="email">Email address</label>
+        <input id="email" type="email" aria-label="Phone number" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="pw">Password</label>
+        <input id="pw" type="password" autocomplete="new-password">
+      </div>
+
+      <button type="submit">Create account</button>
+      <p class="muted">By continuing you agree to our <a href="/terms">Terms</a>.</p>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; Cedar &amp; Co. <a href="/privacy">Privacy</a></p>
+  </footer>
+</body>
+</html>

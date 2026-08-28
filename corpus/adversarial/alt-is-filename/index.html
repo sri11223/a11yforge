@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brightwell Clinic — Our team</title>
+  <style>
+    :root { --ink:#141414; --muted:#4a4a4a; --brand:#0a5c6e; --line:#dde6e8; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif; color:var(--ink); background:#fff; }
+    a { color:var(--brand); }
+    .site { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid var(--line); }
+    .brand { font-weight:700; font-size:18px; text-decoration:none; color:var(--ink); }
+    nav a { margin-left:20px; text-decoration:none; }
+    main { max-width:940px; margin:0 auto; padding:40px 24px; }
+    h1 { font-size:30px; margin:0 0 8px; }
+    .lede { color:var(--muted); margin:0 0 28px; }
+    .team { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    @media (max-width:760px){ .team{ grid-template-columns:1fr 1fr; } }
+    .member img { width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:12px; background:#e7eef0; }
+    .member h2 { font-size:17px; margin:12px 0 2px; }
+    .member p { color:var(--muted); font-size:14px; margin:0; }
+    footer { border-top:1px solid var(--line); padding:24px; color:var(--muted); margin-top:40px; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="/">Brightwell Clinic</a>
+    <nav aria-label="Primary">
+      <a href="/services">Services</a>
+      <a href="/team">Our team</a>
+      <a href="/book">Book</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Meet our care team</h1>
+    <p class="lede">Board-certified clinicians focused on whole-person primary care.</p>
+
+    <section class="team" aria-label="Team members">
+      <div class="member">
+        <!-- Alt text is the raw camera filename: present but meaningless to a user. -->
+        <img src="staff/DSC_0042.jpg" alt="DSC_0042.jpg">
+        <h2>Dr. Amara Osei</h2>
+        <p>Family Medicine</p>
+      </div>
+      <div class="member">
+        <img src="staff/IMG_20240118_final.jpg" alt="IMG_20240118_final.jpg">
+        <h2>Dr. Ravi Menon</h2>
+        <p>Internal Medicine</p>
+      </div>
+      <div class="member">
+        <img src="staff/headshot-v2-web.png" alt="headshot-v2-web.png">
+        <h2>Nadia Petrova, NP</h2>
+        <p>Pediatrics</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; Brightwell Clinic. <a href="/privacy">Privacy</a> · <a href="/accessibility">Accessibility</a></p>
+  </footer>
+</body>
+</html>
