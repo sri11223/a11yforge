@@ -1,14 +1,14 @@
 import type { Finding } from "../types.js";
 
 /**
- * Routing decision for the advanced agent: mechanical violations get a
- * deterministic rule-based fix; semantic ones go to the LLM fixer. Behavioral
- * findings route by their concrete remedy (often rule-based structural edits).
- *
- * TODO(step-later): map Finding.type/source to the concrete fix strategy.
+ * Routing decision for the advanced agent:
+ *  - Layer A (mechanical) findings → deterministic rule fix (cheerio), no LLM.
+ *  - Layer B (behavioral) and Layer C (semantic) findings → LLM fix (shared prompt),
+ *    because how to fix a keyboard trap / focus order / meaningful alt requires judgment.
+ * Semantic alt/label fixes are additionally gated by grounding (see human-checkpoint).
  */
 export type FixStrategy = "rule" | "llm";
 
-export function route(_finding: Finding): FixStrategy {
-  throw new Error("TODO: router not implemented yet");
+export function route(finding: Finding): FixStrategy {
+  return finding.layer === "A" ? "rule" : "llm";
 }
