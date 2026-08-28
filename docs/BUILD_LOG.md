@@ -310,3 +310,53 @@ announcement-string equivalence.
   will score baseline vs advanced on this exact harness. Hallucinated-but-plausible alt is a
   known blind spot of any automated layer — it is surfaced to the human checkpoint, not
   silently scored as fixed.
+
+---
+
+## Step 8 — Advanced agent (route → verify-loop → guard → checkpoint → memory)
+
+**Done**
+- `src/agents/advanced.ts` — `runAdvanced(html)`: detect (A/B/C) → per-finding route → fix →
+  regression-guard (pre-commit) → re-scan verify (target gone AND no new A/B/C finding
+  anywhere) → accept or retry (max 3) with the specific failure fed back → escalate → memory.
+- **Routing / integrity (a deliberate deviation from "semantic→LLM"):** Layer B (behavioral)
+  → LLM targeted fix; Layer A + Layer C → deterministic rule fixes. The LLM is NEVER used to
+  write alt text. Alt is either GROUNDED in the page's own markup (figcaption / aria-labelledby
+  / wrapping link / a heading inside a small card) — in which case an empty alt is written
+  because the alternative already exists — or, when it cannot be grounded, ESCALATED to
+  needs-review. This makes the confident-hallucination failure mode structurally impossible,
+  which is the Hot Take enforced in code (an early version routed C→LLM and the model
+  cheerfully invented descriptions — caught and fixed).
+- Regression guard runs on every candidate before commit; verify re-runs the full harness.
+- Memory: verified fix signatures carry across pages (deterministic order); reused for the
+  duplicate play-button on icon-only-control (memHits=1) and the four inputs on
+  placeholder-as-label (memHits=3). Memory never enters LLM prompts, so replay stays exact.
+- `eval/record-advanced.ts` (run from compiled `dist/`, per the tsx caveat) recorded the
+  advanced runs over all 15 pages; 13 new fixer cassettes (94 total). Replays offline.
+
+**Whole-corpus outcomes (advanced)**
+- true-fix on nearly every page; **2 honest escalations to needs-review** — `alt-generic`
+  hero (no caption/heading to ground it) and `informative-emptied` (figure caption is just
+  "Figure 1", not descriptive). Neither was guessed.
+- **Zero false-fixes shipped.** The agent only commits fixes that re-verify clean across
+  A/B/C; anything it cannot verify is left flagged, not shipped as done. On icon-only-control
+  it ends A0/B0 where the baseline shipped A0/**B2** — the same page, the difference is
+  verification.
+- `color-only-status` is fixed by neither agent: WCAG 1.4.1 (use of colour) has no reliable
+  automated test, so no layer surfaces it. Documented limitation (a real audit flags it manually).
+
+**Verified**
+- `test/advanced.test.ts` (3) + `test/advanced-support.test.ts` (8): icon-only-control ends
+  A/B clean with every fix verified (no new findings); alt-generic escalates the ungrounded
+  hero to needs-review and leaves its `alt="image"` untouched (no fabricated description
+  shipped) while rule-fixing the grounded grid images; every Layer-C fix is rule/checkpoint,
+  never LLM; deterministic across replays.
+- Made the suite deterministic: `fileParallelism: false` in vitest config (each file drives
+  its own Chromium; parallel runs contended and flaked on timeouts). `npx tsc --noEmit` clean;
+  full suite `npm test` → **97 passed** (8 files), stable.
+
+**Note for the metric step (S9)**
+- Headline delta will be **false-fix rate** (baseline ships them, advanced ships zero) and
+  **integrity** (advanced escalates 2 ungrounded alts a human must resolve), not raw fix-count
+  — the base model is strong, as reported in S7. If the 15-page delta is too concentrated for
+  a clean significance test, add the injected/ corpus bucket (decision deferred to S9 per plan).

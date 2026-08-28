@@ -29,7 +29,15 @@ export function snapshot(html: string): DomSnapshot {
   let emptyAltInFigure = 0;
   $("img").each((_i, el) => {
     const alt = $(el).attr("alt");
-    if ((alt ?? "").trim() === "" && $(el).closest("figure").length > 0) emptyAltInFigure++;
+    const fig = $(el).closest("figure");
+    if ((alt ?? "").trim() === "" && fig.length > 0) {
+      // Empty alt is legitimate when a descriptive <figcaption> is the text alternative.
+      const cap = fig.find("figcaption").first().text().trim();
+      const capWords = cap.split(/\s+/).filter((w) => /[a-z]/i.test(w));
+      const capDescriptive =
+        capWords.length >= 2 && !/^(figure|fig|image|photo|picture|img)\s*\.?\s*\d*$/i.test(cap);
+      if (!capDescriptive) emptyAltInFigure++;
+    }
   });
   return {
     textTokens,

@@ -12,10 +12,10 @@ const mk = (layer: "A" | "B" | "C"): Finding => ({
 });
 
 describe("router", () => {
-  it("mechanical → rule, behavioral/semantic → llm", () => {
+  it("behavioral → llm; mechanical + semantic → rule (alt is never LLM-invented)", () => {
     expect(route(mk("A"))).toBe("rule");
     expect(route(mk("B"))).toBe("llm");
-    expect(route(mk("C"))).toBe("llm");
+    expect(route(mk("C"))).toBe("rule");
   });
 });
 

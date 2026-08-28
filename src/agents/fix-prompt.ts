@@ -35,3 +35,33 @@ export function extractHtml(raw: string): string {
   const fenced = /```(?:html)?\s*([\s\S]*?)```/i.exec(raw);
   return (fenced ? fenced[1]! : raw).trim();
 }
+
+/**
+ * Targeted fix prompt used by the advanced agent's verify-loop: fix ONE behavioral
+ * issue and nothing else, with optional feedback from a rejected prior attempt.
+ * Semantic alt is NEVER fixed via this path (grounded rule-fix or human checkpoint
+ * only) so the model cannot invent descriptions for pixels it never saw.
+ */
+export function buildTargetedFixMessages(
+  html: string,
+  target: { wcag?: string; message: string; selector?: string },
+  feedback?: string,
+): ChatMessage[] {
+  const system =
+    "You are an expert web accessibility engineer. Fix ONLY the single issue described " +
+    "below and change as little else as possible. Preserve all visible text, controls, and " +
+    "images — never delete, hide, or empty content to satisfy a checker. Return the COMPLETE " +
+    "corrected HTML document only — no explanation, no markdown fences.";
+  const fb = feedback
+    ? `\n\nYour previous attempt was rejected by automated verification:\n${feedback}\nAddress this in the corrected HTML.`
+    : "";
+  return [
+    { role: "system", content: system },
+    {
+      role: "user",
+      content:
+        `Issue to fix: [${target.wcag ?? "?"}] ${target.message}` +
+        `${target.selector ? ` (selector: ${target.selector})` : ""}${fb}\n\nHTML:\n${html}`,
+    },
+  ];
+}

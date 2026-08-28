@@ -59,6 +59,16 @@ export function findAltGrounding(html: string, imgSelector: string): Grounding {
     if (descriptive(lt)) return { grounded: true, source: "link-text", text: lt };
   }
 
+  // A heading inside a SMALL container (a card/list item), NOT a page-level landmark —
+  // e.g. a headshot next to <h2>Dr. Amara Osei</h2>. Excludes main/section so a page
+  // <h1> never falsely "grounds" an unrelated hero image.
+  const parent = el.parent();
+  const ptag = (parent.get(0) as { tagName?: string } | undefined)?.tagName?.toLowerCase();
+  if (parent.length && ptag && ["div", "li", "article", "aside"].includes(ptag)) {
+    const h = parent.find("h1,h2,h3,h4,h5,h6").first().text().trim();
+    if (descriptive(h)) return { grounded: true, source: "adjacent-heading", text: h };
+  }
+
   return { grounded: false };
 }
 

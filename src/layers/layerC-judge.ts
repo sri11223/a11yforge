@@ -99,13 +99,20 @@ export function deterministicBackstops(html: string): Finding[] {
       });
       return;
     }
-    // 4. informative image emptied to alt="" (heuristic: substantial / in a figure / content src)
-    if (trimmed === "" && (inFigure || INFORMATIVE_SRC_RE.test(src))) {
-      raw.push({
-        selector, wcag: "1.1.1", source: "backstop", category: "decorative-misuse", rule: "informative-emptied",
-        message: `A substantial image (in a <figure> or with a content-bearing source) has empty alt="", so a screen-reader user gets no information — likely an informative image wrongly marked decorative.`,
-      });
-      return;
+    // 4. informative image emptied to alt="" — but NOT if a descriptive <figcaption>
+    //    already provides the text alternative (empty alt is correct in that case).
+    if (trimmed === "") {
+      const cap = $(el).closest("figure").find("figcaption").first().text().trim();
+      const capWords = cap.split(/\s+/).filter((w) => /[a-z]/i.test(w));
+      const capDescriptive =
+        capWords.length >= 2 && !/^(figure|fig|image|photo|picture|img)\s*\.?\s*\d*$/i.test(cap);
+      if ((inFigure || INFORMATIVE_SRC_RE.test(src)) && !capDescriptive) {
+        raw.push({
+          selector, wcag: "1.1.1", source: "backstop", category: "decorative-misuse", rule: "informative-emptied",
+          message: `A substantial image (in a <figure> or with a content-bearing source) has empty alt="" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative.`,
+        });
+        return;
+      }
     }
     // 5. alt duplicates adjacent visible text (redundant)
     const cap = $(el).closest("figure").find("figcaption").first().text().trim();
