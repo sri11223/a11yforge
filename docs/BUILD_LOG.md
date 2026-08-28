@@ -104,3 +104,52 @@ Chronological record of each build step: what was done and how it was verified.
 - `aria-label-contradicts` uses a **text input** so axe's `label-content-name-mismatch`
   (2.5.3) rule does not apply — the contradiction stays invisible to axe (would be caught
   on a button/link).
+
+---
+
+## Step 4 — Layer A wired (axe-core + pa11y, normalized)
+
+**Done**
+- Implemented `src/layers/layerA-scanners.ts`: runs axe-core (via Playwright) and
+  pa11y/HTMLCS (via Puppeteer, which pa11y bundles) over the same page and normalizes
+  both into a single `Finding[]` (layer "A", type "mechanical", with `source`, selector,
+  WCAG SC, impact, human message). Accepts `{ html }` (written to a temp file so both
+  engines see identical input) or `{ url }`; optional shared Playwright `browser`.
+- Two engines on purpose (not single-vendor). De-dupe by node+criterion (selector|SC),
+  merging engines into `source` (e.g. `axe-core+pa11y`). Deterministic **stable sort**
+  (selector → WCAG SC → id) so a page always yields byte-identical output.
+- Added a minimal ambient type declaration `src/pa11y.d.ts` (pa11y ships no types).
+
+**Principled scope decision (important, and it deviates from the original plan)**
+- Layer A counts **DEFINITE failures only**: axe *violations* (WCAG 2.x A/AA tags) and
+  pa11y *errors*. We deliberately EXCLUDE pa11y warnings/notices and axe best-practice
+  rules — uniformly. Rationale: a probe showed warnings fire spuriously on the
+  scanner-invisible pages (H48 "links should be a list", G90 onclick heuristic, etc.),
+  so counting them would falsely flag those pages and **destroy the gap proof**.
+- Consequence: **heading-skip is NOT a Layer-A catch.** Empirically neither engine flags
+  it as a conformance error — axe's `heading-order` is best-practice (excluded) and
+  HTMLCS emits only a *warning* (`1_3_1_A.G141`). Including the checks that would catch it
+  (the best-practice tag) also makes axe flag `positive-tabindex` and `skip-link-broken`,
+  which are two of our five B-exclusive pages. There is no non-cherry-picked line that
+  catches heading-skip without breaking the gap, so heading-skip was **reclassified to
+  Layer B** (deterministic heading-outline traversal). This is a *stronger* thesis result:
+  even the canonical "scanners catch headings" belief is only advisory at conformance level.
+- The genuine Layer-A catch is now **placeholder-as-label** — and it's a better example:
+  axe reports NO violation (it treats the placeholder as an accessible name) while pa11y
+  correctly errors (F68 + H91.InputText.Name). Single-vendor scanning misses it; the
+  two-engine layer catches it. Its manifest was updated to `expectedCatchingLayer: A`.
+
+**Verified**
+- `test/layerA.test.ts` (9 tests): placeholder-as-label flagged by pa11y-not-axe; the 5
+  B-exclusive pages AND heading-skip return zero Layer-A findings; **across all 15 pages,
+  only placeholder-as-label yields findings**; output is byte-identical across repeat runs.
+- `npx tsc --noEmit` clean; full suite `npm test` → **45 passed** (3 files).
+- Normalized findings spot-checked: placeholder-as-label = 8 findings (F68/1.3.1 +
+  H91.InputText.Name/4.1.2 for each of 4 inputs, all `source: pa11y`); heading-skip = [];
+  keyboard-trap-modal = [].
+
+**Headline**
+- Two independent WCAG-conformance engines, run over 15 pages that are ALL genuinely
+  broken, flag exactly **one** page. The other 14 — keyboard traps, focus scrambles,
+  silent live regions, meaningless alt — pass with zero findings. The gap is now proven
+  through the real pipeline, not a toy check.

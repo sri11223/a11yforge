@@ -6,12 +6,12 @@
     {
       "id": "skipped-heading-level",
       "wcag": "1.3.1",
-      "type": "mechanical",
+      "type": "behavioral",
       "selector": "main h4",
       "informative": null,
-      "expectedCatchingLayer": "A",
+      "expectedCatchingLayer": "B",
       "expectedFix": "Change the three section headings from <h4> to <h2> so the outline goes h1 → h2 without skipping levels; style with CSS rather than by choosing a level.",
-      "notes": "Included deliberately as a case Layer A DOES catch — this keeps us honest about the scanner's genuine value. pa11y/HTMLCS flags the skipped level under 1.3.1; note that axe's own heading-order rule is best-practice (not a WCAG SC), so this is caught by the pa11y engine in Layer A, not the WCAG-tagged axe pass."
+      "notes": "Empirically, NEITHER engine flags this as a conformance failure: axe's heading-order rule is best-practice (excluded from the WCAG-tagged scan) and pa11y/HTMLCS emits only a *warning* (1_3_1_A.G141), not an error. Since Layer A counts definite failures only (axe violations + pa11y errors), heading-skip passes Layer A — a stronger thesis result than expected. Layer B catches it via a deterministic heading-outline traversal (detecting the h1→h4 jump)."
     }
   ]
 }

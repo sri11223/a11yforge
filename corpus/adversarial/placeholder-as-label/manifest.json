@@ -5,13 +5,13 @@
   "violations": [
     {
       "id": "placeholder-only-label",
-      "wcag": "3.3.2",
-      "type": "behavioral",
+      "wcag": "4.1.2",
+      "type": "mechanical",
       "selector": "form input",
       "informative": null,
-      "expectedCatchingLayer": "B",
+      "expectedCatchingLayer": "A",
       "expectedFix": "Add a real <label> (associated via for/id) for each input; keep the placeholder only as an example/format hint, not as the label.",
-      "notes": "A placeholder is used as the accessible name of last resort, so axe's label rule generally passes. But the placeholder disappears on input and is not a dependable label — Layer B flags that each field's accessible name derives solely from its placeholder with no associated <label>."
+      "notes": "A strong two-engine demonstration: axe treats the placeholder as an accessible name and reports NO violation, but pa11y/HTMLCS correctly flags each field as an error (F68 / Input.Name, missing label). Single-vendor scanning would miss this; Layer A catches it because it runs both engines. (The deeper 'placeholder vanishes on input' nuance is also observable by Layer B.)"
     }
   ]
 }
