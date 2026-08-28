@@ -19,8 +19,11 @@ blob-report/
 
 # eval / run artifacts
 out/
-results/
+/results/
 *.log
+# ...but the committed, reproducible metrics artifacts ARE tracked
+!docs/results/
+!docs/results/**
 
 # OS / editor
 .DS_Store
