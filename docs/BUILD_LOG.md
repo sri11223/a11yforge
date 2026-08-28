@@ -153,3 +153,58 @@ Chronological record of each build step: what was done and how it was verified.
   broken, flag exactly **one** page. The other 14 — keyboard traps, focus scrambles,
   silent live regions, meaningless alt — pass with zero findings. The gap is now proven
   through the real pipeline, not a toy check.
+
+---
+
+## Step 5 — Layer B wired (the screen-reader / keyboard layer)
+
+**Done**
+- Implemented `src/layers/layerB-sr.ts` — the deterministic behavioral layer that finds
+  what a scanner cannot. Emits `Finding[]` (layer "B", type "behavioral"), de-duped by
+  node+criterion and stable-sorted for byte-identical output.
+- Engines (per docs/BRAINSTORM.md §2): the **Guidepup virtual screen reader** is injected
+  into the page (as a data-URL ESM module) and run as the announcement oracle — its spoken
+  output is captured and attached to findings as `srReadingOrderSample`; the **CDP
+  `Accessibility.getFullAXTree`** is pulled as the cross-check; if the virtual-SR fails to
+  inject, everything still runs (pure-CDP/DOM fallback). The pass/fail logic runs on real
+  Chromium via Playwright + CDP (real layout, JS, keyboard) — where determinism is
+  strongest, which is the priority for this layer.
+- Deterministic checks, each tied to the page it must catch:
+  - **heading outline** (no skipped levels) → heading-skip
+  - **skip-link target exists** → skip-link-broken
+  - **tab order == DOM order** (positive-tabindex detection via real Tab traversal) → positive-tabindex
+  - **visual order == DOM/reading order** (CSS `order` reordering via bounding boxes) → css-reorder
+  - **dialog keyboard trap** (opens the dialog, Tab-cycles, tries Escape, checks for an
+    operable close) → keyboard-trap-modal
+  - **control operability** (focusable + Enter/Space via CDP getEventListeners) → div-button-no-keys, icon-only-control, modal close
+  - **control accessible name** (meaningful, not empty/symbol-only) → modal close ("×")
+  - **live region on dynamic update** (MutationObserver + real button clicks) → live-region-missing
+- Ordering keeps interactive checks independent: static/order checks on a pristine load;
+  reload before the live-region clicks; reload before the dialog check (which opens the
+  modal and leaves it open so the control checks see the close control).
+
+**Honest caveat (in code + docs):** Layer B is a *simulator* of reading order, keyboard
+operability, and accessible-name presence — NOT a bug-for-bug NVDA/JAWS/VoiceOver replica.
+We claim structure/order/operability fidelity (where the scanner gap lives), not literal
+announcement-string equivalence.
+
+**Verified**
+- `test/layerB.test.ts` (16 tests): each expected violation is flagged on the right page
+  (5 B-exclusive + heading-skip + icon-only-control + div-button-no-keys); the 7 B-clean
+  pages (alt-generic, alt-is-filename, informative-emptied, aria-label-contradicts,
+  color-only-status, redundant-alt-decorative, placeholder-as-label) produce **zero**
+  Layer-B findings (no crying wolf); output is byte-identical across runs.
+- `npx tsc --noEmit` clean; full suite `npm test` → **61 passed** (4 files).
+- Spot check — keyboard-trap-modal → 3 findings: `2.1.2` trap + `2.1.1` non-focusable
+  close (span) + `4.1.2` close announced only as "×"; alt-generic → `[]`.
+
+**Surprises / notes**
+- `vitest` uses **oxc** for transforms (not esbuild), so page.evaluate bodies serialize
+  cleanly. Running Layer B under **tsx** injects an esbuild `__name` shim that is undefined
+  in the browser context and throws — so ad-hoc probing must go through vitest (or compiled
+  `dist/`), not `tsx`. The eval CLI should run from compiled output for this reason.
+- Chromium parks focus on `<body>` between the positive-tabindex group and the auto group
+  during Tab traversal; the tab-order check skips those blips instead of stopping (an early
+  version stopped there and missed the scramble).
+- Guidepup's `@guidepup/playwright` package is for *real* NVDA/VoiceOver; the virtual SR is
+  the separate `@guidepup/virtual-screen-reader` browser bundle, injected directly.
