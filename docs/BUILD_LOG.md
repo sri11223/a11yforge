@@ -256,3 +256,57 @@ announcement-string equivalence.
   key — and are committed so κ + judge tests reproduce fully offline.
 - Layer A now catches placeholder-as-label, Layer B the behavioral set, Layer C the
   semantic set; every corpus page's `expectedCatchingLayer` is now backed by a passing test.
+
+---
+
+## Step 7 — Baseline agent (fair single-shot) + scanner-only reference
+
+**Done**
+- `src/agents/fix-prompt.ts` — the SHARED fix prompt (system + user builder + fence
+  stripping) used by BOTH the baseline and the advanced fixer. Identical prompt/model/seed
+  is what keeps the comparison fair; only the pipeline differs.
+- `src/agents/baseline.ts` — `runBaseline(html, scannerFindings)`: ONE call to
+  **FIXER_MODEL = anthropic/claude-sonnet-5** (temp 0, seed 42), apply, stop. No routing,
+  verify-loop, regression guard, or checkpoint.
+- `src/agents/scanner-autofix.ts` — the "pure determinism" reference row: mechanical-only
+  fixes for Layer-A findings (no LLM). It can only touch what the scanner reported.
+- `src/harness/scan-all.ts` — `scanAll(html)` runs A+B+C over any document;
+  `classifyOutcome` captures **scanner-clean-but-broken** (A empty while B or C still flag).
+- `eval/record-baseline.ts` recorded 15 claude-sonnet-5 fixer cassettes over the corpus
+  (scanner findings from the same deterministic `runLayerA({url})` used at scoring time, so
+  keys match). Baseline now replays offline for free.
+
+**Honest findings (this tempers the original expectation — worth stating plainly)**
+- claude-sonnet-5 single-shot is **strong**: given the shared prompt it fixed the mechanical
+  and most behavioral issues on nearly every page in one pass. It did NOT do the crude lazy
+  fixes we half-expected (no `alt=""`, no hiding elements). A fair baseline that does well is
+  the credible baseline — a rigged-weak one would (rightly) be discounted by a judge.
+- But the false-fix IS there, in two more interesting forms than "set alt=empty":
+  1. **icon-only-control** — the baseline correctly upgraded the play `<div role=button>`s to
+     native `<button>`s (fixing keyboard operability), but the play/pause state text now
+     updates in a **non-live region**, which Layer B flags (4.1.3). Net: **axe-clean after,
+     Layer B still flags 2** → a genuine false-fix the scanner cannot see.
+  2. **alt-generic** — the baseline replaced `alt="image"` with confident, detailed
+     descriptions ("Lumen product packaging boxes stacked in warm lighting") it **could not
+     have known** (it never saw the pixels). These are **hallucinated**: axe-clean, backstops
+     pass, and even the LLM judge (also blind to the image) would rate them plausible. Only
+     ground truth or a human catches them — which is exactly why the advanced agent needs a
+     **human checkpoint** for ambiguous alt, not blind trust.
+- Scanner-only auto-fix: on this corpus the scanner is nearly blind (Layer A flags only
+  placeholder-as-label), so the deterministic row fixes essentially nothing semantic/behavioral
+  — the intended "pure determinism lands nowhere" reference.
+
+**Verified**
+- `test/baseline.test.ts` (5): baseline produces changed non-empty HTML; deterministic across
+  replays; **icon-only-control is a captured false-fix** (axe-clean after, B still flags);
+  baseline resolves the scanner's own findings (placeholder-as-label A>0 → A=0); scanner-only
+  auto-fix leaves the semantic alt untouched (Layer C still flags).
+- `npx tsc --noEmit` clean; full suite `npm test` → **86 passed** (6 files); 81 cassettes,
+  no secrets.
+
+**Note for the metric step**
+- The whole-corpus before/after table (Layer counts) is captured by the harness. The formal
+  metric suite (gap%, true-fix, false-fix, regression, McNemar, Wilson CIs) comes next and
+  will score baseline vs advanced on this exact harness. Hallucinated-but-plausible alt is a
+  known blind spot of any automated layer — it is surfaced to the human checkpoint, not
+  silently scored as fixed.
