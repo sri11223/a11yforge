@@ -1,0 +1,18 @@
+{
+  "request": {
+    "model": "openai/gpt-4o-mini",
+    "temperature": 0,
+    "seed": 42,
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are an accessibility expert. Judge ONLY the semantic meaningfulness and accuracy of the given alt text or accessible name for a screen-reader user. Do NOT consider mechanical validity, keyboard operability, color, or layout. Categories: good = accurate and useful; generic = present but vacuous or too vague to convey the content; wrong = inaccurate, mismatched, misleading, or a file name; decorative-misuse = describes a decorative element that should have empty alt. Respond with raw JSON only."
+      },
+      {
+        "role": "user",
+        "content": "Context (what the image depicts and where it is used): A chart that actually shows revenue DECLINING year over year.\nAlt text: \"Chart showing steady growth\"\nReturn ONLY JSON with keys: meaningful (boolean), category (good|generic|wrong|decorative-misuse), reason (string), confidence (number 0-1)."
+      }
+    ]
+  },
+  "response": "{\n  \"meaningful\": false,\n  \"category\": \"wrong\",\n  \"reason\": \"The alt text inaccurately describes the chart as showing growth when it actually depicts a decline in revenue.\",\n  \"confidence\": 1\n}"
+}

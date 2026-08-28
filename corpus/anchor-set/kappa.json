@@ -1,0 +1,17 @@
+{
+  "model": "openai/gpt-4o-mini",
+  "n": 64,
+  "kappaCategory": 0.9792,
+  "kappaBinary": 1,
+  "rawAgreement": 0.9844,
+  "gateMode": "hard",
+  "disagreements": [
+    {
+      "id": "wrong-16",
+      "expert": "wrong",
+      "judge": "decorative-misuse",
+      "reason": "The alt text 'decorative' is inappropriate for an informative pie chart that conveys important data about budget allocation."
+    }
+  ],
+  "note": "Cohen's kappa of the LLM judge (JUDGE_MODEL) vs the expert anchor labels. Category = 4-way (good/generic/wrong/decorative-misuse); binary = meaningful vs not. Gate: >=0.6 hard, 0.4-0.6 advisory, <0.4 backstops-only. Reproduces offline via committed cassettes in replay mode."
+}

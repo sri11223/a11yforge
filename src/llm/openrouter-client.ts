@@ -32,6 +32,8 @@ export interface CompleteOptions<T> {
   messages: ChatMessage[];
   /** Optional zod schema; when provided the JSON response is validated (and retried on mismatch upstream). */
   schema?: z.ZodType<T>;
+  /** Request a JSON object response (response_format). Does not affect the cassette key. */
+  jsonMode?: boolean;
 }
 
 function modelFor(role: Role): string {
@@ -89,6 +91,7 @@ export async function complete<T = string>(opts: CompleteOptions<T>): Promise<T 
       temperature: TEMPERATURE,
       seed: FIXED_SEED,
       messages: opts.messages,
+      ...(opts.jsonMode ? { response_format: { type: "json_object" } } : {}),
     });
     raw = res.choices[0]?.message?.content ?? "";
     if (mode === "record") writeCassette(hash, keyInput, raw);

@@ -208,3 +208,51 @@ announcement-string equivalence.
   version stopped there and missed the scramble).
 - Guidepup's `@guidepup/playwright` package is for *real* NVDA/VoiceOver; the virtual SR is
   the separate `@guidepup/virtual-screen-reader` browser bundle, injected directly.
+
+---
+
+## Step 6 — Layer C wired (semantic judge: backstops + calibrated LLM)
+
+**Done**
+- `src/layers/layerC-judge.ts`, two tiers:
+  1. **Deterministic backstops** (pure functions over HTML via cheerio, no LLM, fully
+     offline): filename-as-alt, generic-word alt, decorative description that should be
+     empty, informative-image emptied to `alt=""` (heuristic: in a `<figure>` or
+     content-bearing src), alt duplicating adjacent visible text, and aria-label
+     contradicting the visible label. These keep gap%/false-fix alive without the judge.
+  2. **LLM judge** on top for nuance ("a person" vs "a barista holding a latte"):
+     zod-validated `Verdict`, temperature 0, **JUDGE_MODEL = openai/gpt-4o-mini** — a
+     DIFFERENT family from the fixer (**FIXER_MODEL = anthropic/claude-sonnet-5**), so it
+     isn't grading its own dialect. Scoped strictly to semantic meaningfulness.
+- κ-gating (`gateModeForKappa`): ≥0.6 hard gate, 0.4–0.6 advisory, <0.4 backstops-only.
+- `src/metrics/stats.ts`: implemented `cohensKappa`, `wilsonInterval`, `mcNemar`
+  (continuity-corrected) — clears the stubs; κ used now, the others in the metrics step.
+- Client gained a `jsonMode` (response_format json_object) — does not change cassette keys.
+
+**Calibration (a KEY was present in the env, so we recorded real cassettes)**
+- Expert anchor set: `corpus/anchor-set/anchors.json` — 64 alt samples, 16 each across
+  good / generic / wrong / decorative-misuse, grounded in WCAG alt techniques and the WAI
+  alt decision tree. Provenance stated: expert-curated, NOT crowd-sourced.
+- `eval/calibrate-judge.ts` ran the judge over all 64 anchors in **record** mode, saving
+  66 cassettes (64 anchors + 2 runLayerC fixtures) under `cassettes/`, and wrote
+  `corpus/anchor-set/kappa.json`.
+- **Published κ:** Cohen's κ(category, 4-way) = **0.9792**, κ(binary) = **1.0**,
+  raw agreement 63/64 = 0.9844 → **hard gate**. The single disagreement (an `alt="decorative"`
+  on an informative chart) is judged "decorative-misuse" vs expert "wrong" — both are
+  "not meaningful", so binary agreement is perfect.
+- Reproducibility: `A11YFORGE_MODE=replay` (the default, no key) recomputes the exact same
+  κ offline from the committed cassettes; a test asserts κ == the published value.
+
+**Verified**
+- `test/layerC.test.ts` (20): backstops catch all 5 C-semantic pages with zero LLM; the
+  other 10 pages produce zero Layer-C backstop findings (no crying wolf); the judge
+  (replay) matches expert anchors on good/generic; κ reproduces from cassettes and gives a
+  hard gate; runLayerC+judge returns `[]` on a good-alt fixture and one llm-judge finding
+  on a vague `alt="a chart"` (nuance the backstops can't see).
+- `npx tsc --noEmit` clean; full suite `npm test` → **81 passed** (5 files).
+
+**Notes**
+- Cassettes contain only `{request:{model,temperature,seed,messages}, response}` — no API
+  key — and are committed so κ + judge tests reproduce fully offline.
+- Layer A now catches placeholder-as-label, Layer B the behavioral set, Layer C the
+  semantic set; every corpus page's `expectedCatchingLayer` is now backed by a passing test.
