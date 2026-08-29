@@ -2,6 +2,7 @@
 import { chromium, type Browser } from "playwright";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import type { Finding } from "../types.js";
 import { runLayerA } from "../layers/layerA-scanners.js";
 import { runLayerB } from "../layers/layerB-sr.js";
@@ -210,7 +211,7 @@ async function main(): Promise<number> {
   return report.summary.hiddenFromScanner > 0 ? 1 : 0;
 }
 
-const isMain = import.meta.url === `file://${process.argv[1]}`;
+const isMain = !!process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (isMain) {
   main()
     .then((code) => process.exit(code))

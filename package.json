@@ -8,7 +8,7 @@
     "node": ">=22 <23"
   },
   "bin": {
-    "a11yforge": "dist/cli/audit.js"
+    "a11yforge": "dist/src/cli/audit.js"
   },
   "scripts": {
     "build": "tsc",
@@ -21,7 +21,7 @@
     "report": "tsc && node dist/eval/build-report.js",
     "trajectories": "tsc && node dist/eval/export-trajectories.js",
     "determinism": "tsc && node dist/eval/determinism-proof.js",
-    "audit": "tsc && node dist/cli/audit.js audit",
+    "audit": "tsc && node dist/src/cli/audit.js audit",
     "snapshot-real": "tsc && node dist/eval/snapshot-real.js"
   },
   "license": "MIT",
