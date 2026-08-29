@@ -551,15 +551,27 @@ export async function runLayerB(input: LayerBInput, opts: LayerBOptions = {}): P
   try {
     const raw: RawB[] = [];
 
-    // Pass 1 — pristine page: SR oracle + static/order checks (no state mutation).
+    // Pass 1 — pristine page: static/order checks. The virtual SR is captured on an
+    // ISOLATED page (below) because starting it injects a live-region announcer node into
+    // the DOM, which would otherwise pollute these checks and the verify-loop's re-scans.
     await page.goto(url);
     await injectHelpers(page);
-    const spoken = await gatherSpokenLog(page);
     await gatherAxTree(client); // cross-check pull (corroboration; count available for logs)
     raw.push(...(await safe(checkHeadingOutline(page))));
     raw.push(...(await safe(checkSkipLinks(page))));
     raw.push(...(await safe(checkTabOrder(page))));
     raw.push(...(await safe(checkVisualOrder(page))));
+
+    // Virtual screen-reader transcript (evidence + cross-check), isolated from the checks.
+    let spoken: string[] | null = null;
+    try {
+      const srPage = await context.newPage();
+      await srPage.goto(url);
+      spoken = await gatherSpokenLog(srPage);
+      await srPage.close();
+    } catch {
+      spoken = null;
+    }
 
     // Pass 2 — fresh load: live-region interaction (clicks buttons).
     await page.goto(url);
