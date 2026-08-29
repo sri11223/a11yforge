@@ -9,10 +9,9 @@ WORKDIR /app
 # pa11y's bundled Puppeteer downloads its (version-pinned) Chromium here too.
 COPY package.json package-lock.json .npmrc ./
 RUN npm ci
-# The Playwright base image ships Playwright's Chromium but NOT the Chrome that pa11y's
-# bundled Puppeteer requires. npm ci may leave a PARTIAL download in the cache (folder
-# present, executable missing), so clear it and install a complete copy.
-RUN rm -rf /root/.cache/puppeteer && npx puppeteer browsers install chrome
+# pa11y's Puppeteer reuses the image's full Playwright Chromium via executablePath (gated by
+# this flag in src/layers/layerA-scanners.ts), so no separate Chrome download is needed.
+ENV A11YFORGE_PA11Y_CHROMIUM=1
 
 COPY . .
 RUN npm run build

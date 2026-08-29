@@ -93,13 +93,20 @@ async function runAxe(url: string, shared?: Browser, navWaitUntil: NavWait = "lo
 }
 
 async function runPa11y(url: string): Promise<RawFinding[]> {
+  // In Docker (A11YFORGE_PA11Y_CHROMIUM=1) reuse the image's full Playwright Chromium for
+  // pa11y's Puppeteer — avoids a second, flaky Chrome download. Locally, leave it unset so
+  // pa11y uses its own bundled Chrome (the Playwright install here is headless-shell only,
+  // which Puppeteer can't spawn). Either way the DOM — and thus HTMLCS findings — is the same.
+  const pa11yChrome = process.env.A11YFORGE_PA11Y_CHROMIUM === "1" ? chromium.executablePath() : undefined;
   const res = await pa11y(url, {
     runners: ["htmlcs"],
     standard: "WCAG2AA",
     includeWarnings: false,
     includeNotices: false,
-    // Needed when running as root in Docker (pa11y drives Chromium via Puppeteer).
-    chromeLaunchConfig: { args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"] },
+    chromeLaunchConfig: {
+      ...(pa11yChrome ? { executablePath: pa11yChrome } : {}),
+      args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
+    },
   });
   return res.issues
     .filter((i) => i.type === "error")
