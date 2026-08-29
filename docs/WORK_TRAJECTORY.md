@@ -87,6 +87,15 @@ decision that shaped the next step.**
     detection-only snapshot bucket + 18 more fair injected pages in a separate bucket, and a
     before/after screenshot util (**431dcc5**, **0f1ac65**) — all authored without disturbing
     the running determinism proof (`corpus/injected-v2/`, no eval, no Chromium).
+13. **V2 item 3 — robustness at scale + the silent-ship self-catch.** *"Widen to 45 pages as a
+    supplementary check; never overwrite the sealed V1."* → wide-mode eval/ablation writing
+    separate `*-wide.json` files. The widened run **exposed a real bug in our own agent** (two
+    `not-focusable` pages shipped A-clean-but-broken with no flag). We generalized the escalation
+    rule to a universal invariant, **proved byte-identical on the sealed 27** (fix is a no-op
+    there), then re-ran wide: harmful pages 2→0, ablation 38→13→0, gap 97.4%. Reported the
+    significance honestly (harmful-pages p=0.041 *on our own corpus, a byproduct of the fix*) and
+    the cost of conservatism (baseline true-fixes 7 the advanced escalates, p=0.023 in the
+    baseline's favour). Kept 27 as the headline; added a "Robustness at scale" section.
 
 ## The honest self-catches (the part we're proudest of)
 
@@ -99,6 +108,17 @@ decision that shaped the next step.**
   unaffected (byte-identical), documenting the whole thing.
 - **Refused to fake significance** — reported p=0.074 as not significant; led with the
   ablation, which doesn't depend on discordant-pair counts.
+- **The silent-ship self-catch (our thesis, on us — again, and worse)** — widening the eval
+  corpus from 27 to 45 pages caught the advanced agent *silently shipping a scanner-clean-but-broken
+  page*: two `not-focusable` keyboard controls it couldn't fix were left in the output as A-clean
+  with no flag. The escalation invariant had only ever covered ungrounded alt; an unresolvable
+  behavioral issue slipped through. We generalized it to **"never ship an issue you can't verify"**
+  (any residual A/B/C after the verify-loop → human checkpoint, never emitted as done). Critically,
+  we proved the fix is **byte-identical on the sealed 27-page corpus** before adopting it — the bug
+  never manifested there, so the determinism-proven headline stands — and kept 27 as the headline
+  with 45 as a supplementary robustness section (gap 97.4%, ablation 38→13→0, harmful pages 6→0).
+  Finding our own product's exact failure mode inside our own agent, and fixing it by principle
+  rather than patch, is the self-catch we're proudest of.
 - **The stale-diff false-positive (our own thesis, on us)** — Docker-verifying the clean-env
   build surfaced two real qualification-gate bugs a judge would have hit: `npm ci` aborting on
   an ERESOLVE peer conflict, and pa11y's Puppeteer failing to find Chrome in the image. Worse,

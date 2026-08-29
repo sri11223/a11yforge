@@ -1,0 +1,1278 @@
+{
+  "n": {
+    "pages": 45,
+    "issues": 68,
+    "buckets": [
+      "adversarial",
+      "injected",
+      "injected-v2"
+    ]
+  },
+  "gap": {
+    "aCleanPages": 39,
+    "aCleanButBrokenPages": 38,
+    "gapPctOfACleanPages": "97.4%"
+  },
+  "baseline": {
+    "agent": "baseline",
+    "pages": 45,
+    "issues": 68,
+    "trueFix": 66,
+    "falseFix": 2,
+    "needsReview": 0,
+    "unresolved": 0,
+    "regressions": 8,
+    "falseFixPages": 5,
+    "trueFixPages": 39
+  },
+  "advanced": {
+    "agent": "advanced",
+    "pages": 45,
+    "issues": 68,
+    "trueFix": 60,
+    "falseFix": 0,
+    "needsReview": 4,
+    "unresolved": 4,
+    "regressions": 0,
+    "falseFixPages": 0,
+    "trueFixPages": 37
+  },
+  "deltas": {
+    "falseFixIssues": "2 → 0",
+    "trueFixIssues": "66 → 60",
+    "regressions": "8 → 0",
+    "falseFixPages": "5 → 0"
+  },
+  "falseFixRate": {
+    "baseline": "2.9% [0.8, 10.1]",
+    "advanced": "0.0% [0.0, 5.3]"
+  },
+  "harm": {
+    "note": "Harmful CHANGES = false-fixes + regressions the agent shipped. Per-page harm = a page with any false-fix or regression.",
+    "harmfulChanges": {
+      "baseline": 10,
+      "advanced": 0
+    },
+    "harmfulPages": {
+      "baseline": 6,
+      "advanced": 0
+    },
+    "harmfulPageRate": {
+      "baseline": "13.3% [6.3, 26.2]",
+      "advanced": "0.0% [0.0, 7.9]"
+    }
+  },
+  "mcnemar": {
+    "trueFix": {
+      "b": 7,
+      "c": 0,
+      "statistic": 5.143,
+      "p": 0.0233
+    },
+    "falseFix": {
+      "b": 2,
+      "c": 0,
+      "statistic": 0.5,
+      "p": 0.4795
+    },
+    "regressionPages": {
+      "b": 4,
+      "c": 0,
+      "statistic": 2.25,
+      "p": 0.1336
+    },
+    "harmfulPages": {
+      "b": 6,
+      "c": 0,
+      "statistic": 4.167,
+      "p": 0.0412
+    }
+  },
+  "ablation": {
+    "note": "Auditing each agent's shipped output at increasing verification depth. Each row is pages an {A}-only audit called compliant that the added layer reveals as still-broken.",
+    "baseline": {
+      "aCleanDeclaredCompliant": 44,
+      "layerBcatches": 3,
+      "layerCcatches": 2,
+      "trulyCleanAllThree": 39
+    },
+    "advanced": {
+      "aCleanDeclaredCompliant": 41,
+      "layerBcatches": 2,
+      "layerCcatches": 2,
+      "trulyCleanAllThree": 37
+    }
+  },
+  "perPage": [
+    {
+      "bucket": "adversarial",
+      "page": "alt-generic",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": true,
+        "trueFix": false,
+        "halluc": 1,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 1
+        },
+        "falseFix": false,
+        "trueFix": false,
+        "needsReview": 1,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "alt-is-filename",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "aria-label-contradicts",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "color-only-status",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "css-reorder",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "div-button-no-keys",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "heading-skip",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "icon-only-control",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 2,
+          "c": 0
+        },
+        "falseFix": true,
+        "trueFix": false,
+        "halluc": 0,
+        "regressions": 2
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "informative-emptied",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": true,
+        "trueFix": false,
+        "halluc": 1,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 1
+        },
+        "falseFix": false,
+        "trueFix": false,
+        "needsReview": 1,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "keyboard-trap-modal",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "live-region-missing",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "placeholder-as-label",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "positive-tabindex",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "redundant-alt-decorative",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "adversarial",
+      "page": "skip-link-broken",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-alt-filename-heading",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-alt-generic-caption",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-aria-label-mismatch",
+      "baseline": {
+        "after": {
+          "a": 3,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": false,
+        "halluc": 0,
+        "regressions": 3
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-css-reorder",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-decorative-alt",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-div-button",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-form-label",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 1,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": false,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-heading-skip",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-icon-focus",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 1,
+          "c": 0
+        },
+        "falseFix": true,
+        "trueFix": false,
+        "halluc": 0,
+        "regressions": 1
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-live-region",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 1,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": false,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-positive-tabindex",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected",
+      "page": "inj-skip-link",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-alt-filename-team",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-alt-generic-hero",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-aria-label-mismatch-search",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-css-reorder-nav",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-css-reorder-steps",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-decorative-alt-hr",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-div-button-accordion",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-div-button-menu",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-form-label-login",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-form-label-search",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 1,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": false,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-heading-skip-report",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-heading-skip-wiki",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-icon-focus-fav",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 2,
+          "c": 0
+        },
+        "falseFix": true,
+        "trueFix": false,
+        "halluc": 0,
+        "regressions": 2
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 1,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": false,
+        "needsReview": 1,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-icon-focus-share",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 1,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": false,
+        "needsReview": 1,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-live-region-cart",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-live-region-form",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 1,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": false,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-positive-tabindex-apply",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    },
+    {
+      "bucket": "injected-v2",
+      "page": "v2-skip-link-shop",
+      "baseline": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "halluc": 0,
+        "regressions": 0
+      },
+      "advanced": {
+        "after": {
+          "a": 0,
+          "b": 0,
+          "c": 0
+        },
+        "falseFix": false,
+        "trueFix": true,
+        "needsReview": 0,
+        "regressions": 0
+      }
+    }
+  ]
+}

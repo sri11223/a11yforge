@@ -85,6 +85,37 @@ code{background:#eef0f3;padding:1px 5px;border-radius:4px;font-size:13px}
   Adding Layer&nbsp;B catches 14 false-compliances; adding Layer&nbsp;C catches 9 more.</p>
 </section>
 
+<section aria-labelledby="robustness">
+  <h2 id="robustness">Robustness at scale (45 pages)</h2>
+  <p class="muted">The three numbers and ablation above are the <strong>headline result</strong>: the
+  27-page corpus, determinism-proven and byte-reproducible in Docker. As a supplementary check we
+  widened to <strong>45 pages / 68 issues</strong> (adversarial + injected + 18 new fair-injected
+  pages) and re-ran the same harness. The core story holds and, in one respect, gets stronger.</p>
+  <div class="abl"><span class="glabel">{A}</span><span class="track"><span class="bar" style="width:84.44%;background:#b3261e"></span></span><span class="n">38</span></div>
+  <div class="abl"><span class="glabel">{A,B}</span><span class="track"><span class="bar" style="width:28.89%;background:#e08600"></span></span><span class="n">13</span></div>
+  <div class="abl"><span class="glabel">{A,B,C}</span><span class="track"><span class="bar" style="width:0%;background:#0a7d3c"></span></span><span class="n">0</span></div>
+  <p style="margin-top:14px"><strong>Gap 97.4%</strong> (38 of 39 axe-clean pages still fail B/C).
+  <strong>Harmful pages: baseline 6 → advanced 0.</strong> The ablation scales: scanner-only ships
+  38 broken pages as "compliant"; the full stack ships 0 (Layer&nbsp;B catches 25, Layer&nbsp;C
+  catches 13), escalating 4 to human review instead of guessing.</p>
+  <p class="muted"><strong>Honest caveats.</strong> The harmful-page difference is statistically
+  significant on this corpus (McNemar b=6, c=0, p=0.041) — but that significance is a
+  <em>byproduct of a correctness fix</em> (see below), measured on our own constructed benchmark,
+  so we do not headline it as external evidence. And there is a real <strong>cost of
+  conservatism</strong>: on raw fixes the baseline is significantly ahead — it true-fixes 7 issues
+  (McNemar p=0.023) that the advanced agent instead escalates. That is the intended trade: the
+  advanced agent fixes fewer but ships zero broken pages.</p>
+  <p class="callout" style="margin-top:14px"><strong>The self-catch this section exists to tell.</strong>
+  Widening the corpus caught <em>our own agent</em> silently shipping a scanner-clean-but-broken
+  page: two <code>not-focusable</code> keyboard controls it couldn't fix were left in the output
+  as "A-clean" with no flag — exactly the failure this whole project condemns, on us. The fix was
+  principled, not a patch: we made <strong>"escalate what you can't verify"</strong> a universal
+  invariant — any issue still failing B/C after the verify-loop is routed to a human, never shipped
+  silently. It moved advanced's harmful pages from 2 to 0 here and is <strong>byte-identical on the
+  sealed 27-page corpus</strong> (the bug never manifested there; the headline result is
+  unaffected).</p>
+</section>
+
 <section aria-labelledby="hearit">
   <h2 id="hearit">Hear it: a page that passes axe but reads wrong</h2>
   <p>The <code>css-reorder</code> pricing page passes a WCAG axe scan with zero violations.

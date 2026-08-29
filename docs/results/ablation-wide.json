@@ -1,0 +1,24 @@
+{
+  "note": "Advanced verify-loop gated at increasing depth; outputs judged by the full A/B/C harness.",
+  "rows": {
+    "{A}": {
+      "falseFixPages": 38,
+      "trueFixPages": 3,
+      "needsReviewPages": 0
+    },
+    "{A,B}": {
+      "falseFixPages": 13,
+      "trueFixPages": 26,
+      "needsReviewPages": 2
+    },
+    "{A,B,C}": {
+      "falseFixPages": 0,
+      "trueFixPages": 37,
+      "needsReviewPages": 4
+    }
+  },
+  "caught": {
+    "byAddingB": 25,
+    "byAddingC": 13
+  }
+}

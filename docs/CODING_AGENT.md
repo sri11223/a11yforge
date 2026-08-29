@@ -60,6 +60,21 @@ numbers. See [`README`](../README.md) and [`BUILD_LOG.md`](BUILD_LOG.md).
 
 ## Bugs we caught and fixed (in the open)
 
+- **Our own agent silently shipped a scanner-clean-but-broken page — our thesis, on us.**
+  Widening the eval corpus from 27 to 45 pages surfaced a case the smaller corpus never hit: two
+  `not-focusable` keyboard controls (`<div role="button">` with no tabindex) that the advanced
+  agent could not fix were left in its output as **Layer-A-clean with no flag**. That is precisely
+  the failure this whole project exists to expose — a page that passes the scanner while remaining
+  unusable — happening inside our own agent. The escalation invariant had been written narrowly
+  (only *ungrounded alt* was escalated to a human); an unresolvable behavioral issue fell through
+  and shipped silently. The fix was principled, not a spot-patch: we generalized it to a
+  **universal invariant — "never ship an issue you could not verify."** Any A/B/C issue still
+  failing after the verify-loop is now routed to the human checkpoint (needs-review), never emitted
+  as done. It moved advanced's harmful pages from 2 → 0 on the wide corpus, and is
+  **byte-identical on the sealed 27-page corpus** (the bug never manifested there — no A-clean page
+  had an unescalated residual), so the determinism-proven headline result is unaffected. We kept
+  the 27-page corpus as the headline and present the 45-page run as a supplementary robustness
+  section. See [`CHANGELOG.md`](CHANGELOG.md) "Robustness at scale."
 - **The virtual SR was silently disabled.** A wrong module-resolve path
   (`.../lib/esm/index.browser.js`, blocked by the package `exports` map) meant Guidepup never
   actually ran — Layer B was quietly on its deterministic fallback. We fixed the resolve to

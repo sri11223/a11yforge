@@ -111,6 +111,45 @@ doubt; the corpus is simply too small for a significance stamp, and the honest r
 corpus to confirm." The **ablation** (below/above), which does not depend on discordant-pair
 counts, is the more decisive per-layer evidence.
 
+## Robustness at scale (45 pages) — supplementary
+
+The 27-page result above is the **headline**: determinism-proven and byte-reproducible in
+Docker. Taking our own "widen the corpus to confirm" seriously, we re-ran the identical harness
+on **45 pages / 68 issues** (adversarial + injected + 18 new fair-injected pages). Wide artifacts
+live in [`docs/results/metrics-wide.json`](results/metrics-wide.json) and
+[`docs/results/ablation-wide.json`](results/ablation-wide.json); the sealed 27-page files are
+untouched.
+
+| Metric (n=45 pages, 68 issues) | Baseline | Advanced |
+|---|---|---|
+| gap (axe-clean pages still failing B/C) | 38 / 39 = **97.4%** | — |
+| harmful pages (false-fix OR regression) | **6 (13.3%)** | **0 (0.0%)** |
+| false-fix issues | 2 | 0 |
+| regressions | 8 | 0 |
+| true-fix issues | 66 | 60 |
+| needs-review (honest escalation) | 0 | 4 |
+
+Gated ablation at scale: false-fix pages **{A}=38 → {A,B}=13 → {A,B,C}=0** (Layer B catches
+**25** false-compliances, Layer C catches **13**). The full stack ships **zero** broken pages and
+escalates 4 to a human.
+
+**Significance, honestly.** At n=45 the harmful-page contrast becomes significant — McNemar
+b=6, c=0, χ²=4.17, **p=0.041**. We flag two caveats and do **not** headline it: (1) it is measured
+on our own constructed benchmark, not in the wild; (2) the crossing of α=0.05 is a *byproduct of a
+correctness fix* we made mid-run (below), not of widening-to-chase-p. Conversely, the **cost of
+conservatism is real and significant in the baseline's favour**: the baseline true-fixes **7**
+issues (McNemar p=0.023) that the advanced agent instead escalates. "Fixes fewer, ships zero
+broken pages" is the trade, stated plainly.
+
+**The self-catch (our thesis, on us).** Widening the corpus caught *our own agent* silently
+shipping a scanner-clean-but-broken page: two `not-focusable` keyboard controls it could not fix
+were left in the output as A-clean **with no flag** — precisely the failure this project exists to
+expose. We fixed it by principle, not patch: **"escalate what you can't verify" is now a universal
+invariant** — any issue still failing B/C after the verify-loop is routed to a human, never shipped
+silently (it previously applied only to ungrounded alt). The fix moved advanced's harmful pages
+from 2 → 0 on the wide corpus and is **byte-identical on the sealed 27-page corpus** (the bug never
+manifested there), so the determinism-proven headline result is unaffected.
+
 ## Calibration
 
 The Layer C semantic judge is calibrated against a 64-item expert anchor set:
