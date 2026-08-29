@@ -19,7 +19,7 @@ careful agent and a careless one becomes a number.
   backstops. A published `npx a11yforge` follows once released to npm; the GitHub Action works today.)
 - **The proof** — a reproducible eval showing the method works: the ablation **23 → 9 → 0**
   (scanner-only verification ships 23 broken pages; the full stack ships 0) and **20 live sites**
-  with **127** barriers hidden from scanners.
+  with **206** barriers hidden from scanners (141 excluding one site's repeated animation-ticker finding).
 
 **Dev journey (CI):** a developer opens a PR → the A11yForge check **blocks the merge** on a
 scanner-clean-but-broken page (keyboard trap, wrong reading order, meaningless alt) → they fix it,
@@ -35,8 +35,10 @@ confidently-hallucinated `alt`.
 1. **Categorical — ablation 23 → 0.** A scanner-only verify gate ships **23** broken pages as
    "compliant"; `{A,B}` → **9**; the full `{A,B,C}` stack → **0**. Proof by construction, not a
    p-value.
-2. **Real-world — 127 hidden barriers.** Across **20 live production sites**, 127 Layer-B/C issues
-   a scanner cannot see (honest lower bound). Scanner-clean ≠ usable, in the wild.
+2. **Real-world — 206 hidden barriers** (141 excluding one site's repeated ticker finding).
+   Across **20 live production sites**, Layer-B/C issues a scanner cannot see (honest lower bound;
+   a CSP-safe Layer-B injection now measures the formerly CSP-blocked sites). Scanner-clean ≠
+   usable, in the wild.
 3. **Mechanism — harm 8 → 0.** A fair single-shot baseline ships 6 regressions + 2 false-fixes;
    the verify-loop + regression guard ship **zero** (same model/prompt). An existence proof of the
    method — not statistically significant at n=27 (p=0.074); on the widened 45-page corpus the

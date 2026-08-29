@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-08-29T10:26:46Z",
+  "generatedAt": "2026-08-29T19:33:14Z",
   "note": "LIVE detection-only audit of real public sites. Non-deterministic, dated evidence — separate from the sealed deterministic eval. We do not modify or publish fixes to sites we don't own.",
   "judge": "on (openai/gpt-4o-mini)",
   "totals": {
     "attempted": 20,
     "audited": 20,
     "skipped": 0,
-    "layerA": 500,
-    "layerB": 31,
-    "layerC": 96,
-    "hiddenFromScanner": 127,
+    "layerA": 552,
+    "layerB": 109,
+    "layerC": 97,
+    "hiddenFromScanner": 206,
     "scannerCleanPages": 1,
     "scannerCleanButBrokenPages": 0
   },
@@ -19,13 +19,20 @@
       "category": "news",
       "ok": true,
       "scannerClean": false,
-      "a": 132,
-      "b": 0,
+      "a": 143,
+      "b": 1,
       "c": 14,
-      "hiddenFromScanner": 14,
+      "hiddenFromScanner": 15,
       "layerA": [
-        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#1304a06e8e03798)",
-        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#3891b6c8005acb98)",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#17dbd3f21d0901)",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#3880bd81eca40998)",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#427d08dc76dabff)",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#4373f52b51e906e8)",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#44237916a554589)",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#45468f954ac36448)",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#4671ac2f8fa963f)",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#478e3e321d63fe08)",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#48513a2dc4ff177)",
         "[1.3.1] This form field should be labelled in some way. Use the label element (either with a \"for\" attribute or wrapped around the form field), or \"title\", \"aria-label\" or \"aria-labelledby\" attributes as appropriate. (#g-recaptcha-response-100000)",
         "[4.1.2] This textarea element does not have a name available to an accessibility API. Valid names are: label element, title , aria-label , aria-labelledby . (#g-recaptcha-response-100000)",
         "[4.1.2] Anchor element found with a valid href attribute, but no link content has been supplied. (#globalheader > nav > section:nth-child(3) > div > ul > li:nth-child(1) > a)",
@@ -83,36 +90,36 @@
         "[1.1.1] Img element missing an alt attribute. Use the alt attribute to specify a short text alternative. (#jwPlaylist1234569831 > div:nth-child(2) > ul > li:nth-child(8) > a > div > img)",
         "[1.1.1] Img element missing an alt attribute. Use the alt attribute to specify a short text alternative. (#jwPlaylist1234569831 > div:nth-child(2) > ul > li:nth-child(9) > a > div > img)",
         "[4.1.1] Duplicate id attribute value \"mask-2\" found on the web page. (#mask-2)",
-        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > div:nth-child(19) > iframe)",
-        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > iframe:nth-child(1))",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > div:nth-child(24) > iframe)",
         "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > iframe:nth-child(14))",
-        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > iframe:nth-child(23))",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > iframe:nth-child(15))",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > iframe:nth-child(2))",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > iframe:nth-child(22))",
         "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > iframe:nth-child(25))",
-        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > iframe:nth-child(26))",
         "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > iframe:nth-child(28))",
         "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#news > main > iframe)",
         "[4.1.1] Duplicate id attribute value \"path-1\" found on the web page. (#path-1)",
         "[4.1.2] ARIA roles used must conform to valid values (#res1002-100)",
-        "[4.1.2] ARIA roles used must conform to valid values (#res1002-103)",
-        "[4.1.2] ARIA roles used must conform to valid values (#res1002-108)",
-        "[4.1.2] ARIA roles used must conform to valid values (#res1002-118)",
-        "[4.1.2] ARIA roles used must conform to valid values (#res1002-119)",
-        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-120 > .has-audio.post-type-minimal.has-image > .story-wrap > .story-text > a > .title)",
-        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-121 > .has-podcast-episode.has-audio.post-type-minimal > .story-wrap > .story-text > a > .title)",
-        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-122 > .has-podcast-episode.has-audio.post-type-minimal > .story-wrap > .story-text > a > .title)",
-        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-123 > .post-type-minimal.has-image > .story-wrap > .story-text > a > .title)",
-        "[4.1.2] ARIA roles used must conform to valid values (#res1002-135)",
-        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-136 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .story-text > .affiliation)",
-        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-136 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .story-text > a > .title)",
-        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-137 > .post-type-minimal.has-image > .story-wrap > .story-text > a > .title)",
-        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-138 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .story-text > .affiliation)",
-        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-138 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .story-text > a > .title)",
-        "[2.4.4] Links must have discernible text (#res1002-138 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .wide.thumb-image > .medium.image.bucketwrap > .imagewrap.has-source-dimensions[data-crop-type=\"wide\"] > a)",
+        "[4.1.2] ARIA roles used must conform to valid values (#res1002-102)",
+        "[4.1.2] ARIA roles used must conform to valid values (#res1002-107)",
+        "[4.1.2] ARIA roles used must conform to valid values (#res1002-123)",
+        "[4.1.2] ARIA roles used must conform to valid values (#res1002-124)",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-125 > .has-audio.post-type-minimal.has-image > .story-wrap > .story-text > a > .title)",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-126 > .has-podcast-episode.has-audio.post-type-minimal > .story-wrap > .story-text > a > .title)",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-127 > .has-podcast-episode.has-audio.post-type-minimal > .story-wrap > .story-text > a > .title)",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-128 > .post-type-minimal.has-image > .story-wrap > .story-text > a > .title)",
+        "[4.1.2] ARIA roles used must conform to valid values (#res1002-138)",
         "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-139 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .story-text > .affiliation)",
         "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-139 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .story-text > a > .title)",
-        "[2.4.4] Links must have discernible text (#res1002-142 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .wide.thumb-image > .medium.image.bucketwrap > .imagewrap.has-source-dimensions[data-crop-type=\"wide\"] > a)",
-        "[2.4.4] Links must have discernible text (#res1002-144 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .wide.thumb-image > .medium.image.bucketwrap > .imagewrap.has-source-dimensions[data-crop-type=\"wide\"] > a)",
-        "[4.1.2] ARIA roles used must conform to valid values (#res1002-149)",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-140 > .post-type-minimal.has-image > .story-wrap > .story-text > a > .title)",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-141 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .story-text > .affiliation)",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-141 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .story-text > a > .title)",
+        "[2.4.4] Links must have discernible text (#res1002-141 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .wide.thumb-image > .medium.image.bucketwrap > .imagewrap.has-source-dimensions[data-crop-type=\"wide\"] > a)",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-142 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .story-text > .affiliation)",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#res1002-142 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .story-text > a > .title)",
+        "[2.4.4] Links must have discernible text (#res1002-145 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .wide.thumb-image > .medium.image.bucketwrap > .imagewrap.has-source-dimensions[data-crop-type=\"wide\"] > a)",
+        "[2.4.4] Links must have discernible text (#res1002-147 > .has-affiliation.post-type-minimal.has-image > .story-wrap > .wide.thumb-image > .medium.image.bucketwrap > .imagewrap.has-source-dimensions[data-crop-type=\"wide\"] > a)",
+        "[4.1.2] ARIA roles used must conform to valid values (#res1002-152)",
         "[4.1.1] Duplicate id attribute value \"res1029735284\" found on the web page. (#res1029735284)",
         "[4.1.1] Duplicate id attribute value \"res1044138005\" found on the web page. (#res1044138005)",
         "[4.1.1] Duplicate id attribute value \"res1121902788\" found on the web page. (#res1121902788)",
@@ -128,8 +135,9 @@
         "[4.1.1] Duplicate id attribute value \"resg-s1-140313\" found on the web page. (#resg-s1-140313)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140318\" found on the web page. (#resg-s1-140318)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140378\" found on the web page. (#resg-s1-140378)",
-        "[4.1.1] Duplicate id attribute value \"resg-s1-140379\" found on the web page. (#resg-s1-140379)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140464\" found on the web page. (#resg-s1-140464)",
+        "[4.1.1] Duplicate id attribute value \"resg-s1-140487\" found on the web page. (#resg-s1-140487)",
+        "[4.1.1] Duplicate id attribute value \"resg-s1-140530\" found on the web page. (#resg-s1-140530)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140531\" found on the web page. (#resg-s1-140531)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140558\" found on the web page. (#resg-s1-140558)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140593\" found on the web page. (#resg-s1-140593)",
@@ -137,16 +145,19 @@
         "[4.1.1] Duplicate id attribute value \"resg-s1-140702\" found on the web page. (#resg-s1-140702)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140815\" found on the web page. (#resg-s1-140815)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140820\" found on the web page. (#resg-s1-140820)",
-        "[4.1.1] Duplicate id attribute value \"resg-s1-140827\" found on the web page. (#resg-s1-140827)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140835\" found on the web page. (#resg-s1-140835)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140887\" found on the web page. (#resg-s1-140887)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140961\" found on the web page. (#resg-s1-140961)",
-        "[4.1.1] Duplicate id attribute value \"resg-s1-140964\" found on the web page. (#resg-s1-140964)",
+        "[4.1.1] Duplicate id attribute value \"resg-s1-140963\" found on the web page. (#resg-s1-140963)",
+        "[4.1.1] Duplicate id attribute value \"resg-s1-140968\" found on the web page. (#resg-s1-140968)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140981\" found on the web page. (#resg-s1-140981)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-140984\" found on the web page. (#resg-s1-140984)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-141099\" found on the web page. (#resg-s1-141099)",
+        "[4.1.1] Duplicate id attribute value \"resg-s1-141100\" found on the web page. (#resg-s1-141100)",
+        "[4.1.1] Duplicate id attribute value \"resg-s1-141103\" found on the web page. (#resg-s1-141103)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-141113\" found on the web page. (#resg-s1-141113)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-141118\" found on the web page. (#resg-s1-141118)",
+        "[4.1.1] Duplicate id attribute value \"resg-s1-141120\" found on the web page. (#resg-s1-141120)",
         "[4.1.1] Duplicate id attribute value \"resg-s1-74039\" found on the web page. (#resg-s1-74039)",
         "[4.1.1] Duplicate id attribute value \"resg-s138-53721\" found on the web page. (#resg-s138-53721)",
         "[4.1.1] Duplicate id attribute value \"resg-s60-153388\" found on the web page. (#resg-s60-153388)",
@@ -157,25 +168,26 @@
         "[4.1.1] Duplicate id attribute value \"reswpln-194948\" found on the web page. (#reswpln-194948)",
         "[4.1.1] Duplicate id attribute value \"story\" found on the web page. (#story)"
       ],
-      "layerB": [],
+      "layerB": [
+        "[1.3.1] Heading outline skips a level: <h3> is followed by <h6> (levels 4..5 are skipped), so screen-reader heading navigation is broken. (body > main > div:nth-of-type(2) > section > footer > div > div:nth-of-type(1) > div:nth-of-type(1) > h6)"
+      ],
       "layerC": [
         "[2.5.3] Accessible name (\"Filter Cookie List\") contradicts the visible label (\"Filter Icon\"), so a screen-reader user is told the wrong thing. (#filter-btn-handler)",
         "[1.1.1] Alt text describes a decorative element (\"One person sits on a platform with their arms crossed looking jealously at a pair of people hugging on another platform, a swirl of stars surrounds them in an imaginary landscape.\"); a decorative image should use empty alt=\"\" to avoid screen-reader noise. (img)",
-        "[1.1.1] Alt text describes a decorative element (\"One person sits on a platform with their arms crossed looking jealously at a pair of people hugging on another platform, a swirl of stars surrounds them in an imaginary landscape.\"); a decorative image should use empty alt=\"\" to avoid screen-reader noise. (img[src=\"https://media.npr.org/assets/img/2021/10/07/lk_jealousy_sq-ba0fc72db10132c9aa20474f69d622753261a1e2.jpg?s=100&c=85&f=jpeg\"])",
-        "[1.1.1] Alt text describes a decorative element (\"One person sits on a platform with their arms crossed looking jealously at a pair of people hugging on another platform, a swirl of stars surrounds them in an imaginary landscape.\"); a decorative image should use empty alt=\"\" to avoid screen-reader noise. (img[src=\"https://media.npr.org/assets/img/2021/10/07/lk_jealousy_wide-6bde3402aeaa5af6c2ed0ce329b18796c41e15a3.jpg?s=300&c=85&f=jpeg\"])",
-        "[1.1.1] Alt text is a file name (\"[Hi-Res Image] Saul Williams by Sam Lee.jpeg\"), which conveys nothing to a screen-reader user. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/1358x1358+345+0/resize/100/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F1d%2F3e%2F8a0f21414782b7a080cf64e6e9d9%2Fhi-res-image-saul-williams-by-sam-lee.jpeg\"])",
-        "[1.1.1] Alt text is a file name (\"Dolly-Night-2-scaled.jpg\"), which conveys nothing to a screen-reader user. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/1404x1404+351+0/resize/100/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F40%2F1b%2F64e2a4bf4b43a79a6f20fa89f22b%2Fdolly-night-2-scaled.jpg\"])",
-        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/200x200+50+0/resize/100/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F41%2F1b%2F0fb14d2d4861888c5496781116a4%2Fdolly-night-candle-300x200.jpg\"])",
-        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/200x200+50+0/resize/100/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fdb%2F0d%2F52a2477c434291ef0cda5e8c302e%2F201901205-open-studio-dolly-parton-nierman-1-300x200.jpg\"])",
-        "[1.1.1] Alt text is a file name (\"[Hi-Res Image] Saul Williams by Sam Lee.jpeg\"), which conveys nothing to a screen-reader user. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/2048x1152+0+103/resize/500/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F1d%2F3e%2F8a0f21414782b7a080cf64e6e9d9%2Fhi-res-image-saul-williams-by-sam-lee.jpeg\"])",
-        "[1.1.1] Alt text is a file name (\"Dolly-Night-2-scaled.jpg\"), which conveys nothing to a screen-reader user. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/2106x1185+0+110/resize/300/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F40%2F1b%2F64e2a4bf4b43a79a6f20fa89f22b%2Fdolly-night-2-scaled.jpg\"])",
-        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/225x225+38+0/resize/100/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fbc%2Fe9%2Fca5bd08c466bb2380079e298c6a3%2Fap22067110774356-6fdbb0a6765a67a7f7f6f684f7ed9873e76f6b48-300x225.jpg\"])",
-        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/300x169+0+16/resize/300/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F41%2F1b%2F0fb14d2d4861888c5496781116a4%2Fdolly-night-candle-300x200.jpg\"])",
-        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/300x169+0+16/resize/300/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fdb%2F0d%2F52a2477c434291ef0cda5e8c302e%2F201901205-open-studio-dolly-parton-nierman-1-300x200.jpg\"])",
-        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/300x169+0+28/resize/300/quality/85/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fbc%2Fe9%2Fca5bd08c466bb2380079e298c6a3%2Fap22067110774356-6fdbb0a6765a67a7f7f6f684f7ed9873e76f6b48-300x225.jpg\"])"
+        "[1.1.1] Alt text describes a decorative element (\"One person sits on a platform with their arms crossed looking jealously at a pair of people hugging on another platform, a swirl of stars surrounds them in an imaginary landscape.\"); a decorative image should use empty alt=\"\" to avoid screen-reader noise. (img[src=\"https://media.npr.org/assets/img/2021/10/07/lk_jealousy_sq-ba0fc72db10132c9aa20474f69d622753261a1e2.jpg?s=300&c=100&f=jpeg\"])",
+        "[1.1.1] Alt text describes a decorative element (\"One person sits on a platform with their arms crossed looking jealously at a pair of people hugging on another platform, a swirl of stars surrounds them in an imaginary landscape.\"); a decorative image should use empty alt=\"\" to avoid screen-reader noise. (img[src=\"https://media.npr.org/assets/img/2021/10/07/lk_jealousy_wide-6bde3402aeaa5af6c2ed0ce329b18796c41e15a3.jpg?s=300&c=100&f=jpeg\"])",
+        "[1.1.1] Alt text is a file name (\"[Hi-Res Image] Saul Williams by Sam Lee.jpeg\"), which conveys nothing to a screen-reader user. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/1358x1358+345+0/resize/300/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F1d%2F3e%2F8a0f21414782b7a080cf64e6e9d9%2Fhi-res-image-saul-williams-by-sam-lee.jpeg\"])",
+        "[1.1.1] Alt text is a file name (\"Dolly-Night-2-scaled.jpg\"), which conveys nothing to a screen-reader user. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/1404x1404+351+0/resize/300/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F40%2F1b%2F64e2a4bf4b43a79a6f20fa89f22b%2Fdolly-night-2-scaled.jpg\"])",
+        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/200x200+50+0/resize/300/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F41%2F1b%2F0fb14d2d4861888c5496781116a4%2Fdolly-night-candle-300x200.jpg\"])",
+        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/200x200+50+0/resize/300/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fdb%2F0d%2F52a2477c434291ef0cda5e8c302e%2F201901205-open-studio-dolly-parton-nierman-1-300x200.jpg\"])",
+        "[1.1.1] Alt text is a file name (\"[Hi-Res Image] Saul Williams by Sam Lee.jpeg\"), which conveys nothing to a screen-reader user. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/2048x1152+0+103/resize/300/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F1d%2F3e%2F8a0f21414782b7a080cf64e6e9d9%2Fhi-res-image-saul-williams-by-sam-lee.jpeg\"])",
+        "[1.1.1] Alt text is a file name (\"Dolly-Night-2-scaled.jpg\"), which conveys nothing to a screen-reader user. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/2106x1185+0+110/resize/300/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F40%2F1b%2F64e2a4bf4b43a79a6f20fa89f22b%2Fdolly-night-2-scaled.jpg\"])",
+        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/225x225+38+0/resize/300/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fbc%2Fe9%2Fca5bd08c466bb2380079e298c6a3%2Fap22067110774356-6fdbb0a6765a67a7f7f6f684f7ed9873e76f6b48-300x225.jpg\"])",
+        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/300x169+0+16/resize/300/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F41%2F1b%2F0fb14d2d4861888c5496781116a4%2Fdolly-night-candle-300x200.jpg\"])",
+        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/300x169+0+16/resize/300/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fdb%2F0d%2F52a2477c434291ef0cda5e8c302e%2F201901205-open-studio-dolly-parton-nierman-1-300x200.jpg\"])",
+        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://npr.brightspotcdn.com/dims3/default/strip/false/crop/300x169+0+28/resize/300/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fbc%2Fe9%2Fca5bd08c466bb2380079e298c6a3%2Fap22067110774356-6fdbb0a6765a67a7f7f6f684f7ed9873e76f6b48-300x225.jpg\"])"
       ],
       "layerErrors": {
-        "b": "layerB: timed out after 40000ms",
         "c": "judge failed/slow; used backstops"
       }
     },
@@ -205,11 +217,11 @@
       "ok": true,
       "scannerClean": false,
       "a": 22,
-      "b": 7,
+      "b": 9,
       "c": 1,
-      "hiddenFromScanner": 8,
+      "hiddenFromScanner": 10,
       "layerA": [
-        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#1a0b969f38f17b)",
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#1d57a259e4bc788)",
         "[4.1.2] This button element does not have a name available to an accessibility API. Valid names are: title , element content, aria-label , aria-labelledby . (#bbc-header > div > div:nth-child(3) > div:nth-child(2) > button)",
         "[1.1.1] Img element missing an alt attribute. Use the alt attribute to specify a short text alternative. (#bbc-main > article > section:nth-child(11) > section > div > div:nth-child(1) > div > div > div:nth-child(1) > div > div > a > div > img:nth-child(1))",
         "[1.1.1] Img element missing an alt attribute. Use the alt attribute to specify a short text alternative. (#bbc-main > article > section:nth-child(11) > section > div > div:nth-child(2) > div > div:nth-child(1) > div > div > a > div > div:nth-child(1) > div > div:nth-child(1) > img:nth-child(1))",
@@ -223,7 +235,7 @@
         "[1.1.1] Img element missing an alt attribute. Use the alt attribute to specify a short text alternative. (#bbc-main > article > section:nth-child(13) > section > div > div:nth-child(5) > div > div > a > div > div:nth-child(1) > div > div > img:nth-child(1))",
         "[1.1.1] Img element missing an alt attribute. Use the alt attribute to specify a short text alternative. (#bbc-main > article > section:nth-child(7) > section > div > div:nth-child(1) > div > div > div:nth-child(1) > div > div > a > div > img:nth-child(1))",
         "[1.1.1] Img element missing an alt attribute. Use the alt attribute to specify a short text alternative. (#bbc-main > article > section:nth-child(7) > section > div > div:nth-child(2) > div > div:nth-child(1) > div > div > a > div > div:nth-child(1) > div > div > img:nth-child(1))",
-        "[1.1.1] Img element missing an alt attribute. Use the alt attribute to specify a short text alternative. (#bbc-main > article > section:nth-child(7) > section > div > div:nth-child(3) > div > div > a > div > div:nth-child(1) > div > div > img:nth-child(1))",
+        "[1.1.1] Img element missing an alt attribute. Use the alt attribute to specify a short text alternative. (#bbc-main > article > section:nth-child(7) > section > div > div:nth-child(3) > div > div > a > div > div:nth-child(1) > div > div:nth-child(1) > img:nth-child(1))",
         "[1.1.1] Img element missing an alt attribute. Use the alt attribute to specify a short text alternative. (#bbc-main > article > section:nth-child(7) > section > div > div:nth-child(4) > div > div > a > div > div:nth-child(1) > div > div > img:nth-child(1))",
         "[1.1.1] Img element missing an alt attribute. Use the alt attribute to specify a short text alternative. (#bbc-main > article > section:nth-child(7) > section > div > div:nth-child(5) > div > div > a > div > div:nth-child(1) > div > div > img:nth-child(1))",
         "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#edr_l_first)",
@@ -239,10 +251,12 @@
         "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > header > div > div:nth-of-type(3))",
         "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > article > div:nth-of-type(1) > div)",
         "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > article > div:nth-of-type(1) > div > div)",
-        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > article > section:nth-of-type(8) > section > div > div:nth-of-type(3) > div > div > a > div > div:nth-of-type(2) > div:nth-of-type(2) > span:nth-of-type(1))"
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > article > section:nth-of-type(1) > section > div > div:nth-of-type(3) > div > div:nth-of-type(2) > div > div > a > div > div:nth-of-type(2) > div:nth-of-type(2) > span:nth-of-type(1))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > article > section:nth-of-type(8) > section > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div > a > div > div > div:nth-of-type(2) > span:nth-of-type(1))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > article > section:nth-of-type(8) > section > div > div:nth-of-type(2) > div > div:nth-of-type(3) > div > div > a > div > div > div:nth-of-type(2) > span:nth-of-type(1))"
       ],
       "layerC": [
-        "[1.1.1] Judge (gate): alt \"Lord's\" is not meaningful — The alt text 'Lord's' is too vague and does not provide meaningful context about the image's content or purpose. (img[src=\"https://ichef.bbci.co.uk/ace/standard/480/cpsprodpb/90c4/live/fa5f6cb0-a38d-11f1-aed2-8d6da8d75094.jpg.webp\"])"
+        "[1.1.1] Judge (gate): alt \"index image\" is not meaningful — The alt text 'index image' is too vague and does not convey meaningful information about the content of the image. (img[src=\"https://ichef.bbci.co.uk/news/480/cpsprodpb/e283/live/cf42fda0-a3b8-11f1-b13c-0d78069132fa.jpg.webp\"])"
       ]
     },
     {
@@ -278,10 +292,7 @@
         "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"/assets/frontend/homepage/cost-of-living-featured-4cd41cec449e0bd47e707812a5c3b5c52726bed0acb4f31c9b66548cc6ff6309.png\"])",
         "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"/assets/frontend/homepage/find-a-job-4d38717b0451da3bb223ddea7f681d79e48c1c022da5a08f16aba3f681503150.png\"])",
         "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"/assets/frontend/homepage/national-insurance-featured-7169e3631b639dcfc7be22469daf155ad0aa7516143ff8cf2e6f95ba29c8656c.png\"])"
-      ],
-      "layerErrors": {
-        "b": "layerB: page.addScriptTag: Executing inline script violates the following Content Security Policy directive 'script-src 'self' www.google-analytics.com ssl.google-analytics.com stats.g.doubleclick.net"
-      }
+      ]
     },
     {
       "url": "https://www.nasa.gov",
@@ -290,13 +301,13 @@
       "scannerClean": false,
       "a": 6,
       "b": 0,
-      "c": 32,
-      "hiddenFromScanner": 32,
+      "c": 33,
+      "hiddenFromScanner": 33,
       "layerA": [
+        "[4.1.2] Buttons must have discernible text (#\\31 680720 .ytmVideoInfoChannelAvatar)",
+        "[4.1.2] Elements must only use supported ARIA attributes (#\\31 680720 .ytmVideoInfoVideoTitle)",
+        "[4.1.2] Elements must only use permitted ARIA attributes (#\\31 680720 #movie_player)",
         "[4.1.2] This button element does not have a name available to an accessibility API. Valid names are: title , element content, aria-label , aria-labelledby . (#global-navigation-trigger--mobile)",
-        "[4.1.2] Buttons must have discernible text (#youtube-8994433 .ytmVideoInfoChannelAvatar)",
-        "[4.1.2] Elements must only use supported ARIA attributes (#youtube-8994433 .ytmVideoInfoVideoTitle)",
-        "[4.1.2] Elements must only use permitted ARIA attributes (#youtube-8994433 #movie_player)",
         "[4.1.2] This button element does not have a name available to an accessibility API. Valid names are: title , element content, aria-label , aria-labelledby . (html > body > div:nth-child(4) > div:nth-child(1) > button)",
         "[4.1.2] This button element does not have a name available to an accessibility API. Valid names are: title , element content, aria-label , aria-labelledby . (html > body > header:nth-child(2) > div > div:nth-child(3) > button)"
       ],
@@ -330,6 +341,7 @@
         "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://www.nasa.gov/wp-content/uploads/2025/04/3dmodels-cygnus-astro-74ffde.jpg?w=278\"])",
         "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://www.nasa.gov/wp-content/uploads/2025/05/p23-171-176.jpg?w=1024\"])",
         "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://www.nasa.gov/wp-content/uploads/2026/08/20260828-120552-jk1-3999-1.jpg?w=1536\"])",
+        "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://www.nasa.gov/wp-content/uploads/2026/08/54963535814-ff603aeb05-o.jpg?w=150&h=150&crop=1\"])",
         "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://www.nasa.gov/wp-content/uploads/2026/08/eo-1.png?w=1024\"])",
         "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://www.nasa.gov/wp-content/uploads/2026/08/jsc2026e406812.jpg?w=150&h=150&crop=1\"])",
         "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://www.nasa.gov/wp-content/uploads/2026/08/jsc2026e412862.jpg?w=150&h=150&crop=1\"])",
@@ -345,9 +357,9 @@
       "ok": true,
       "scannerClean": false,
       "a": 23,
-      "b": 0,
+      "b": 12,
       "c": 20,
-      "hiddenFromScanner": 20,
+      "hiddenFromScanner": 32,
       "layerA": [
         "[4.1.1] Duplicate id attribute value \"endless-entertainment-gallery-item-1\" found on the web page. (#endless-entertainment-gallery-item-1)",
         "[1.3.1] Certain ARIA roles must contain particular children (#fam-media-gallery > .media-gallery-item-container[role=\"list\"])",
@@ -373,7 +385,20 @@
         "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 3.1:1. Recommendation:  change background to #382d00. (#media-gallery-item-9 > div:nth-child(1) > noscript)",
         "[1.3.1] Certain ARIA roles must contain particular children (#tv-media-gallery > .media-gallery-item-container[role=\"list\"])"
       ],
-      "layerB": [],
+      "layerB": [
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > nav > div > ul > li:nth-of-type(2) > div > div > div:nth-of-type(1))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > nav > div > ul > li:nth-of-type(2) > div > div > div:nth-of-type(10))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > nav > div > ul > li:nth-of-type(2) > div > div > div:nth-of-type(11))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > nav > div > ul > li:nth-of-type(2) > div > div > div:nth-of-type(2))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > nav > div > ul > li:nth-of-type(2) > div > div > div:nth-of-type(3))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > nav > div > ul > li:nth-of-type(2) > div > div > div:nth-of-type(4))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > nav > div > ul > li:nth-of-type(2) > div > div > div:nth-of-type(5))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > nav > div > ul > li:nth-of-type(2) > div > div > div:nth-of-type(6))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > nav > div > ul > li:nth-of-type(2) > div > div > div:nth-of-type(7))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > nav > div > ul > li:nth-of-type(2) > div > div > div:nth-of-type(8))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > nav > div > ul > li:nth-of-type(2) > div > div > div:nth-of-type(9))",
+        "[1.3.2] Visual order differs from DOM/reading order: children are shown in a different sequence (via CSS 'order') than a screen reader reads them, distorting meaning. (body > main > section:nth-of-type(3) > div)"
+      ],
       "layerC": [
         "[2.5.3] Accessible name (\"Shopping Bag\") contradicts the visible label (\"0+\"), so a screen-reader user is told the wrong thing. (#globalnav-menubutton-link-bag)",
         "[2.5.3] Accessible name (\"Listen now, Sabrina Carpenter: The Zane Lowe Interview\") contradicts the visible label (\"<picture>\n\t\t\t\t\t\t\t\t\t\t\t<source srcset=\"https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/55/2b/5f/552b5f86-46e6-d848-ee06-5395bf09c206/83e0ed3d-c824-4ed9-9572-ae9e784568cb.png/122x122sr.jpg, https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/55/2b/5f/552b5f86-46e6-d848-ee06-5395bf09c206/83e0ed3d-c824-4ed9-9572-ae9e784568cb.png/244x244sr.jpg 2x\" type=\"image/jpeg\" media=\"(max-width: 1068px)\">\n\t\t\t\t\t\t\t\t\t\t\t<source srcset=\"https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/55/2b/5f/552b5f86-46e6-d848-ee06-5395bf09c206/83e0ed3d-c824-4ed9-9572-ae9e784568cb.png/196x196sr.jpg, https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/55/2b/5f/552b5f86-46e6-d848-ee06-5395bf09c206/83e0ed3d-c824-4ed9-9572-ae9e784568cb.png/392x392sr.jpg 2x\" type=\"image/jpeg\" media=\"(max-width: 1440px)\">\n\t\t\t\t\t\t\t\t\t\t\t<source srcset=\"https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/55/2b/5f/552b5f86-46e6-d848-ee06-5395bf09c206/83e0ed3d-c824-4ed9-9572-ae9e784568cb.png/226x226sr.jpg, https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/55/2b/5f/552b5f86-46e6-d848-ee06-5395bf09c206/83e0ed3d-c824-4ed9-9572-ae9e784568cb.png/452x452sr.jpg 2x\" type=\"image/jpeg\" media=\"(min-width:0px)\">\n\t\t\t\t\t\t\t\t\t\t\t<img data-src=\"https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/55/2b/5f/552b5f86-46e6-d848-ee06-5395bf09c206/83e0ed3d-c824-4ed9-9572-ae9e784568cb.png/226x226sr.jpg\" alt=\"\">\n\t\t\t\t\t\t\t\t\t\t</picture>\n\t\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\tSabrina Carpenter: The Zane Lowe Interview\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tListen now\n\t\t\t\t\t\t\t\t\t\tSabrina Carpenter: The Zane Lowe Interview\"), so a screen-reader user is told the wrong thing. (#media-gallery-item-1)",
@@ -395,23 +420,21 @@
         "[2.5.3] Accessible name (\"Watch now, Programs\") contradicts the visible label (\"<picture>\n\t\t\t\t\t\t\t\t\t\t\t<source srcset=\"https://is1-ssl.mzstatic.com/image/thumb/Features221/v4/63/79/eb/6379ebdd-976c-11a5-0258-5c5f589b0031/681367fd-f322-4b95-93bf-f906975df4c4.png/188x254sr.jpg, https://is1-ssl.mzstatic.com/image/thumb/Features221/v4/63/79/eb/6379ebdd-976c-11a5-0258-5c5f589b0031/681367fd-f322-4b95-93bf-f906975df4c4.png/376x508sr.jpg 2x\" type=\"image/jpeg\" media=\"(max-width: 1068px)\">\n\t\t\t\t\t\t\t\t\t\t\t<source srcset=\"https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/2a/75/df/2a75df27-703b-4712-6d95-9c9e29ca1dc6/fa77ffdb-61aa-47e7-920a-7da1876f3929.png/417x234.jpg, https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/2a/75/df/2a75df27-703b-4712-6d95-9c9e29ca1dc6/fa77ffdb-61aa-47e7-920a-7da1876f3929.png/834x468.jpg 2x\" type=\"image/jpeg\" media=\"(max-width: 1440px)\">\n\t\t\t\t\t\t\t\t\t\t\t<source srcset=\"https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/2a/75/df/2a75df27-703b-4712-6d95-9c9e29ca1dc6/fa77ffdb-61aa-47e7-920a-7da1876f3929.png/470x264.jpg, https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/2a/75/df/2a75df27-703b-4712-6d95-9c9e29ca1dc6/fa77ffdb-61aa-47e7-920a-7da1876f3929.png/940x528.jpg 2x\" type=\"image/jpeg\" media=\"(min-width:0px)\">\n\t\t\t\t\t\t\t\t\t\t\t<img data-src=\"https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/2a/75/df/2a75df27-703b-4712-6d95-9c9e29ca1dc6/fa77ffdb-61aa-47e7-920a-7da1876f3929.png/470x264.jpg\" alt=\"\">\n\t\t\t\t\t\t\t\t\t\t</picture>\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\tWatch now\n\t\t\t\t\t\t\t\t\t\tPrograms\"), so a screen-reader user is told the wrong thing. (#media-gallery-item-9)",
         "[2.5.3] Accessible name (\"Stream now, Widow’s Bay - Mystery - 19 Emmy® Nominations Including Best Comedy\") contradicts the visible label (\"<picture>\n\t\t\t\t\t<source srcset=\"https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/aa/d0/f7/aad0f7e2-d20d-610a-ad83-e4c18d53808f/9fc84f34-217d-4161-8c71-a5064339d807.png/274x496nr.jpg, https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/aa/d0/f7/aad0f7e2-d20d-610a-ad83-e4c18d53808f/9fc84f34-217d-4161-8c71-a5064339d807.png/548x992nr.jpg 2x\" type=\"image/jpeg\" media=\"(max-width: 734px)\">\n\t\t\t\t\t<source srcset=\"https://is1-ssl.mzstatic.com/image/thumb/CqMFl0CvUAUE1axxV4k-ew/688x368sr.jpg, https://is1-ssl.mzstatic.com/image/thumb/CqMFl0CvUAUE1axxV4k-ew/1376x736sr.jpg 2x\" type=\"image/jpeg\" media=\"(max-width: 1068px)\">\n\t\t\t\t\t<source srcset=\"https://is1-ssl.mzstatic.com/image/thumb/CqMFl0CvUAUE1axxV4k-ew/980x522sr.jpg, https://is1-ssl.mzstatic.com/image/thumb/CqMFl0CvUAUE1axxV4k-ew/1960x1044sr.jpg 2x\" type=\"image/jpeg\" media=\"(max-width: 1440px)\">\n\t\t\t\t\t<source srcset=\"https://is1-ssl.mzstatic.com/image/thumb/CqMFl0CvUAUE1axxV4k-ew/1250x668sr.jpg, https://is1-ssl.mzstatic.com/image/thumb/CqMFl0CvUAUE1axxV4k-ew/2500x1336sr.jpg 2x\" type=\"image/jpeg\" media=\"(min-width:0px)\">\n\t\t\t\t\t<img data-src=\"https://is1-ssl.mzstatic.com/image/thumb/CqMFl0CvUAUE1axxV4k-ew/1250x668sr.jpg\" alt=\"\">\n\t\t\t\t</picture>\n\t\t\t\n\t\t\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\n\t\t\t\n\t\t\t\t<picture>\n\t\t\t\t\t<source srcset=\"/v/home/cj/images/tv-gallery/logo_hero_light__d7t8cya4x26a_small.png, /v/home/cj/images/tv-gallery/logo_hero_light__d7t8cya4x26a_small_2x.png 2x\" media=\"(max-width: 734px)\">\n\t\t\t\t\t<img data-src=\"/v/home/cj/images/tv-gallery/logo_hero_light__d7t8cya4x26a_small.png\" alt=\"\">\n\t\t\t\t</picture>\n\t\t\t\n\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\n\t\t\t\n\t\t\t\t<picture>\n\t\t\t\t\t<source srcset=\"https://is1-ssl.mzstatic.com/image/thumb/vXNv4MQ8aLXIkWQTZxw-BQ/220x54.png, https://is1-ssl.mzstatic.com/image/thumb/vXNv4MQ8aLXIkWQTZxw-BQ/440x108.png 2x\" media=\"(max-width: 734px)\">\n\t\t\t\t<img src=\"https://is1-ssl.mzstatic.com/image/thumb/vXNv4MQ8aLXIkWQTZxw-BQ/220x54.png\" alt=\"\">\n\t\t\t\t</picture>\n\t\t\t\n\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tStream now\n\t\t\t\t\t\t\t\tMystery19 Emmy® Nominations Including Best Comedy\"), so a screen-reader user is told the wrong thing. (#media-gallery-item-9-link)",
         "[2.5.3] Accessible name (\"TV and Home\") contradicts the visible label (\"TV & Home\"), so a screen-reader user is told the wrong thing. (a)"
-      ],
-      "layerErrors": {
-        "b": "layerB: timed out after 40000ms"
-      }
+      ]
     },
     {
       "url": "https://www.microsoft.com",
       "category": "big brand",
       "ok": true,
       "scannerClean": false,
-      "a": 28,
-      "b": 12,
+      "a": 38,
+      "b": 11,
       "c": 4,
-      "hiddenFromScanner": 16,
+      "hiddenFromScanner": 15,
       "layerA": [
         "[4.1.1] Duplicate id attribute value \"action-oc0a32\" found on the web page. (#action-oc0a32)",
         "[4.1.1] Duplicate id attribute value \"action-oc0e6f\" found on the web page. (#action-oc0e6f)",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (#action-oc198a > a[data-bi-cn=\"Learn more\"][data-bi-ecn=\"Learn more\"][data-bi-sn=\"1\"])",
         "[4.1.1] Duplicate id attribute value \"action-oc1f97\" found on the web page. (#action-oc1f97)",
         "[4.1.1] Duplicate id attribute value \"action-oc4d4d\" found on the web page. (#action-oc4d4d)",
         "[4.1.1] Duplicate id attribute value \"action-oc86de\" found on the web page. (#action-oc86de)",
@@ -437,7 +460,16 @@
         "[4.1.1] Duplicate id attribute value \"reimagine-image-ocff8b\" found on the web page. (#reimagine-image-ocff8b)",
         "[4.1.1] Duplicate id attribute value \"text-block-oc0e46\" found on the web page. (#text-block-oc0e46)",
         "[4.1.1] Duplicate id attribute value \"text-block-oc2bd8\" found on the web page. (#text-block-oc2bd8)",
-        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#uhf-cart-count-iframe)"
+        "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#uhf-cart-count-iframe)",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (a[aria-label=\"Explore AI solutions \"])",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (a[aria-label=\"Join XBOX Game Pass Ultimate.\"])",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (a[aria-label=\"See if your PC is ready\"])",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (a[aria-label=\"Shop XBOX Series S\"])",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (a[aria-label=\"Shop XBOX Series X\"])",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (a[data-bi-view=\"Less plastic, more planet​\"])",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (a[data-bi-view=\"Microsoft 365 Copilot\"])",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (a[data-bi-view=\"Microsoft OneDrive\"])",
+        "[1.4.3] Elements must meet minimum color contrast ratio thresholds (a[data-bi-view=\"Windows 11 for business\"])"
       ],
       "layerB": [
         "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body)",
@@ -450,8 +482,7 @@
         "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(2) > div > div:nth-of-type(1) > uhf-header > header > div > uhf-actions > uhf-search > uhf-popout > uhf-autosuggest-item:nth-of-type(6))",
         "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(2) > div > div:nth-of-type(1) > uhf-header > header > div > uhf-actions > uhf-search > uhf-popout > uhf-autosuggest-item:nth-of-type(7))",
         "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(2) > div > div:nth-of-type(1) > uhf-header > header > div > uhf-actions > uhf-search > uhf-popout > uhf-autosuggest-item:nth-of-type(8))",
-        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(9) > div)",
-        "[1.3.2] Visual order differs from DOM/reading order: children are shown in a different sequence (via CSS 'order') than a screen reader reads them, distorting meaning. (body > div:nth-of-type(9) > div > div > div > div:nth-of-type(1))"
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(9) > div)"
       ],
       "layerC": [
         "[2.5.3] Accessible name (\"Join XBOX Game Pass Ultimate.\") contradicts the visible label (\"Join now\"), so a screen-reader user is told the wrong thing. (a)",
@@ -466,9 +497,9 @@
       "ok": true,
       "scannerClean": false,
       "a": 48,
-      "b": 0,
+      "b": 65,
       "c": 8,
-      "hiddenFromScanner": 8,
+      "hiddenFromScanner": 73,
       "layerA": [
         "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#​ > body > iframe:nth-child(3))",
         "[2.4.1] Iframe element requires a non-empty title attribute that identifies the frame. (#​ > body > iframe:nth-child(4))",
@@ -514,12 +545,78 @@
         "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 3:1, but text in this element has a contrast ratio of 1:1. Recommendation:  change text colour to #949494. (#main-content > section:nth-child(3) > div > div > div > div > div:nth-child(1) > span)",
         "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1:1. Recommendation:  change text colour to #767676. (#main-content > section:nth-child(6) > div > div:nth-child(1) > div:nth-child(2) > a:nth-child(2))",
         "[1.3.1] Heading tag found with no content. Text that is not intended as a heading should not be marked up with heading tags. (#main-content > section:nth-child(7) > div > div > div:nth-child(3) > div:nth-child(2) > div > div:nth-child(2) > div > div:nth-child(1) > h4)",
-        "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 3.44:1. Recommendation:  change text colour to #697790. (#stat-active-subscriptions-description)",
-        "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 3.44:1. Recommendation:  change text colour to #697790. (#stat-historical-uptime-description)",
-        "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 3.44:1. Recommendation:  change text colour to #697790. (#stat-historical-uptime-description > a)",
-        "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 3.44:1. Recommendation:  change text colour to #697790. (#stat-payments-volume-description)"
+        "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 4.41:1. Recommendation:  change background to #0a1435. (#stat-active-subscriptions-description)",
+        "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 4.41:1. Recommendation:  change background to #0a1435. (#stat-historical-uptime-description)",
+        "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 4.41:1. Recommendation:  change background to #0a1435. (#stat-historical-uptime-description > a)",
+        "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 4.41:1. Recommendation:  change background to #0a1435. (#stat-payments-volume-description)"
       ],
-      "layerB": [],
+      "layerB": [
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body)",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(1))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(10))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(11))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(2))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(3))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(4))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(5))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(6))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(7))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(8))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(9))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(1))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(10))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(11))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(2))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(3))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(4))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(5))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(6))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(7))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(8))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(9))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div > div > main > section:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > button:nth-of-type(1) > div:nth-of-type(4) > div > div > div:nth-of-type(1) > div)",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(1))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(10))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(11))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(2))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(3))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(4))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(5))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(6))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(7))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(8))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(1) > span:nth-of-type(9))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(1))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(10))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(11))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(2))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(3))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(4))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(5))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(6))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(7))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(8))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(1) > div:nth-of-type(1) > div > div:nth-of-type(1) > span:nth-of-type(2) > span:nth-of-type(2) > span:nth-of-type(9))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > button:nth-of-type(2) > div:nth-of-type(4) > div > div > div > div > div:nth-of-type(2) > div:nth-of-type(2) > div > div:nth-of-type(1) > div:nth-of-type(2))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > button:nth-of-type(3) > div:nth-of-type(4) > div > div > div:nth-of-type(1) > div)",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > button:nth-of-type(5) > div:nth-of-type(4) > div > div > div > div > div > div > div:nth-of-type(1) > div > div:nth-of-type(2) > span:nth-of-type(1))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > button:nth-of-type(5) > div:nth-of-type(4) > div > div > div > div > div > div > div:nth-of-type(1) > div > div:nth-of-type(2) > span:nth-of-type(2))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > button:nth-of-type(5) > div:nth-of-type(4) > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > span:nth-of-type(1))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > button:nth-of-type(5) > div:nth-of-type(4) > div > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > span:nth-of-type(2))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > button:nth-of-type(6) > div:nth-of-type(4) > div > div > div:nth-of-type(1) > div)",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > button:nth-of-type(6) > div:nth-of-type(4) > div > div > div:nth-of-type(1) > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(10) > div:nth-of-type(5))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > button:nth-of-type(6) > div:nth-of-type(4) > div > div > div:nth-of-type(1) > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(4) > div:nth-of-type(5))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > button:nth-of-type(6) > div:nth-of-type(4) > div > div > div:nth-of-type(1) > div > div > div > div > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(6) > div:nth-of-type(5))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(5) > div > div:nth-of-type(2) > section:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div)",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(6) > div > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(6) > div > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div)",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(6) > div > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div)",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(7) > div > div > div:nth-of-type(2) > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(1) > h4)",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(7) > div > div > div:nth-of-type(2) > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(1) > span)",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(1) > div > main > section:nth-of-type(7) > div > div > div:nth-of-type(2) > div:nth-of-type(2) > div > div:nth-of-type(2) > div > div:nth-of-type(2))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(2))",
+        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(2) > div:nth-of-type(2) > nav > div)"
+      ],
       "layerC": [
         "[2.5.3] Accessible name (\"Read Hertz's story\") contradicts the visible label (\"Read the story\"), so a screen-reader user is told the wrong thing. (#customer-content-Hertz)",
         "[2.5.3] Accessible name (\"Read Instacart's story\") contradicts the visible label (\"Read the story\"), so a screen-reader user is told the wrong thing. (#customer-content-Instacart)",
@@ -529,10 +626,7 @@
         "[2.5.3] Accessible name (\"India. Choose your country\") contradicts the visible label (\"India(English)\"), so a screen-reader user is told the wrong thing. (button)",
         "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://images.stripeassets.com/fzn2n1nzq965/5dQAw5oJf3TOO1Jt6IKDRH/f391594c11f38d821259acdd3412a7a6/platform-graphic-background_2x.png?w=296&q=90\"])",
         "[1.1.1] A substantial image (in a <figure> or with a content-bearing source) has empty alt=\"\" and no descriptive caption, so a screen-reader user gets no information — likely an informative image wrongly marked decorative. (img[src=\"https://images.stripeassets.com/fzn2n1nzq965/63zO5Z4CABvFl3pLLhnu3l/a9c12c883f820dc29d29fa0b9dcb0814/DatavizStatic3x.png?w=768&q=90\"])"
-      ],
-      "layerErrors": {
-        "b": "layerB: page.addScriptTag: Executing inline script violates the following Content Security Policy directive 'script-src https://b.stripecdn.com https://js.stripe.com 'self' 'sha256-3aWvb9tRBjmz1OjR3n7"
-      }
+      ]
     },
     {
       "url": "https://vercel.com",
@@ -583,28 +677,54 @@
       "layerB": [],
       "layerC": [
         "[2.5.3] Accessible name (\"See all HTML references\") contradicts the visible label (\"See all…\"), so a screen-reader user is told the wrong thing. (a)"
-      ],
-      "layerErrors": {
-        "b": "layerB: page.addScriptTag: Executing inline script violates the following Content Security Policy directive 'script-src-elem 'report-sample' 'self' 'wasm-unsafe-eval' assets.codepen.io production-asse"
-      }
+      ]
     },
     {
       "url": "https://docs.python.org/3/",
       "category": "developer docs",
       "ok": true,
       "scannerClean": false,
-      "a": 0,
+      "a": 31,
       "b": 1,
       "c": 0,
       "hiddenFromScanner": 1,
-      "layerA": [],
+      "layerA": [
+        "[2.4.4] Links must have discernible text (.related[aria-label=\"Related\"][role=\"navigation\"]:nth-child(2) > ul > .nav-item.nav-item-this > a[href=\"\"])",
+        "[2.4.4] Links must have discernible text (.related[aria-label=\"Related\"][role=\"navigation\"]:nth-child(4) > ul > .nav-item.nav-item-this > a[href=\"\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (.sphinxsidebarwrapper > ul:nth-child(6) > li:nth-child(2) > a)",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (.sphinxsidebarwrapper > ul:nth-child(6) > li:nth-child(3) > a)",
+        "[4.1.1] Duplicate id attribute value \"cpython-language-and-version\" found on the web page. (#cpython-language-and-version)",
+        "[4.1.1] Duplicate id attribute value \"search-box\" found on the web page. (#search-box)",
+        "[4.1.2] Anchor element found with no link content and no name and/or ID attribute. (html > body > div:nth-child(2) > ul > li:nth-child(8) > a)",
+        "[4.1.2] Anchor element found with no link content and no name and/or ID attribute. (html > body > div:nth-child(4) > ul > li:nth-child(8) > a)",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(1) > a[href=\"https://docs.python.org/3.16/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(10) > a[href=\"https://docs.python.org/3.7/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(11) > a[href=\"https://docs.python.org/3.6/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(12) > a[href=\"https://docs.python.org/3.5/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(13) > a[href=\"https://docs.python.org/3.4/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(14) > a[href=\"https://docs.python.org/3.3/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(15) > a[href=\"https://docs.python.org/3.2/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(16) > a[href=\"https://docs.python.org/3.1/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(17) > a[href=\"https://docs.python.org/3.0/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(18) > a[href=\"https://docs.python.org/2.7/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(19) > a[href=\"https://docs.python.org/2.6/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(2) > a[href=\"https://docs.python.org/3.15/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(20) > a)",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(3) > a[href=\"https://docs.python.org/3.14/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(4) > a[href=\"https://docs.python.org/3.13/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(5) > a[href=\"https://docs.python.org/3.12/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(6) > a[href=\"https://docs.python.org/3.11/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(7) > a[href=\"https://docs.python.org/3.10/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(8) > a[href=\"https://docs.python.org/3.9/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(4) > li:nth-child(9) > a[href=\"https://docs.python.org/3.8/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(6) > li:nth-child(1) > a[href$=\"peps.python.org/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(6) > li:nth-child(4) > a[href$=\"av/\"])",
+        "[2.5.8] All touch targets must be 24px large, or leave sufficient space (ul:nth-child(6) > li:nth-child(5) > a[href$=\"devguide.python.org/\"])"
+      ],
       "layerB": [
         "[1.3.1] Heading outline skips a level: <h1> is followed by <h3> (levels 2..2 are skipped), so screen-reader heading navigation is broken. (body > div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(1) > h3:nth-of-type(1))"
       ],
-      "layerC": [],
-      "layerErrors": {
-        "a": "layerA: timed out after 45000ms"
-      }
+      "layerC": []
     },
     {
       "url": "https://www.mit.edu",
@@ -637,9 +757,9 @@
       "ok": true,
       "scannerClean": false,
       "a": 6,
-      "b": 4,
+      "b": 3,
       "c": 1,
-      "hiddenFromScanner": 5,
+      "hiddenFromScanner": 4,
       "layerA": [
         "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 3:1, but text in this element has a contrast ratio of 1:1. Recommendation:  change text colour to #949494. (#main-content > div > div > div:nth-child(10) > div:nth-child(1) > section:nth-child(1) > header > div:nth-child(1) > h2)",
         "[1.4.3] This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 1:1. Recommendation:  change text colour to #767676. (#main-content > div > div > div:nth-child(10) > div:nth-child(1) > section:nth-child(1) > header > div:nth-child(2) > div > p)",
@@ -650,7 +770,6 @@
       ],
       "layerB": [
         "[1.3.2] Visual order differs from DOM/reading order: children are shown in a different sequence (via CSS 'order') than a screen reader reads them, distorting meaning. (body > div:nth-of-type(2) > header > div > div > nav > div > div > form)",
-        "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(2) > main > div)",
         "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(2) > main > div > div > section:nth-of-type(3) > div:nth-of-type(2) > div > div)",
         "[4.1.3] Content updated dynamically inside an element with no live region (aria-live / role=status), so screen-reader users are not notified of the change. (body > div:nth-of-type(2) > main > div > div > section:nth-of-type(3) > div:nth-of-type(2) > div > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div > div:nth-of-type(2) > div:nth-of-type(3) > details > div)"
       ],
@@ -674,10 +793,7 @@
       "layerB": [],
       "layerC": [
         "[1.1.1] Judge (gate): alt \"Icon for www.nih.gov\" is not meaningful — The alt text describes the image as an icon for the website but does not provide any specific information about the content or function of the icon itself. (img[src=\"/favicon.ico\"])"
-      ],
-      "layerErrors": {
-        "b": "layerB: page.addScriptTag: Executing inline script violates the following Content Security Policy directive 'script-src 'nonce-aX2umQoD34dXHO6lAuxdwA' 'unsafe-eval' https://challenges.cloudflare.com'."
-      }
+      ]
     },
     {
       "url": "https://www.mayoclinic.org",
@@ -725,7 +841,7 @@
       ],
       "layerC": [
         "[1.1.1] Alt text duplicates adjacent visible text verbatim, so a screen-reader user hears it twice. (img)",
-        "[1.1.1] Judge (gate): alt \"Home\" is not meaningful — The alt text 'Home' is too vague and does not provide specific information about the image's content or context. (img[src=\"/ResourcePackages/WHO/assets/dist/images/logos/en/h-logo-white.svg\"])"
+        "[1.1.1] Judge (gate): alt \"Home\" is not meaningful — The alt text 'Home' is too vague and does not provide specific information about the image content. (img[src=\"/ResourcePackages/WHO/assets/dist/images/logos/en/h-logo-white.svg\"])"
       ]
     },
     {

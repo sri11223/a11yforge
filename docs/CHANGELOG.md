@@ -86,11 +86,14 @@ the other **28** are in classes an automated scanner *structurally cannot* detec
 
 | Layer | Class it owns | Corpus barriers | On 20 real sites |
 |---|---|---|---|
-| **A** — axe + pa11y | mechanical WCAG (missing/placeholder labels) | 2 | 500 |
-| **B** — virtual-SR + CDP | keyboard traps, focus/reading order, operability, live regions, skip links, headings | 17 | 31* |
-| **C** — judge + backstops | meaningfulness of alt/labels (generic, filename, contradicting, decorative) | 11 | 96 |
+| **A** — axe + pa11y | mechanical WCAG (missing/placeholder labels) | 2 | 552 |
+| **B** — virtual-SR + CDP | keyboard traps, focus/reading order, operability, live regions, skip links, headings | 17 | 109* |
+| **C** — judge + backstops | meaningfulness of alt/labels (generic, filename, contradicting, decorative) | 11 | 97 |
 
-So **28 of 30** corpus barriers — and 127 of the real-site findings — are beyond axe entirely.
+So **28 of 30** corpus barriers — and 206 of the real-site findings — are beyond axe entirely.
+(*Layer B = 109 includes 65 from stripe.com alone, all one class — WCAG 4.1.3 dynamic-content-
+without-live-region on its animated homepage; excluding it, Layer B = 44 / hidden = 141 across the
+other 19 sites. Real-site totals are a 2026-08-30 live snapshot.)
 *Honest limits:* these are per-layer **class** counts (from the committed corpus manifests + the
 20-site run); the committed data does not split Layer A into axe-vs-pa11y or Layer C into
 backstop-vs-judge at the finding level, so we don't claim those sub-splits. *Layer B on real sites

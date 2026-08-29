@@ -121,7 +121,12 @@ interface RawB {
 }
 
 async function injectHelpers(page: Page): Promise<void> {
-  await page.addScriptTag({ content: HELPERS });
+  // Inject the window.__b helpers via page.evaluate (CDP Runtime.evaluate), NOT addScriptTag.
+  // A <script> tag is blocked by a strict Content-Security-Policy (script-src), which previously
+  // made Layer B unmeasurable on CSP-locked real sites; CDP evaluation is exempt from page CSP,
+  // so the deterministic checks now run there too. HELPERS is a single `window.__b = {…}`
+  // assignment, so the IIFE wrap is behaviour-identical (verified byte-identical on the corpus).
+  await page.evaluate(`(() => { ${HELPERS} })()`);
 }
 
 /**

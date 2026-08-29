@@ -185,39 +185,40 @@ html{scroll-behavior:smooth}
   <strong>20 diverse production sites</strong> (news, government, healthcare, SaaS, big brands,
   universities, docs, reference). This is <strong>dated, live</strong> evidence (sites change and
   the LLM judge runs live) — kept separate from the sealed, reproducible-replay eval — and
-  strictly <strong>detection-only</strong>:
-  we never modify or publish fixes to sites we don't own. Snapshot: <code>2026-08-29</code>. Full
-  data: <a href="results/real-world-20.md">real-world-20.md</a> ·
-  <a href="results/real-world-20.json">real-world-20.json</a>.</p>
+  strictly <strong>detection-only</strong>: we never modify or publish fixes to sites we don't own.
+  Snapshot: <code>2026-08-30</code>. Full data:
+  <a href="results/real-world-20.md">real-world-20.md</a> ·
+  <a href="results/real-world-20.json">real-world-20.json</a>. (This run added a CSP-safe Layer-B
+  injection — see the caveat below — so 4 previously CSP-blocked sites are now measured.)</p>
   <div class="nums">
-    <div class="num r"><div class="big">127</div><div class="lbl">issues hidden from the scanner (Layer B + C) across 20 real sites — and this is a <strong>lower bound</strong>.</div></div>
-    <div class="num b"><div class="big">500</div><div class="lbl">Layer A (scanner) findings — real sites are far from scanner-clean to begin with.</div></div>
+    <div class="num r"><div class="big">206</div><div class="lbl">issues hidden from the scanner (Layer B + C) across 20 real sites — still a <strong>lower bound</strong> (3 sites' Layer B timed out). See the stripe caveat below.</div></div>
+    <div class="num b"><div class="big">552</div><div class="lbl">Layer A (scanner) findings — real sites are far from scanner-clean to begin with.</div></div>
     <div class="num g"><div class="big">18 / 20</div><div class="lbl">sites had at least one issue a scanner cannot see (Layer B/C). The two without: usa.gov (fully clean) and mayoclinic.org (scanner flagged 8, but nothing hidden). Only usa.gov was fully scanner-clean.</div></div>
   </div>
   <p><strong>Scanners aren't useless — and we're not claiming they are.</strong> Real sites have
-  plenty of Layer-A violations too (500 here), and axe/pa11y catch those. The point is the
-  <strong>additional 127 barriers in the B/C classes a scanner cannot see</strong> — keyboard
+  plenty of Layer-A violations too (552 here), and axe/pa11y catch those. The point is the
+  <strong>additional 206 barriers in the B/C classes a scanner cannot see</strong> — keyboard
   traps, broken reading order, and meaningless or missing accessible names — sitting on top of the
   scanner's own findings. A11yForge reports both; only the full A/B/C stack surfaces the second
   kind.</p>
   <table>
     <thead><tr><th>Site</th><th>Category</th><th>A</th><th>B</th><th>C</th><th>hidden (B+C)</th><th>notes</th></tr></thead>
     <tbody>
-      <tr><td>npr.org</td><td>news</td><td>132</td><td>0*</td><td>14</td><td>14</td><td>B timed out; judge→backstops</td></tr>
+      <tr><td>npr.org</td><td>news</td><td>143</td><td>1</td><td>14</td><td>15</td><td>judge→backstops</td></tr>
       <tr><td>apnews.com</td><td>news</td><td>0*</td><td>0*</td><td>1</td><td>1</td><td>A+B timed out; judge→backstops</td></tr>
-      <tr><td>bbc.com/news</td><td>news</td><td>22</td><td>7</td><td>1</td><td>8</td><td>—</td></tr>
+      <tr><td>bbc.com/news</td><td>news</td><td>22</td><td>9</td><td>1</td><td>10</td><td>—</td></tr>
       <tr><td>usa.gov</td><td>government</td><td>0</td><td>0</td><td>0</td><td>0</td><td>fully clean</td></tr>
-      <tr><td>gov.uk</td><td>government</td><td>2</td><td>0*</td><td>5</td><td>5</td><td>B CSP-blocked</td></tr>
-      <tr><td>nasa.gov</td><td>gov / science</td><td>6</td><td>0</td><td>32</td><td>32</td><td>judge→backstops</td></tr>
-      <tr><td>apple.com</td><td>big brand</td><td>23</td><td>0*</td><td>20</td><td>20</td><td>B timed out</td></tr>
-      <tr><td>microsoft.com</td><td>big brand</td><td>28</td><td>12</td><td>4</td><td>16</td><td>—</td></tr>
-      <tr><td>stripe.com</td><td>SaaS / fintech</td><td>48</td><td>0*</td><td>8</td><td>8</td><td>B CSP-blocked</td></tr>
+      <tr><td>gov.uk</td><td>government</td><td>2</td><td>0</td><td>5</td><td>5</td><td>CSP now measured</td></tr>
+      <tr><td>nasa.gov</td><td>gov / science</td><td>6</td><td>0</td><td>33</td><td>33</td><td>judge→backstops</td></tr>
+      <tr><td>apple.com</td><td>big brand</td><td>23</td><td>12</td><td>20</td><td>32</td><td>—</td></tr>
+      <tr><td>microsoft.com</td><td>big brand</td><td>38</td><td>11</td><td>4</td><td>15</td><td>—</td></tr>
+      <tr><td>stripe.com</td><td>SaaS / fintech</td><td>48</td><td>65</td><td>8</td><td>73</td><td>CSP now measured — 65 B all one class (4.1.3), see caveat</td></tr>
       <tr><td>vercel.com</td><td>SaaS</td><td>0*</td><td>0*</td><td>2</td><td>2</td><td>A+B timed out</td></tr>
-      <tr><td>developer.mozilla.org</td><td>docs</td><td>15</td><td>0*</td><td>1</td><td>1</td><td>B CSP-blocked</td></tr>
-      <tr><td>docs.python.org</td><td>docs</td><td>0*</td><td>1</td><td>0</td><td>1</td><td>A timed out</td></tr>
+      <tr><td>developer.mozilla.org</td><td>docs</td><td>15</td><td>0</td><td>1</td><td>1</td><td>CSP now measured</td></tr>
+      <tr><td>docs.python.org</td><td>docs</td><td>31</td><td>1</td><td>0</td><td>1</td><td>—</td></tr>
       <tr><td>mit.edu</td><td>university</td><td>9</td><td>1</td><td>0</td><td>1</td><td>—</td></tr>
-      <tr><td>stanford.edu</td><td>university</td><td>6</td><td>4</td><td>1</td><td>5</td><td>—</td></tr>
-      <tr><td>nih.gov</td><td>healthcare</td><td>2</td><td>0*</td><td>1</td><td>1</td><td>B CSP-blocked</td></tr>
+      <tr><td>stanford.edu</td><td>university</td><td>6</td><td>3</td><td>1</td><td>4</td><td>—</td></tr>
+      <tr><td>nih.gov</td><td>healthcare</td><td>2</td><td>0</td><td>1</td><td>1</td><td>CSP now measured</td></tr>
       <tr><td>mayoclinic.org</td><td>healthcare</td><td>8</td><td>0</td><td>0</td><td>0</td><td>—</td></tr>
       <tr><td>who.int</td><td>healthcare / NGO</td><td>7</td><td>2</td><td>2</td><td>4</td><td>—</td></tr>
       <tr><td>en.wikipedia.org</td><td>reference</td><td>138</td><td>0*</td><td>3</td><td>3</td><td>B timed out</td></tr>
@@ -225,12 +226,16 @@ html{scroll-behavior:smooth}
       <tr><td>smashingmagazine.com</td><td>publishing</td><td>52</td><td>3</td><td>1</td><td>4</td><td>—</td></tr>
     </tbody>
   </table>
-  <p class="muted" style="margin-top:12px"><strong>Honest lower bound.</strong> <code>*</code> marks
-  a layer that hit its per-layer budget or was blocked by the site's Content-Security-Policy — a
-  <code>0*</code> means "not measured", not "clean". Layer&nbsp;A timed out on 3 sites, Layer&nbsp;B
-  was unavailable on 9 (large-DOM timeouts or CSP-blocked script injection), and the Layer&nbsp;C
-  LLM judge degraded to deterministic backstops on 3. So the real hidden-issue count is higher than
-  127. Nothing is fabricated: every partial layer is listed per-site in the linked report.</p>
+  <p class="muted" style="margin-top:12px"><strong>Honest lower bound + one concentration to flag.</strong>
+  <code>*</code> = a layer hit its per-layer timeout (a <code>0*</code> means "not measured", not
+  "clean"): Layer&nbsp;A timed out on 2 sites, Layer&nbsp;B on 3 (all large-DOM timeouts — after the
+  CSP-safe injection, <strong>0 sites are CSP-blocked</strong>, down from 4), and the Layer&nbsp;C
+  judge degraded to deterministic backstops on 3. So the real count is higher still.
+  <strong>But read the 206 with care:</strong> <strong>stripe.com alone contributes 65 of the 109
+  Layer-B findings, all one class</strong> (WCAG 4.1.3 — its homepage animates many numeric spans,
+  each flagged as content updated without a live region). It's a real pattern but a single repeated
+  issue on one site; <strong>excluding it, Layer B = 44 and hidden = 141</strong> across the other
+  19. Nothing is fabricated — every count and partial is per-site in the linked data.</p>
 </section>
 
 <section aria-labelledby="hearit">
