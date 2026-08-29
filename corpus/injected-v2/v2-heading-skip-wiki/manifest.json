@@ -1,0 +1,17 @@
+{
+  "id": "v2-heading-skip-wiki",
+  "source": "injected",
+  "expectedUsable": "Headings are sequential.",
+  "violations": [
+    {
+      "id": "heading-skip",
+      "wcag": "1.3.1",
+      "type": "behavioral",
+      "selector": "main h3",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Change the h3 to h2.",
+      "notes": "h1 then h3 (Layer B outline)."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "v2-live-region-cart",
+  "source": "injected",
+  "expectedUsable": "The add-to-cart confirmation is announced.",
+  "violations": [
+    {
+      "id": "silent-status",
+      "wcag": "4.1.3",
+      "type": "behavioral",
+      "selector": "#msg",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Add role=status / aria-live=polite.",
+      "notes": "Dynamic confirmation, non-live region (Layer B)."
+    }
+  ]
+}

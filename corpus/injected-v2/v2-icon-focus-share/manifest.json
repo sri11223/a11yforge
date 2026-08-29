@@ -1,0 +1,17 @@
+{
+  "id": "v2-icon-focus-share",
+  "source": "injected",
+  "expectedUsable": "The share control is keyboard-reachable.",
+  "violations": [
+    {
+      "id": "not-focusable",
+      "wcag": "2.1.1",
+      "type": "behavioral",
+      "selector": ".ib",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Use <button> or add tabindex=0 + Enter/Space.",
+      "notes": "role=button, no tabindex (Layer B)."
+    }
+  ]
+}

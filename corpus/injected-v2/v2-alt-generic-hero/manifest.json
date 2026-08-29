@@ -1,0 +1,17 @@
+{
+  "id": "v2-alt-generic-hero",
+  "source": "injected",
+  "expectedUsable": "The image alt is meaningful (or empty, since the caption covers it).",
+  "violations": [
+    {
+      "id": "generic-alt-grounded",
+      "wcag": "1.1.1",
+      "type": "semantic",
+      "selector": "img[src=\"assets/aurora.jpg\"]",
+      "informative": true,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Use alt=\"\" (the descriptive caption is the alternative).",
+      "notes": "Generic alt, descriptive caption grounds the fix (Layer C)."
+    }
+  ]
+}

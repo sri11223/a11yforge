@@ -1,0 +1,17 @@
+{
+  "id": "v2-form-label-login",
+  "source": "injected",
+  "expectedUsable": "The username field has a label like the password field.",
+  "violations": [
+    {
+      "id": "missing-label",
+      "wcag": "4.1.2",
+      "type": "mechanical",
+      "selector": "form input",
+      "informative": null,
+      "expectedCatchingLayer": "A",
+      "expectedFix": "Add a <label> for the username field.",
+      "notes": "One labelled field, one placeholder-only (Layer A)."
+    }
+  ]
+}

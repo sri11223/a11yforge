@@ -1,0 +1,17 @@
+{
+  "id": "v2-css-reorder-nav",
+  "source": "injected",
+  "expectedUsable": "Visual service order matches reading order.",
+  "violations": [
+    {
+      "id": "visual-order",
+      "wcag": "1.3.2",
+      "type": "behavioral",
+      "selector": "main div",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Order items in the DOM; drop the CSS order overrides.",
+      "notes": "CSS order reorders reading sequence (Layer B)."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "v2-skip-link-shop",
+  "source": "injected",
+  "expectedUsable": "The skip link lands on the main content.",
+  "violations": [
+    {
+      "id": "dead-skip-link",
+      "wcag": "2.4.1",
+      "type": "behavioral",
+      "selector": "a.skip",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Point href at #content (or set main id=deals).",
+      "notes": "Skip link target missing (Layer B)."
+    }
+  ]
+}

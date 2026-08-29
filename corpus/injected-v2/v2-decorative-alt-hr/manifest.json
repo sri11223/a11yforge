@@ -1,0 +1,17 @@
+{
+  "id": "v2-decorative-alt-hr",
+  "source": "injected",
+  "expectedUsable": "The decorative rule is hidden from screen readers.",
+  "violations": [
+    {
+      "id": "decorative-verbose-alt",
+      "wcag": "1.1.1",
+      "type": "semantic",
+      "selector": "img[src=\"assets/rule.svg\"]",
+      "informative": false,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Set alt=\"\".",
+      "notes": "Decorative image with verbose alt (Layer C)."
+    }
+  ]
+}

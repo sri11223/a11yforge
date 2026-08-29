@@ -1,0 +1,17 @@
+{
+  "id": "v2-live-region-form",
+  "source": "injected",
+  "expectedUsable": "The success message is announced.",
+  "violations": [
+    {
+      "id": "silent-status",
+      "wcag": "4.1.3",
+      "type": "behavioral",
+      "selector": "#ok",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Add a live region to the status container.",
+      "notes": "Silent success message (Layer B)."
+    }
+  ]
+}

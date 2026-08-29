@@ -1,0 +1,17 @@
+{
+  "id": "v2-div-button-accordion",
+  "source": "injected",
+  "expectedUsable": "The disclosure works with the keyboard.",
+  "violations": [
+    {
+      "id": "no-keyboard-activation",
+      "wcag": "2.1.1",
+      "type": "behavioral",
+      "selector": ".q",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Add keydown handling or use <button>.",
+      "notes": "role=button, click-only (Layer B)."
+    }
+  ]
+}

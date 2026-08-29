@@ -1,0 +1,17 @@
+{
+  "id": "v2-div-button-menu",
+  "source": "injected",
+  "expectedUsable": "The menu toggle works with Enter/Space.",
+  "violations": [
+    {
+      "id": "no-keyboard-activation",
+      "wcag": "2.1.1",
+      "type": "behavioral",
+      "selector": ".m",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Use a <button> or add keydown for Enter/Space.",
+      "notes": "role=button, click-only (Layer B)."
+    }
+  ]
+}

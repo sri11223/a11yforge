@@ -1,0 +1,17 @@
+{
+  "id": "v2-alt-filename-team",
+  "source": "injected",
+  "expectedUsable": "The headshot alt is meaningful (or empty; the adjacent name covers it).",
+  "violations": [
+    {
+      "id": "filename-alt-grounded",
+      "wcag": "1.1.1",
+      "type": "semantic",
+      "selector": "img[src=\"assets/DSC_1180.jpg\"]",
+      "informative": true,
+      "expectedCatchingLayer": "C",
+      "expectedFix": "Use alt=\"\" (adjacent name) or alt=\"Priya Nair\".",
+      "notes": "Filename alt with adjacent name heading (Layer C)."
+    }
+  ]
+}

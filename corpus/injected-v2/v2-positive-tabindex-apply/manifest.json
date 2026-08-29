@@ -1,0 +1,17 @@
+{
+  "id": "v2-positive-tabindex-apply",
+  "source": "injected",
+  "expectedUsable": "Tab order follows the visual field order.",
+  "violations": [
+    {
+      "id": "positive-tabindex",
+      "wcag": "2.4.3",
+      "type": "behavioral",
+      "selector": "form",
+      "informative": null,
+      "expectedCatchingLayer": "B",
+      "expectedFix": "Remove the positive tabindex attributes.",
+      "notes": "tabindex 3/1/2 scrambles order (Layer B)."
+    }
+  ]
+}
