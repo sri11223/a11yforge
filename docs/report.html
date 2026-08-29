@@ -164,12 +164,14 @@ code{background:#eef0f3;padding:1px 5px;border-radius:4px;font-size:13px}
       <figure><img src="assets/shots/alt-generic-after.png" alt="After the advanced agent: the captioned grid images have empty alt, while the uncaptioned hero still reads image because it was escalated, not guessed.">
         <figcaption class="after">After — <b>grounded or escalated, never guessed</b></figcaption></figure>
     </div>
-    <p class="muted"><code>alt-generic</code>: here the difference <em>is</em> visible (broken images
-    surface their alt). The three grid images have captions to ground them, so their redundant
-    “photo/image/picture” alt is set to <code>alt=""</code>. The hero has <strong>no caption to
-    ground a description</strong> — so the advanced agent leaves it untouched (still “image”) and
-    escalates it to a human, rather than inventing one. The baseline instead shipped a confident,
-    fabricated hero description. <span class="tag">Hot take, enforced</span></p>
+    <p class="muted"><code>alt-generic</code>: a real portfolio page — and again the two images are
+    identical, because a correct alt fix is <strong>invisible</strong> once the images load. Under
+    the hood the difference is real: the three grid images have captions to ground them, so their
+    meaningless “photo/image/picture” alt becomes <code>alt=""</code>; the hero has <strong>no
+    caption to ground a description</strong>, so the advanced agent leaves it untouched and
+    escalates it to a human instead of inventing one. The baseline shipped a confident, fabricated
+    hero description here — and note it would look <em>exactly</em> as correct in this screenshot,
+    which is precisely why that failure is dangerous. <span class="tag">Hot take, enforced</span></p>
   </div>
 </section>
 

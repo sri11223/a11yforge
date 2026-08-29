@@ -1,6 +1,7 @@
 import { chromium, type Browser } from "playwright";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { runAdvanced } from "../src/agents/advanced.js";
 import { screenshotHtml } from "../src/report/screenshot.js";
 
@@ -46,8 +47,13 @@ async function main(): Promise<void> {
     for (const shot of SHOTS) {
       const original = readFileSync(join(CORPUS, shot.slug, "index.html"), "utf8");
       const advanced = (await runAdvanced(original, { browser, pageId: shot.slug })).html;
-      const before = shot.prep ? shot.prep(original) : original;
-      const after = shot.prep ? shot.prep(advanced) : advanced;
+      // The screenshot renders from a temp dir, so inject a <base> pointing at the page's real
+      // directory — this is what lets relative <img src="assets/…"> resolve to the committed
+      // sample images. Applied identically to before/after (render-only; never touches the eval).
+      const baseTag = `<base href="${pathToFileURL(join(CORPUS, shot.slug)).href}/">`;
+      const withBase = (h: string) => (shot.prep ? shot.prep(h) : h).replace("<head>", `<head>${baseTag}`);
+      const before = withBase(original);
+      const after = withBase(advanced);
       await screenshotHtml(before, join(OUT, `${shot.slug}-before.png`), { browser, ...VIEWPORT, fullPage: false });
       await screenshotHtml(after, join(OUT, `${shot.slug}-after.png`), { browser, ...VIEWPORT, fullPage: false });
       console.log(`shot: ${shot.slug} (before + after)`);
