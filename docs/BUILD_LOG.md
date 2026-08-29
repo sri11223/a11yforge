@@ -406,3 +406,36 @@ announcement-string equivalence.
 **Verified**
 - `npx tsc --noEmit` clean; scorer unit tests green. Metrics/ablation regenerate offline via
   `A11YFORGE_MODE=replay` from committed cassettes.
+
+---
+
+## Step 10 — HTML report, trajectories, coding-agent disclosure
+
+**Done**
+- `src/report/html-report.ts` + `eval/build-report.ts` → `docs/report.html`: self-contained,
+  accessible end-to-end report — problem/user framing, three numbers (gap 95.8% / harm 8→0 /
+  integrity), the {A}/{A,B}/{A,B,C} ablation as the hero (23→9→0 bars), the "hear it" SR
+  transcript (css-reorder read Enterprise→Starter→Team), the confident-hallucination hot
+  take, per-page baseline-vs-advanced table, honest small-n significance.
+- `eval/capture-sr.ts` → `docs/results/sr-transcript.json`: verbatim virtual-SR transcripts.
+- `eval/export-trajectories.ts` → `docs/trajectories/*.{md,jsonl}`: the advanced agent's
+  decision traces (detected issues → route → fix → guard+verify verdicts → accept/escalate).
+  icon-only-control shows the verify-loop rejecting attempt 1 and accepting attempt 2;
+  alt-generic shows the ungrounded hero escalated (alt untouched) while grounded grid images
+  are rule-fixed.
+- `docs/CODING_AGENT.md`: tool disclosure (Claude Code/Opus 4.8 as coding agent; OpenRouter
+  fixer=claude-sonnet-5 + judge=gpt-4o-mini for runtime) + honest build arc + removed
+  experiments (C→LLM alt hallucination, pa11y warnings, axe best-practice).
+
+**Bug caught & fixed in the open (honesty)**
+- The virtual SR had been **silently disabled** since Step 5: `require.resolve` of the deep
+  bundle path is blocked by the package `exports` map, so Guidepup never ran and Layer B was
+  quietly on its deterministic fallback. Fixed to the exported `browser.js` subpath. Starting
+  the SR then turned out to inject a live-region announcer node that polluted the same-page
+  checks, so the SR capture was isolated to a throwaway page. Net: the deterministic CDP/DOM
+  checks are the verified source of truth for Layer B; the SR is evidence + cross-check.
+
+**Verified**
+- Layer B 16 tests green with the SR now genuinely running (isolated). `npx tsc --noEmit`
+  clean. **Reproducibility check:** a fresh SR-isolated eval run reproduces the committed
+  `docs/results/metrics.json` **byte-identical** — the SR fix did not move any number.
