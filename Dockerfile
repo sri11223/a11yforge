@@ -10,8 +10,9 @@ WORKDIR /app
 COPY package.json package-lock.json .npmrc ./
 RUN npm ci
 # The Playwright base image ships Playwright's Chromium but NOT the Chrome that pa11y's
-# bundled Puppeteer requires — install it so Layer A's pa11y engine launches in-container.
-RUN npx puppeteer browsers install chrome
+# bundled Puppeteer requires. npm ci may leave a PARTIAL download in the cache (folder
+# present, executable missing), so clear it and install a complete copy.
+RUN rm -rf /root/.cache/puppeteer && npx puppeteer browsers install chrome
 
 COPY . .
 RUN npm run build
