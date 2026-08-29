@@ -121,10 +121,20 @@ async function injectHelpers(page: Page): Promise<void> {
   await page.addScriptTag({ content: HELPERS });
 }
 
-/** PRIMARY engine: capture the virtual screen-reader spoken output (best-effort). */
+/**
+ * Capture the virtual screen-reader spoken transcript (announcement evidence +
+ * cross-check). NOTE: this does NOT drive which Layer-B findings fire — those come
+ * from the deterministic CDP/DOM checks. If the SR fails to engage we WARN loudly
+ * (a silent fallback previously masked the SR never running) and fall back to the
+ * deterministic-only path; the test suite asserts the SR is actually engaged so this
+ * cannot regress unnoticed.
+ */
 async function gatherSpokenLog(page: Page): Promise<string[] | null> {
   const dataUrl = srDataUrl();
-  if (!dataUrl) return null;
+  if (!dataUrl) {
+    console.warn("[layerB] virtual-SR bundle not resolvable — falling back to CDP/DOM only");
+    return null;
+  }
   try {
     await page.addScriptTag({
       type: "module",
@@ -144,8 +154,9 @@ async function gatherSpokenLog(page: Page): Promise<string[] | null> {
       await v.stop();
       return log;
     });
-  } catch {
-    return null; // fallback: deterministic checks below do not depend on this
+  } catch (err) {
+    console.warn("[layerB] virtual-SR failed to engage — falling back to CDP/DOM only:", (err as Error).message);
+    return null;
   }
 }
 

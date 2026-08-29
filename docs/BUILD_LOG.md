@@ -439,3 +439,20 @@ announcement-string equivalence.
 - Layer B 16 tests green with the SR now genuinely running (isolated). `npx tsc --noEmit`
   clean. **Reproducibility check:** a fresh SR-isolated eval run reproduces the committed
   `docs/results/metrics.json` **byte-identical** — the SR fix did not move any number.
+
+### Step 10b — virtual-SR re-verification + regression guard
+
+After fixing the silently-disabled SR, we re-ran the full evaluation with the virtual SR
+GENUINELY ENGAGED (isolated so it can't pollute the checks) and confirmed the headline
+numbers are unchanged — because Layer B findings come from the deterministic CDP/DOM checks,
+not the SR (the SR only ever produced the announcement transcript, attached as evidence):
+- `docs/results/metrics.json` reproduces **byte-identical** (gap 95.8%, harm 8→0).
+- `docs/results/ablation.json` reproduces **byte-identical** (23 → 9 → 0 false-fix pages).
+- Full suite **103 passed** (9 files); `tsc` clean.
+
+**Guard against regression:** `gatherSpokenLog` now WARNs loudly on fallback instead of
+failing silently, and `test/layerB.test.ts` asserts a finding carries a populated
+`srReadingOrderSample` (a real role/name announcement stream) — so "the virtual SR silently
+didn't run" fails the suite instead of passing quietly. Honest framing, enforced in code:
+the deterministic CDP/DOM checks are the verified source of truth for Layer B; the virtual SR
+is the announcement transcript (evidence + cross-check).

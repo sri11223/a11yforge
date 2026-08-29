@@ -81,6 +81,19 @@ describe("Layer B does not cry wolf on B-clean pages", () => {
   }
 });
 
+describe("Layer B actually engages the virtual screen reader (no silent fallback)", () => {
+  it("css-reorder: findings carry a populated SR reading-order transcript", async () => {
+    const f = await scan("css-reorder");
+    const withSr = f.find((x) => Array.isArray((x.detail as { srReadingOrderSample?: unknown })?.srReadingOrderSample));
+    expect(withSr, "no finding carried srReadingOrderSample — the virtual SR did not engage").toBeTruthy();
+    const sample = (withSr!.detail as { srReadingOrderSample: string[] }).srReadingOrderSample;
+    // A populated transcript proves the virtual SR actually ran (not the silent CDP fallback).
+    expect(sample.length).toBeGreaterThan(0);
+    // ...and it is a real SR announcement stream (roles/names), not empty strings.
+    expect(sample.some((p) => /link|heading|banner|navigation|button|document/i.test(p))).toBe(true);
+  });
+});
+
 describe("Layer B output is deterministic", () => {
   it("keyboard-trap-modal yields byte-identical findings across runs", async () => {
     const a = await scan("keyboard-trap-modal");
