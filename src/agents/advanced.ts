@@ -205,5 +205,25 @@ export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Pro
     fixes.push({ layer: target.layer, wcag: target.wcag, selector: target.selector, strategy, outcome, attempts: iterations.length, iterations, note: committed ? undefined : "not committed" });
   }
 
+  // Universal integrity invariant: NEVER ship an issue we could not verify-fix. If the page
+  // ends Layer-A-clean but still carries residual B/C findings we did not resolve, escalate
+  // them to human review rather than shipping a scanner-clean-but-still-broken page silently.
+  // Gated by inGate so a shallower ablation config can only escalate what it can actually see
+  // (a scanner-only gate still ships the false-compliances a deeper gate catches).
+  const finalScan = await scanAll(working, { browser: opts.browser });
+  if (finalScan.A.length === 0) {
+    const queued = new Set(reviewQueue.map((r) => r.selector));
+    for (const f of [...finalScan.B, ...finalScan.C].filter(inGate)) {
+      const sel = f.selector ?? "";
+      if (queued.has(sel)) continue;
+      const reason = "could not verify a fix after retries; escalated to a human rather than shipping a scanner-clean-but-broken page";
+      reviewQueue.push({ pageId: opts.pageId, finding: f, selector: sel, reason });
+      queueForReview({ pageId: opts.pageId, finding: f, selector: sel, reason: "unresolved residual on an A-clean page" });
+      queued.add(sel);
+      const led = fixes.find((x) => (x.selector ?? "") === sel && x.wcag === f.wcag && (x.outcome === "unresolved" || x.outcome === "regressed"));
+      if (led) { led.outcome = "needs-review"; led.strategy = "checkpoint"; led.note = "unresolved → human checkpoint (never shipped silently)"; }
+    }
+  }
+
   return { html: working, fixes, reviewQueue, memoryHits };
 }

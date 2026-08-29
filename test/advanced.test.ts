@@ -61,6 +61,27 @@ describe("advanced agent: escalates ungrounded alt instead of hallucinating", ()
   });
 });
 
+describe("advanced agent: never ships a scanner-clean-but-broken page (universal escalation)", () => {
+  it("v2-icon-focus-fav: an unfixable keyboard (Layer B) issue is escalated, never shipped silently", async () => {
+    const dir = join(process.cwd(), "corpus", "injected-v2");
+    const html = readFileSync(join(dir, "v2-icon-focus-fav", "index.html"), "utf8");
+    const res = await runAdvanced(html, { browser, pageId: "v2-icon-focus-fav" });
+    const after = await scanAll(res.html, { browser });
+
+    // The page ships Layer-A clean (a scanner would call it "done")...
+    expect(after.A.length).toBe(0);
+    // ...but the not-focusable control could not be verify-fixed, so a residual B remains.
+    expect(after.B.length).toBeGreaterThan(0);
+    // INTEGRITY INVARIANT: every residual B/C on an A-clean page MUST be escalated — the agent
+    // must never emit an issue it could not verify. So nothing broken ships without a flag.
+    const escalated = new Set(res.reviewQueue.map((r) => r.selector));
+    for (const f of [...after.B, ...after.C]) {
+      expect(escalated.has(f.selector ?? "")).toBe(true);
+    }
+    expect(res.fixes.some((f) => f.outcome === "needs-review" && f.layer === "B")).toBe(true);
+  });
+});
+
 describe("advanced agent is deterministic", () => {
   it("same page → identical html and outcome sequence across runs", async () => {
     const a = await runAdvanced(readPage("icon-only-control"), { browser });
