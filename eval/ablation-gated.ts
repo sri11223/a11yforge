@@ -19,7 +19,9 @@ const GATES: { label: string; layers: Layer[] }[] = [
   { label: "{A,B}", layers: ["A", "B"] },
   { label: "{A,B,C}", layers: ["A", "B", "C"] },
 ];
-const BUCKETS = ["adversarial", "injected"].map((b) => join(process.cwd(), "corpus", b));
+const WIDE = process.env.A11YFORGE_WIDE === "1";
+const BUCKETS = (WIDE ? ["adversarial", "injected", "injected-v2"] : ["adversarial", "injected"]).map((b) => join(process.cwd(), "corpus", b));
+const ABLATION_OUT = WIDE ? "ablation-wide.json" : "ablation.json";
 
 async function main(): Promise<void> {
   process.env.A11YFORGE_MODE ??= "replay";
@@ -69,7 +71,7 @@ async function main(): Promise<void> {
     },
   };
   mkdirSync(join(process.cwd(), "out"), { recursive: true });
-  writeFileSync(join(process.cwd(), "out", "ablation.json"), JSON.stringify(result, null, 2) + "\n", "utf8");
+  writeFileSync(join(process.cwd(), "out", ABLATION_OUT), JSON.stringify(result, null, 2) + "\n", "utf8");
 
   console.log("\nGATE       false-fix pages   true-fix pages   needs-review pages");
   for (const g of GATES) {

@@ -17,7 +17,13 @@ import { mcNemar, wilsonInterval } from "../src/metrics/stats.js";
  *     JUDGE_MODEL=openai/gpt-4o-mini node dist/eval/run-eval.js
  */
 
-const BUCKETS = ["adversarial", "injected"].map((b) => join(process.cwd(), "corpus", b));
+// V1 default: adversarial + injected (27 pages), writes out/metrics.json (sealed/reproducible).
+// A11YFORGE_WIDE=1: also include injected-v2 (~45 pages), writes out/metrics-wide.json — so the
+// widened run never overwrites the sealed V1 artifacts.
+const WIDE = process.env.A11YFORGE_WIDE === "1";
+const BUCKET_NAMES = WIDE ? ["adversarial", "injected", "injected-v2"] : ["adversarial", "injected"];
+const BUCKETS = BUCKET_NAMES.map((b) => join(process.cwd(), "corpus", b));
+const METRICS_OUT = WIDE ? "metrics-wide.json" : "metrics.json";
 
 interface PagePair {
   bucket: string;
@@ -190,7 +196,7 @@ async function main(): Promise<void> {
   };
 
   mkdirSync(join(process.cwd(), "out"), { recursive: true });
-  writeFileSync(join(process.cwd(), "out", "metrics.json"), JSON.stringify(report, null, 2) + "\n", "utf8");
+  writeFileSync(join(process.cwd(), "out", METRICS_OUT), JSON.stringify(report, null, 2) + "\n", "utf8");
 
   console.log(`\nPages=${report.n.pages}  Issues=${report.n.issues}  Buckets=${report.n.buckets.join(",")}`);
   console.log(`GAP: of ${aCleanPages} axe-clean pages, ${gapPages} still fail B/C = ${report.gap.gapPctOfACleanPages}`);
@@ -216,7 +222,7 @@ async function main(): Promise<void> {
   console.log(`  ...Layer B reveals    ${String(abB.layerBcatches).padStart(6)}   ${String(abA.layerBcatches).padStart(8)}  (false-compliances a scanner+B audit catches)`);
   console.log(`  ...Layer C reveals    ${String(abB.layerCcatches).padStart(6)}   ${String(abA.layerCcatches).padStart(8)}  (adds semantic/hallucination catches)`);
   console.log(`  truly clean {A,B,C}   ${String(abB.trulyCleanAllThree).padStart(6)}   ${String(abA.trulyCleanAllThree).padStart(8)}`);
-  console.log(`\nWrote out/metrics.json`);
+  console.log(`\nWrote out/${METRICS_OUT}${WIDE ? " (WIDE corpus)" : ""}`);
 }
 
 main().catch((err: unknown) => {
