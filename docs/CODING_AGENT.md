@@ -68,3 +68,11 @@ numbers. See [`README`](../README.md) and [`BUILD_LOG.md`](BUILD_LOG.md).
   Net honest framing: the **deterministic CDP/DOM checks are the verified source of truth**
   for Layer B findings; the virtual SR provides the announcement transcript as evidence and
   cross-check. Metrics reproduce byte-for-byte before and after the fix.
+- **Clean-env reproducibility, verified the hard way.** Actually running the Docker container
+  (not just building it) surfaced two bugs a keyless judge would hit — `npm ci` aborting on an
+  ERESOLVE peer conflict, and pa11y's Puppeteer unable to find Chrome in the Playwright image
+  (fixed via legacy-peer-deps and by pointing pa11y at the image's Playwright Chromium). And a
+  meta-lesson: our first "it reproduces ✅" was a **false green** — the container had crashed
+  and the diff compared a stale local `out/metrics.json`. We hardened the check (delete `out/`
+  so it can only pass on a real fresh container write) and only then confirmed a true
+  byte-match. A green check you don't validate is false comfort — our own thesis, on us.

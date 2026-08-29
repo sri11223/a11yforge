@@ -99,6 +99,16 @@ decision that shaped the next step.**
   unaffected (byte-identical), documenting the whole thing.
 - **Refused to fake significance** — reported p=0.074 as not significant; led with the
   ablation, which doesn't depend on discordant-pair counts.
+- **The stale-diff false-positive (our own thesis, on us)** — Docker-verifying the clean-env
+  build surfaced two real qualification-gate bugs a judge would have hit: `npm ci` aborting on
+  an ERESOLVE peer conflict, and pa11y's Puppeteer failing to find Chrome in the image. Worse,
+  the first "container reproduces the metrics ✅" was a **false green**: the container had
+  crashed and the diff was comparing a *stale* `out/metrics.json` from a prior local run. We
+  caught it (the container also printed a non-zero exit), fixed the *check* (delete `out/`
+  first so the diff can only pass on a genuine fresh container write), fixed the image (legacy
+  peer deps; pa11y reuses the image's Playwright Chromium), and only then confirmed a true
+  byte-match. This is literally our own thesis — *a green check you don't validate is false
+  comfort; scanner-clean ≠ usable* — playing out in our own build harness.
 
 ## Human/orchestrator checkpoints
 
