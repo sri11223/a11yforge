@@ -5,7 +5,7 @@ import { complete } from "../llm/openrouter-client.js";
 import { buildTargetedFixMessages, extractHtml } from "./fix-prompt.js";
 import { route } from "./router.js";
 import { snapshot, checkRegression } from "./regression-guard.js";
-import { findAltGrounding, queueForReview, type ReviewItem } from "./human-checkpoint.js";
+import { findAltGrounding, type ReviewItem } from "./human-checkpoint.js";
 import { scanAll, type LayerScan } from "../harness/scan-all.js";
 
 /**
@@ -116,6 +116,29 @@ function orderFindings(fs: Finding[]): Finding[] {
   return [...fs].sort((a, b) => rank[a.layer] - rank[b.layer] || (a.selector ?? "").localeCompare(b.selector ?? ""));
 }
 
+/**
+ * Fixer LLM call with a timeout + bounded retry/backoff. On repeated failure it throws so the
+ * caller can escalate that fix to human review rather than crashing the whole page. No-op on the
+ * committed eval: in replay the cassette resolves on the first attempt, so no timeout/backoff runs.
+ */
+async function callFixer(messages: ReturnType<typeof buildTargetedFixMessages>, timeoutMs = 60_000, retries = 2): Promise<string> {
+  let lastErr: unknown;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      const call = complete({ role: "fixer", messages }) as Promise<string>;
+      const timeout = new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error(`fixer timed out after ${timeoutMs}ms`)), timeoutMs); });
+      return await Promise.race([call, timeout]);
+    } catch (e) {
+      lastErr = e;
+      if (attempt < retries) await new Promise((r) => setTimeout(r, 250 * (attempt + 1)));
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error(String(lastErr));
+}
+
 export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Promise<AdvancedResult> {
   const maxRetries = opts.maxRetries ?? 3;
   const memory: FixMemory = opts.memory ?? new Map();
@@ -147,7 +170,6 @@ export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Pro
       const rule = (target.detail as { rule?: string })?.rule;
       if ((rule === "generic-word" || rule === "filename-as-alt" || rule === "informative-emptied") && !findAltGrounding(working, target.selector ?? "").grounded) {
         reviewQueue.push({ pageId: opts.pageId, finding: target, selector: target.selector ?? "", reason: "alt text cannot be grounded in the page markup (no caption/heading/link); a confident description would be a hallucination" });
-        queueForReview({ pageId: opts.pageId, finding: target, selector: target.selector ?? "", reason: "ungrounded alt" });
         fixes.push({ layer: "C", wcag: target.wcag, selector: target.selector, strategy: "checkpoint", outcome: "needs-review", attempts: 0, iterations: [], note: "ungrounded alt → human checkpoint" });
         continue;
       }
@@ -169,7 +191,18 @@ export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Pro
           break;
         }
       } else {
-        const raw = (await complete({ role: "fixer", messages: buildTargetedFixMessages(working, target, feedback) })) as string;
+        let raw: string;
+        try {
+          raw = await callFixer(buildTargetedFixMessages(working, target, feedback));
+        } catch (err) {
+          // Transient LLM/network failure: escalate THIS fix to a human instead of throwing and
+          // killing the whole page. (In replay the cassette resolves first try, so this never
+          // fires — a no-op on the committed eval.)
+          reviewQueue.push({ pageId: opts.pageId, finding: target, selector: target.selector ?? "", reason: `fixer call failed after retries (${(err as Error).message}); escalated to human review` });
+          iterations.push({ attempt, strategy, guardOk: true, guardReasons: [], targetResolved: false, newFindings: [], accepted: false, note: "fixer call failed → needs-review" });
+          outcome = "needs-review";
+          break;
+        }
         candidate = extractHtml(raw);
       }
 
@@ -218,7 +251,6 @@ export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Pro
       if (queued.has(sel)) continue;
       const reason = "could not verify a fix after retries; escalated to a human rather than shipping a scanner-clean-but-broken page";
       reviewQueue.push({ pageId: opts.pageId, finding: f, selector: sel, reason });
-      queueForReview({ pageId: opts.pageId, finding: f, selector: sel, reason: "unresolved residual on an A-clean page" });
       queued.add(sel);
       const led = fixes.find((x) => (x.selector ?? "") === sel && x.wcag === f.wcag && (x.outcome === "unresolved" || x.outcome === "regressed"));
       if (led) { led.outcome = "needs-review"; led.strategy = "checkpoint"; led.note = "unresolved → human checkpoint (never shipped silently)"; }

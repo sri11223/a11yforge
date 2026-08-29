@@ -78,14 +78,3 @@ export interface ReviewItem {
   selector: string;
   reason: string;
 }
-
-const queue: ReviewItem[] = [];
-
-/** Record an item that needs human review instead of an auto-emitted guess. */
-export function queueForReview(item: ReviewItem): void {
-  queue.push(item);
-}
-
-export function drainReviewQueue(): ReviewItem[] {
-  return queue.splice(0, queue.length);
-}
