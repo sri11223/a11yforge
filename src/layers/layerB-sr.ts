@@ -93,9 +93,7 @@ let SR_DATA_URL: string | null = null;
 function srDataUrl(): string | null {
   if (SR_DATA_URL) return SR_DATA_URL;
   try {
-    const bundlePath = require.resolve(
-      "@guidepup/virtual-screen-reader/lib/esm/index.browser.js",
-    );
+    const bundlePath = require.resolve("@guidepup/virtual-screen-reader/browser.js");
     const code = readFileSync(bundlePath, "utf8");
     SR_DATA_URL = "data:text/javascript;base64," + Buffer.from(code).toString("base64");
     return SR_DATA_URL;
