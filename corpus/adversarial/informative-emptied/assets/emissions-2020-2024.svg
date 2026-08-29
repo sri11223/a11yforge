@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" role="img" width="400" height="240">
+  <rect width="400" height="240" fill="#fbfaf8"/>
+  <g font-family="system-ui,sans-serif" font-size="11" fill="#454545">
+    <line x1="48" y1="20" x2="48" y2="200" stroke="#c9c9cf"/>
+    <line x1="48" y1="200" x2="380" y2="200" stroke="#c9c9cf"/>
+    <g fill="#0b4a8f">
+      <rect x="70"  y="70"  width="40" height="130"/>
+      <rect x="135" y="95"  width="40" height="105"/>
+      <rect x="200" y="120" width="40" height="80"/>
+      <rect x="265" y="150" width="40" height="50"/>
+      <rect x="330" y="168" width="40" height="32"/>
+    </g>
+    <text x="90"  y="215" text-anchor="middle">2020</text>
+    <text x="155" y="215" text-anchor="middle">2021</text>
+    <text x="220" y="215" text-anchor="middle">2022</text>
+    <text x="285" y="215" text-anchor="middle">2023</text>
+    <text x="350" y="215" text-anchor="middle">2024</text>
+    <text x="10" y="110" transform="rotate(-90 10 110)" text-anchor="middle">tCO2e</text>
+  </g>
+</svg>

@@ -133,6 +133,7 @@ Locally, the same check: `npm run audit -- <url|path> [--ci] [--no-llm] [--html 
   used": runtime decision traces (readable + raw JSONL), a [reflexion deep-dive](docs/trajectories/reflexion-icon-only-control.md)
   and a [baseline-vs-advanced contrast](docs/trajectories/contrast-alt-generic.md) quoting the
   actual model I/O from the 151 committed [`cassettes/`](cassettes/), plus the coding-agent build trace.
+- **Coding-agent trajectory (how the repo was built):** [`docs/WORK_TRAJECTORY.md`](docs/WORK_TRAJECTORY.md) — the two-agent (orchestrator + builder) build trace, step by step, each backed by a commit
 - **Coding-agent disclosure & build arc:** [`docs/CODING_AGENT.md`](docs/CODING_AGENT.md)
 - **Design decisions:** [`docs/BRAINSTORM.md`](docs/BRAINSTORM.md) · **Build log:** [`docs/BUILD_LOG.md`](docs/BUILD_LOG.md)
 

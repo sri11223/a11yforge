@@ -15,7 +15,7 @@ report:            ## build docs/report.html from committed results
 	npm run report
 trajectories:      ## export runtime agent trajectories -> docs/trajectories/
 	npm run trajectories
-determinism:       ## 3x byte-identical determinism proof -> docs/results/determinism-proof.txt
+determinism:       ## 3x byte-identical determinism proof -> docs/results/DETERMINISM.md
 	npm run determinism
 
 # --- docker (only Docker required; offline, no key) ---
