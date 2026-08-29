@@ -1,0 +1,94 @@
+name: "A11yForge gap check"
+description: "Fail the build when a scanner-clean page is still unusable to a screen-reader or keyboard user."
+branding:
+  icon: "eye"
+  color: "blue"
+
+inputs:
+  target:
+    description: "File path, directory, or URL to audit (passed to `a11yforge audit`)."
+    required: true
+  ci:
+    description: "Strict mode: fail on ANY issue (Layer A, B, or C), not only the scanner-hidden ones. Default false = fail only on the scanner-clean-but-broken gap (Layer B/C)."
+    required: false
+    default: "false"
+  no-llm:
+    description: "Disable the Layer C LLM judge and use the deterministic backstops only. Default true, so the check needs no API key."
+    required: false
+    default: "true"
+  html-report:
+    description: "Optional path to write a standalone HTML gap report (upload it as an artifact)."
+    required: false
+    default: ""
+  comment:
+    description: "On pull_request events, post the gap report as a PR comment (requires github-token). Default false."
+    required: false
+    default: "false"
+  github-token:
+    description: "Token used to post the PR comment when `comment` is true. Usually ${{ github.token }}."
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: "22"
+
+    - name: Build A11yForge (from the action's own checkout)
+      shell: bash
+      run: |
+        cd "$GITHUB_ACTION_PATH"
+        npm ci
+        npm run build
+        npx --yes playwright install --with-deps chromium
+
+    - name: Run the A11yForge gap audit
+      id: audit
+      shell: bash
+      env:
+        A11YFORGE_PA11Y_CHROMIUM: "1"
+      run: |
+        cd "$GITHUB_WORKSPACE"
+        flags=()
+        [ "${{ inputs.ci }}" = "true" ] && flags+=(--ci)
+        [ "${{ inputs.no-llm }}" = "true" ] && flags+=(--no-llm)
+        [ -n "${{ inputs.html-report }}" ] && flags+=(--html "${{ inputs.html-report }}")
+        set +e
+        node "$GITHUB_ACTION_PATH/dist/src/cli/audit.js" audit "${{ inputs.target }}" "${flags[@]}" | tee "$RUNNER_TEMP/a11yforge.out"
+        code=${PIPESTATUS[0]}
+        set -e
+        {
+          echo "## A11yForge gap check — \`${{ inputs.target }}\`"
+          echo ""
+          if [ "$code" = "0" ]; then echo "✅ No scanner-clean-but-broken issues found."; \
+          elif [ "$code" = "1" ]; then echo "⚠️ **Scanner-clean ≠ usable** — issues a scanner cannot see were found. This check blocks the false-green."; \
+          else echo "❌ audit could not run (usage/fetch error)."; fi
+          echo ""
+          echo '```'
+          cat "$RUNNER_TEMP/a11yforge.out"
+          echo '```'
+        } >> "$GITHUB_STEP_SUMMARY"
+        echo "exit-code=$code" >> "$GITHUB_OUTPUT"
+        exit $code
+
+    - name: Post PR comment
+      if: ${{ always() && inputs.comment == 'true' && github.event_name == 'pull_request' && inputs.github-token != '' }}
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+      run: |
+        body="$RUNNER_TEMP/a11yforge-comment.md"
+        {
+          echo "### A11yForge gap check — \`${{ inputs.target }}\`"
+          echo ""
+          echo '```'
+          cat "$RUNNER_TEMP/a11yforge.out"
+          echo '```'
+          echo ""
+          echo "_Exit ${{ steps.audit.outputs.exit-code }} · scanner-clean ≠ usable is the whole point._"
+        } > "$body"
+        gh pr comment "${{ github.event.pull_request.number }}" --body-file "$body" || \
+          echo "::warning::could not post PR comment (check token permissions: pull-requests: write)"

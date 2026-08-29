@@ -37,6 +37,38 @@ Both replay committed LLM cassettes (`A11YFORGE_MODE=replay`) — deterministic,
 key, near-zero cost. Full walkthrough + expected output: [`REPRODUCE.md`](REPRODUCE.md).
 Determinism proof (3× byte-identical): [`docs/results/DETERMINISM.md`](docs/results/DETERMINISM.md).
 
+## Use in CI — block the false-green before merge
+
+A11yForge ships as a GitHub Action ([`action.yml`](action.yml)) that runs `a11yforge audit`
+and **fails the check when a page is scanner-clean but still unusable** — the thesis, enforced
+in the dev workflow. Layers A+B are deterministic and run with **no API key**; Layer C degrades
+to its deterministic backstops (pass `no-llm: true`, the default). Add to any repo:
+
+```yaml
+# .github/workflows/a11y.yml
+name: A11yForge gap check
+on: [pull_request]
+permissions: { contents: read, pull-requests: write }
+jobs:
+  a11y:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: sri11223/a11yforge@main
+        with:
+          target: path/or/glob/to/page.html   # a file, directory, or URL
+          comment: "true"                       # post the gap report on the PR
+          github-token: ${{ github.token }}
+```
+
+The action self-builds from its own checkout, so it works **without publishing to npm**. It
+writes a job summary, optionally comments on the PR, and exits non-zero on the gap (use
+`ci: "true"` to also fail on plain Layer-A violations). A live demo runs on this repo's own
+pages — an accessible page passes, a scanner-clean-but-broken page is caught — in
+[`.github/workflows/a11y.yml`](.github/workflows/a11y.yml).
+
+Locally, the same check: `npm run audit -- <url|path> [--ci] [--no-llm] [--html report.html]`.
+
 ## Three verification layers
 
 - **Layer A — mechanical (deterministic):** `axe-core` + `pa11y` (two independent engines);

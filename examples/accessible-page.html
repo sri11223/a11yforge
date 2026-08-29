@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trailhead — accessible sample page</title>
+  <style>
+    body{margin:0;font:16px/1.6 system-ui,Segoe UI,Roboto,sans-serif;color:#161616;background:#fff}
+    a{color:#0b4a8f}
+    header,main,footer{max-width:760px;margin:0 auto;padding:20px 22px}
+    header{border-bottom:1px solid #e2e5ea;display:flex;justify-content:space-between;align-items:center}
+    nav a{margin-left:16px}
+    button{background:#0b4a8f;color:#fff;border:0;border-radius:8px;padding:10px 16px;font-size:16px;cursor:pointer}
+    a:focus-visible,button:focus-visible{outline:3px solid #ffbf47;outline-offset:2px}
+    footer{border-top:1px solid #e2e5ea;color:#4a4f57;font-size:14px}
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/">Trailhead</a>
+    <nav aria-label="Primary"><a href="/guides">Guides</a><a href="/about">About</a></nav>
+  </header>
+  <main>
+    <h1>Plan your first overnight hike</h1>
+    <p>A short, honest checklist for a safe first night on the trail. Everything here is
+      keyboard-reachable and reads in a sensible order to a screen reader.</p>
+    <h2>Before you go</h2>
+    <p>Tell someone your route and expected return time. Check the forecast the morning you leave.</p>
+    <p><button type="button">Download the checklist</button></p>
+  </main>
+  <footer>
+    <p>© Trailhead. <a href="/contact">Contact us</a>.</p>
+  </footer>
+</body>
+</html>

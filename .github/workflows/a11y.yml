@@ -1,0 +1,53 @@
+name: A11yForge gap check
+
+# Demonstrates the A11yForge Action on this repo's own pages:
+#   - a genuinely accessible page PASSES (green)
+#   - a scanner-clean-but-broken page is CAUGHT and would block a merge (shown green here
+#     by asserting the check failed, so this demo run stays meaningful)
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  clean-page-passes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit an accessible page (expect pass)
+        uses: ./
+        with:
+          target: examples/accessible-page.html
+
+  broken-page-blocks-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit a scanner-clean-but-broken page (expect the check to fail)
+        id: gap
+        continue-on-error: true
+        uses: ./
+        with:
+          target: corpus/adversarial/keyboard-trap-modal/index.html
+          html-report: gap-report.html
+      - name: Upload the HTML gap report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11yforge-gap-report
+          path: gap-report.html
+          if-no-files-found: ignore
+      - name: Assert the gap was caught (this is the merge-blocking behavior)
+        shell: bash
+        run: |
+          if [ "${{ steps.gap.outcome }}" = "failure" ]; then
+            echo "✅ A11yForge failed on a scanner-clean-but-broken page — a real PR would be blocked here."
+          else
+            echo "::error::Expected A11yForge to FAIL on the keyboard-trap page (scanner-clean but unusable), but it did not."
+            exit 1
+          fi
