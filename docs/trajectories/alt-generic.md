@@ -16,10 +16,10 @@
 - ungrounded alt → human checkpoint
 - → escalated to **human checkpoint**: alt left untouched (no fabricated description).
 
-### C [1.1.1] `img[src="assets/lumen.jpg"]` → **true-fix** (rule)
+### C [1.1.1] `img[src="assets/lumen.jpg"]` → **true-fix** (rule) · memory-hit (strategy recalled from an earlier verified fix)
 - attempt 1: deterministic rule fix → guard ok · verify: target resolved, new findings [none] → **ACCEPT**
 
-### C [1.1.1] `img[src="assets/verge.jpg"]` → **true-fix** (rule)
+### C [1.1.1] `img[src="assets/verge.jpg"]` → **true-fix** (rule) · memory-hit (strategy recalled from an earlier verified fix)
 - attempt 1: deterministic rule fix → guard ok · verify: target resolved, new findings [none] → **ACCEPT**
 
 **Shipped result:** Layer A 0 · Layer B 0 · Layer C 1 · 1 escalated for human review

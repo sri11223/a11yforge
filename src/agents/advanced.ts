@@ -3,7 +3,7 @@ import type { Browser } from "playwright";
 import type { Finding, Layer } from "../types.js";
 import { complete } from "../llm/openrouter-client.js";
 import { buildTargetedFixMessages, extractHtml } from "./fix-prompt.js";
-import { route } from "./router.js";
+import { route, type FixStrategy } from "./router.js";
 import { snapshot, checkRegression } from "./regression-guard.js";
 import { findAltGrounding, type ReviewItem } from "./human-checkpoint.js";
 import { scanAll, type LayerScan } from "../harness/scan-all.js";
@@ -39,6 +39,9 @@ export interface AdvFix {
   attempts: number;
   iterations: Iteration[];
   note?: string;
+  /** True when the fix strategy was recalled from memory (a previously-verified signature)
+   *  rather than re-derived by the router. Trajectory-only; does not affect scored outcomes. */
+  memoryHit?: boolean;
 }
 
 export interface AdvancedResult {
@@ -48,7 +51,7 @@ export interface AdvancedResult {
   memoryHits: number;
 }
 
-export type FixMemory = Map<string, { strategy: string }>;
+export type FixMemory = Map<string, { strategy: FixStrategy }>;
 
 export interface AdvancedOptions {
   browser?: Browser;
@@ -162,8 +165,14 @@ export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Pro
       continue;
     }
 
-    const strategy = route(target);
-    if (memory.has(sig(target))) memoryHits++;
+    // Memory is LOAD-BEARING: on a repeat fix-signature we reuse the previously-verified
+    // strategy instead of re-deriving the route. route() is a pure function of finding.layer and
+    // sig() encodes the layer, so the recalled strategy is provably identical to a fresh route()
+    // — outcome-neutral by construction (same fix, less re-derivation).
+    const remembered = memory.get(sig(target));
+    const memHit = remembered !== undefined;
+    if (memHit) memoryHits++;
+    const strategy: FixStrategy = remembered?.strategy ?? route(target);
 
     // Semantic alt with no grounding → escalate, never guess.
     if (target.layer === "C" && target.wcag === "1.1.1") {
@@ -235,7 +244,7 @@ export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Pro
       if (strategy === "rule") { outcome = target.layer === "C" ? "needs-review" : "unresolved"; break; }
     }
 
-    fixes.push({ layer: target.layer, wcag: target.wcag, selector: target.selector, strategy, outcome, attempts: iterations.length, iterations, note: committed ? undefined : "not committed" });
+    fixes.push({ layer: target.layer, wcag: target.wcag, selector: target.selector, strategy, outcome, attempts: iterations.length, iterations, memoryHit: memHit, note: memHit ? `strategy "${strategy}" recalled from memory (repeat signature)` : committed ? undefined : "not committed" });
   }
 
   // Universal integrity invariant: NEVER ship an issue we could not verify-fix. If the page

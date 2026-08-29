@@ -48,6 +48,7 @@ async function main(): Promise<void> {
             decision: it.accepted ? "ACCEPT" : "REJECT",
           })),
           outcome: f.outcome,
+          memoryHit: f.memoryHit ?? false,
           note: f.note,
         }));
       }
@@ -61,8 +62,9 @@ async function main(): Promise<void> {
       for (const f of [...before.A, ...before.B, ...before.C]) md.push(`- \`${f.layer}\` [${f.wcag}] ${f.message} — \`${f.selector ?? ""}\``);
       md.push(`\n**Agent decisions:**\n`);
       for (const f of adv.fixes) {
-        md.push(`### ${f.layer} [${f.wcag}] \`${f.selector ?? ""}\` → **${f.outcome}** (${f.strategy})`);
+        md.push(`### ${f.layer} [${f.wcag}] \`${f.selector ?? ""}\` → **${f.outcome}** (${f.strategy})${f.memoryHit ? " · memory-hit (strategy recalled from an earlier verified fix)" : ""}`);
         if (f.iterations.length === 0) md.push(`- ${f.note ?? "resolved by an earlier whole-page fix / escalated"}`);
+        if (f.iterations.length > 1) md.push(`- _reflexion: ${f.iterations.length} attempts — a rejected attempt's diagnostic is fed back into the next try._`);
         for (const it of f.iterations) {
           md.push(`- attempt ${it.attempt}: ${it.strategy === "rule" ? "deterministic rule fix" : "LLM targeted fix"} → guard ${it.guardOk ? "ok" : "REJECTED (" + it.guardReasons.join("; ") + ")"} · verify: target ${it.targetResolved ? "resolved" : "still present"}, new findings [${it.newFindings.join(", ") || "none"}] → **${it.accepted ? "ACCEPT" : "REJECT — feed failure back and retry"}**`);
         }
