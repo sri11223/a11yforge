@@ -10,10 +10,13 @@ careful agent and a careless one becomes a number.
 
 - **The tool** — point it at any page and it finds the barriers a scanner misses:
   ```bash
-  npm ci && npm run audit -- <url|path>   # → Layer A/B/C gap report; exit 1 if scanner-clean-but-broken
+  npx github:sri11223/a11yforge audit <url|path>   # zero-install; builds on fetch
+  # or, in a clone:  npm ci && npm run audit -- <url|path>
+  # → Layer A/B/C gap report; exit 1 if scanner-clean-but-broken
   ```
-  (A published `npx a11yforge audit <url>` lands with npm packaging; the GitHub Action already
-  works today — see "Use in CI" below.)
+  (Needs Chromium for the deterministic A+B layers: `npx playwright install chromium`. Layer C's
+  judge is optional — set `OPENROUTER_API_KEY` + `JUDGE_MODEL`, else it uses deterministic
+  backstops. A published `npx a11yforge` follows once released to npm; the GitHub Action works today.)
 - **The proof** — a reproducible eval showing the method works: the ablation **23 → 9 → 0**
   (scanner-only verification ships 23 broken pages; the full stack ships 0) and **20 live sites**
   with **127** barriers hidden from scanners.
