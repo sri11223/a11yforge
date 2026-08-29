@@ -49,10 +49,12 @@ code{background:#eef0f3;padding:1px 5px;border-radius:4px;font-size:13px}
 <body>
 <main>
 <header class="hero">
-  <h1>Scanner-clean ≠ usable</h1>
-  <p>An AI agent that fixes WCAG violations <strong>and proves</strong> how often a
-  "scanner-clean" fix is still unusable to a screen-reader user — then refuses to ship the
-  ones it can't verify.</p>
+  <h1>Verifiable agentic remediation</h1>
+  <p>A11yForge is an <strong>evaluation harness for agents that never ship a fix they can't
+  verify</strong> — measured by what the naive agent breaks: <strong>8 harmful changes → 0</strong>,
+  same model, same prompt, only the verify-loop differs. Accessibility is the proving ground: the
+  rare domain where <strong>"looks fixed" (scanner-green) and "is fixed" (a screen-reader user
+  succeeds) diverge measurably.</strong></p>
 </header>
 
 <section aria-labelledby="why">
@@ -69,15 +71,23 @@ code{background:#eef0f3;padding:1px 5px;border-radius:4px;font-size:13px}
 </section>
 
 <section aria-labelledby="numbers">
-  <h2 id="numbers">Three numbers</h2>
+  <h2 id="numbers">The evidence, strongest first</h2>
+  <p class="muted">Led by what is <strong>categorical</strong> (not a p-value) and what is
+  <strong>real-world</strong> — the corpus gap number is demoted to what it honestly is: a
+  property of an adversarial-by-construction corpus, not a field discovery.</p>
   <div class="nums">
-    <div class="num r"><div class="big">95.8%</div>
-      <div class="lbl">of axe-clean pages (23 of 24; the sealed corpus is 27 = 15 adversarial + 12 injected) still fail the screen-reader / keyboard / semantic layers. Scanner-clean ≠ usable.</div></div>
-    <div class="num b"><div class="big">8 → 0</div>
-      <div class="lbl">harmful changes shipped (false-fixes + regressions). The baseline breaks or fakes 8; the verify-loop ships 0.</div></div>
-    <div class="num g"><div class="big">2 / 0</div>
-      <div class="lbl">integrity: alts escalated to a human vs invented. Where it can't ground an alt, the agent flags it — it never guesses.</div></div>
+    <div class="num r"><div class="big">23 → 0</div>
+      <div class="lbl"><strong>Categorical (ablation).</strong> A scanner-only verify gate ships 23 broken pages as "compliant"; the full A/B/C stack ships 0. Proof by construction, no statistics needed. ({A}=23 → {A,B}=9 → {A,B,C}=0.)</div></div>
+    <div class="num b"><div class="big">127</div>
+      <div class="lbl"><strong>Real-world.</strong> Barriers hidden from scanners (Layer B+C) across 20 live production sites — an honest lower bound. Scanner-clean ≠ usable, in the wild.</div></div>
+    <div class="num g"><div class="big">8 → 0</div>
+      <div class="lbl"><strong>Mechanism (case study).</strong> Harmful changes the baseline ships vs the verify-loop — same model, same prompt, only the pipeline differs. Existence proof of the method; not statistically significant at n=27 (see below).</div></div>
   </div>
+  <p class="muted"><strong>The gap number, honestly:</strong> on our sealed corpus (27 pages =
+  15 adversarial + 12 injected), 23 of the 24 axe-clean pages still fail Layer B/C — <strong>95.8%</strong>.
+  But the corpus is <em>adversarial by construction</em>: it was built to isolate what scanners miss,
+  so this characterizes the corpus, not the prevalence of the gap in the wild. The real-world number
+  above (127 across 20 sites) is the field evidence.</p>
 </section>
 
 <section aria-labelledby="ablation">
@@ -90,6 +100,28 @@ code{background:#eef0f3;padding:1px 5px;border-radius:4px;font-size:13px}
   <div class="abl"><span class="glabel">{A,B,C}</span><span class="track"><span class="bar" style="width:0%;background:#0a7d3c"></span></span><span class="n">0</span></div>
   <p style="margin-top:14px"><strong>Scanner-only verification ships 23 broken pages as "compliant"; the full stack ships 0.</strong>
   Adding Layer&nbsp;B catches 14 false-compliances; adding Layer&nbsp;C catches 9 more.</p>
+</section>
+
+<section aria-labelledby="layers">
+  <h2 id="layers">What each layer uniquely contributes ("not just an axe wrapper")</h2>
+  <p class="muted">The sealed corpus encodes <strong>30 ground-truth barriers</strong> across 27
+  pages. Only <strong>2</strong> are things a scanner catches; the other <strong>28</strong> live
+  in classes an automated scanner <em>structurally cannot</em> detect — that's the whole reason the
+  other two layers exist.</p>
+  <table>
+    <thead><tr><th>Layer</th><th>Class it owns</th><th>Corpus barriers</th><th>On 20 real sites</th><th>Why a scanner can't</th></tr></thead>
+    <tbody>
+      <tr><td><strong>A</strong> — axe + pa11y</td><td>Mechanical WCAG (missing/placeholder labels)</td><td>2 of 30</td><td>500</td><td>— (this is what scanners do; we run two engines)</td></tr>
+      <tr><td><strong>B</strong> — virtual-SR + CDP</td><td>Keyboard traps, focus/reading order, operability, live regions, skip links, headings</td><td>17 of 30</td><td>31<sup>*</sup></td><td>behavior needs a real browser + AT, not static rule-matching</td></tr>
+      <tr><td><strong>C</strong> — calibrated judge + backstops</td><td>Meaningfulness of alt/labels (generic, filename, contradicting, decorative)</td><td>11 of 30</td><td>96</td><td>"is this alt <em>meaningful</em>?" is a semantic judgment, not a presence check</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">So <strong>28 of 30</strong> sealed-corpus barriers — and 127 of the real-site
+  findings — are outside axe's reach entirely. <em>Honest limits:</em> these counts are per-layer
+  <strong>class</strong> from the committed corpus manifests + the 20-site run; the committed data
+  does not split Layer&nbsp;A into axe-vs-pa11y or Layer&nbsp;C into backstop-vs-judge at the
+  finding level, so we don't claim those sub-splits here. <sup>*</sup>Layer&nbsp;B on real sites is
+  a lower bound (some large-DOM/CSP sites timed out — see "In the wild").</p>
 </section>
 
 <section aria-labelledby="robustness">

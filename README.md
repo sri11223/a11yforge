@@ -1,25 +1,35 @@
-# A11yForge — Scanner-clean ≠ usable
+# A11yForge — verifiable agentic remediation
 
-An AI agent that fixes web accessibility (WCAG) violations **and proves, with a reproducible
-number, how often a "scanner-clean" fix is still unusable to a screen-reader user** — then
-refuses to ship the fixes it can't verify.
+**An evaluation harness for agents that never ship a fix they can't verify** — measured by what
+the naive agent breaks: **8 harmful changes → 0**, same model, same prompt, only the verify-loop
+differs. Accessibility is the proving ground: the rare domain where **"looks fixed" (scanner-green)
+and "is fixed" (a screen-reader user succeeds) diverge measurably**, so the difference between a
+careful agent and a careless one becomes a number.
 
 Automated scanners catch only ~13–57% of real WCAG issues. The FTC fined accessiBe $1M (2025)
 for false compliance claims. WebAIM Million: 95.9% of homepages still fail. A page can pass
 every automated check and still trap a keyboard user, scramble reading order, or ship a
 confidently-hallucinated `alt`.
 
-## Three numbers (reproduced offline — [`docs/results/`](docs/results/))
+## The evidence, strongest first (reproduced offline — [`docs/results/`](docs/results/))
 
-1. **Gap = 95.8%** — our sealed corpus is **27 pages** (15 adversarial + 12 injected); **24**
-   are axe-clean, and of those **23 still fail** the screen-reader/keyboard or semantic layers.
-2. **Harm shipped: baseline 8 → advanced 0** — a fair single-shot fixer ships 6 regressions +
-   2 false-fixes; the verify-loop + regression guard ship zero.
-3. **Integrity: 2 escalations, 0 guesses** — where an alt can't be grounded in the page's own
+1. **Categorical — ablation 23 → 0.** A scanner-only verify gate ships **23** broken pages as
+   "compliant"; `{A,B}` → **9**; the full `{A,B,C}` stack → **0**. Proof by construction, not a
+   p-value.
+2. **Real-world — 127 hidden barriers.** Across **20 live production sites**, 127 Layer-B/C issues
+   a scanner cannot see (honest lower bound). Scanner-clean ≠ usable, in the wild.
+3. **Mechanism — harm 8 → 0.** A fair single-shot baseline ships 6 regressions + 2 false-fixes;
+   the verify-loop + regression guard ship **zero** (same model/prompt). An existence proof of the
+   method — not statistically significant at n=27 (p=0.074); on the widened 45-page corpus the
+   harmful-page difference reaches p=0.041, *significant on our own benchmark* (external-validity
+   caveat), not a bare "p<0.05".
+4. **Integrity — 2 escalations, 0 guesses.** Where an alt can't be grounded in the page's own
    markup, the agent flags it for a human instead of inventing a description.
 
-**Ablation (each layer earns its place):** a verify-loop gated at `{A}` ships **23** broken
-pages as "compliant"; `{A,B}` → **9**; `{A,B,C}` → **0**.
+**The gap number, honestly:** on the sealed corpus (27 pages = 15 adversarial + 12 injected), 23 of
+the 24 axe-clean pages still fail Layer B/C — **95.8%**. The corpus is *adversarial by construction*
+(built to isolate what scanners miss), so this characterizes the corpus, not field prevalence; the
+20-site number above is the field evidence.
 
 ## Reproduce it (one command, offline, no API key)
 

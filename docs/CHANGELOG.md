@@ -79,6 +79,23 @@ Adding **Layer B catches 14** false-compliances the scanner-only gate shipped; a
 **Layer C catches 9** more. Each layer earns its place: a scanner-only verify gate ships
 **23 of 27 pages** as "compliant" while they are still broken; the full stack ships **zero**.
 
+## What each layer uniquely contributes ("not just an axe wrapper")
+
+The sealed corpus encodes **30 ground-truth barriers**. Only **2** are things a scanner catches;
+the other **28** are in classes an automated scanner *structurally cannot* detect:
+
+| Layer | Class it owns | Corpus barriers | On 20 real sites |
+|---|---|---|---|
+| **A** — axe + pa11y | mechanical WCAG (missing/placeholder labels) | 2 | 500 |
+| **B** — virtual-SR + CDP | keyboard traps, focus/reading order, operability, live regions, skip links, headings | 17 | 31* |
+| **C** — judge + backstops | meaningfulness of alt/labels (generic, filename, contradicting, decorative) | 11 | 96 |
+
+So **28 of 30** corpus barriers — and 127 of the real-site findings — are beyond axe entirely.
+*Honest limits:* these are per-layer **class** counts (from the committed corpus manifests + the
+20-site run); the committed data does not split Layer A into axe-vs-pa11y or Layer C into
+backstop-vs-judge at the finding level, so we don't claim those sub-splits. *Layer B on real sites
+is a lower bound (large-DOM/CSP timeouts — see the real-world report).
+
 ## The trade-off, stated plainly
 
 Advanced true-fixes **42** issues vs the baseline's **44**. That is not a loss — it is the
