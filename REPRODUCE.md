@@ -53,7 +53,7 @@ npm run determinism        # or: docker compose run --rm determinism
 ```
 
 Runs the eval three times, SHA-256s `out/metrics.json` each run, asserts all three match, and
-writes [`docs/results/determinism-proof.txt`](docs/results/determinism-proof.txt). The three
+writes [`docs/results/DETERMINISM.md`](docs/results/DETERMINISM.md). The three
 committed hashes are the evidence that the pipeline is byte-for-byte reproducible.
 
 ## Expected numbers (the committed reference)

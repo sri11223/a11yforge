@@ -35,7 +35,7 @@ docker compose run --rm eval    # same numbers, no local Node needed
 
 Both replay committed LLM cassettes (`A11YFORGE_MODE=replay`) — deterministic, no OpenRouter
 key, near-zero cost. Full walkthrough + expected output: [`REPRODUCE.md`](REPRODUCE.md).
-Determinism proof (3× byte-identical): [`docs/results/determinism-proof.txt`](docs/results/determinism-proof.txt).
+Determinism proof (3× byte-identical): [`docs/results/DETERMINISM.md`](docs/results/DETERMINISM.md).
 
 ## Three verification layers
 
