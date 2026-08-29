@@ -22,7 +22,8 @@
     "trajectories": "tsc && node dist/eval/export-trajectories.js",
     "determinism": "tsc && node dist/eval/determinism-proof.js",
     "audit": "tsc && node dist/src/cli/audit.js audit",
-    "snapshot-real": "tsc && node dist/eval/snapshot-real.js"
+    "snapshot-real": "tsc && node dist/eval/snapshot-real.js",
+    "audit-real": "tsc && node dist/eval/audit-real.js"
   },
   "license": "MIT",
   "dependencies": {

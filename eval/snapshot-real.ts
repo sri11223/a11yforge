@@ -12,13 +12,19 @@ import { join } from "node:path";
  * Run explicitly (network): `npm run snapshot-real`.
  */
 
+// Diverse candidates; we keep whichever fetch cleanly (real sites block/redirect/stall —
+// that messiness is the production test). Snapshots under ~5 KB are treated as
+// bot-challenge/blocked stubs and skipped.
 const SITES: { slug: string; url: string; kind: string }[] = [
-  { slug: "news-apnews", url: "https://apnews.com/", kind: "news" },
   { slug: "gov-usagov", url: "https://www.usa.gov/", kind: "government" },
-  { slug: "ecommerce-etsy", url: "https://www.etsy.com/", kind: "e-commerce" },
   { slug: "docs-mdn", url: "https://developer.mozilla.org/en-US/", kind: "documentation" },
   { slug: "org-wikipedia", url: "https://www.wikipedia.org/", kind: "reference" },
+  { slug: "news-npr", url: "https://www.npr.org/", kind: "news" },
+  { slug: "brand-apple", url: "https://www.apple.com/", kind: "brand" },
+  { slug: "saas-github", url: "https://github.com/", kind: "SaaS" },
+  { slug: "ecommerce-ebay", url: "https://www.ebay.com/", kind: "e-commerce" },
 ];
+const MIN_BYTES = 5000;
 
 async function main(): Promise<void> {
   const root = join(process.cwd(), "corpus", "real");
@@ -29,8 +35,12 @@ async function main(): Promise<void> {
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
       try {
-        await page.goto(s.url, { waitUntil: "load", timeout: 45000 });
+        await page.goto(s.url, { waitUntil: "domcontentloaded", timeout: 30000 });
         const html = await page.content();
+        if (html.length < MIN_BYTES) {
+          console.warn(`${s.slug}: skipped — only ${html.length} bytes (likely a bot-challenge/blocked stub)`);
+          continue;
+        }
         const dir = join(root, s.slug);
         mkdirSync(dir, { recursive: true });
         writeFileSync(join(dir, "index.html"), html, "utf8");

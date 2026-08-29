@@ -106,8 +106,11 @@ export interface LayerBInput {
   html?: string;
   url?: string;
 }
+export type NavWait = "load" | "domcontentloaded" | "networkidle" | "commit";
 export interface LayerBOptions {
   browser?: Browser;
+  /** Navigation wait condition (default "load"; use "domcontentloaded" for heavy real pages). */
+  navWaitUntil?: NavWait;
 }
 
 interface RawB {
@@ -558,6 +561,7 @@ export async function runLayerB(input: LayerBInput, opts: LayerBOptions = {}): P
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const page = await context.newPage();
   const client = await context.newCDPSession(page);
+  const nav = opts.navWaitUntil ?? "load";
 
   try {
     const raw: RawB[] = [];
@@ -565,7 +569,7 @@ export async function runLayerB(input: LayerBInput, opts: LayerBOptions = {}): P
     // Pass 1 — pristine page: static/order checks. The virtual SR is captured on an
     // ISOLATED page (below) because starting it injects a live-region announcer node into
     // the DOM, which would otherwise pollute these checks and the verify-loop's re-scans.
-    await page.goto(url);
+    await page.goto(url, { waitUntil: nav });
     await injectHelpers(page);
     await gatherAxTree(client); // cross-check pull (corroboration; count available for logs)
     raw.push(...(await safe(checkHeadingOutline(page))));
@@ -577,7 +581,7 @@ export async function runLayerB(input: LayerBInput, opts: LayerBOptions = {}): P
     let spoken: string[] | null = null;
     try {
       const srPage = await context.newPage();
-      await srPage.goto(url);
+      await srPage.goto(url, { waitUntil: nav });
       spoken = await gatherSpokenLog(srPage);
       await srPage.close();
     } catch {
@@ -585,13 +589,13 @@ export async function runLayerB(input: LayerBInput, opts: LayerBOptions = {}): P
     }
 
     // Pass 2 — fresh load: live-region interaction (clicks buttons).
-    await page.goto(url);
+    await page.goto(url, { waitUntil: nav });
     await injectHelpers(page);
     raw.push(...(await safe(checkLiveRegions(page))));
 
     // Pass 3 — fresh load: dialog trap (opens dialogs, leaves them open), then
     // control operability/name on the resulting DOM.
-    await page.goto(url);
+    await page.goto(url, { waitUntil: nav });
     await injectHelpers(page);
     raw.push(...(await safe(checkDialogTraps(page))));
     raw.push(...(await safe(checkControls(page, client))));

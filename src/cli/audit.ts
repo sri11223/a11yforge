@@ -45,7 +45,7 @@ async function resolveHtml(target: string, browser: Browser, timeoutMs: number):
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
     try {
-      await page.goto(target, { waitUntil: "load", timeout: timeoutMs });
+      await page.goto(target, { waitUntil: "domcontentloaded", timeout: timeoutMs });
       return await page.content();
     } finally {
       await ctx.close();
@@ -64,8 +64,8 @@ export async function audit(target: string, opts: AuditOptions = {}): Promise<Au
   try {
     const html = opts.html ?? (await resolveHtml(target, browser, timeoutMs));
     const [layerA, layerB] = await Promise.all([
-      runLayerA({ html }, { browser }),
-      runLayerB({ html }, { browser }),
+      runLayerA({ html }, { browser, navWaitUntil: "domcontentloaded" }),
+      runLayerB({ html }, { browser, navWaitUntil: "domcontentloaded" }),
     ]);
     let layerC: Finding[] = [];
     try {

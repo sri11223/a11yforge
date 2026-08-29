@@ -31,9 +31,13 @@ export interface LayerAInput {
   url?: string;
 }
 
+export type NavWait = "load" | "domcontentloaded" | "networkidle" | "commit";
+
 export interface LayerAOptions {
   /** Reuse a Playwright browser across calls (the verify-loop scans repeatedly). */
   browser?: Browser;
+  /** Navigation wait condition (default "load"; use "domcontentloaded" for heavy real pages). */
+  navWaitUntil?: NavWait;
 }
 
 /** Convert an axe tag like "wcag111"/"wcag1410" into a WCAG SC like "1.1.1"/"1.4.10". */
@@ -65,12 +69,12 @@ interface RawFinding {
   message: string;
 }
 
-async function runAxe(url: string, shared?: Browser): Promise<RawFinding[]> {
+async function runAxe(url: string, shared?: Browser, navWaitUntil: NavWait = "load"): Promise<RawFinding[]> {
   const browser = shared ?? (await chromium.launch({ args: ["--no-sandbox", "--disable-dev-shm-usage"] }));
   const context = await browser.newContext();
   const page = await context.newPage();
   try {
-    await page.goto(url);
+    await page.goto(url, { waitUntil: navWaitUntil });
     const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
     return results.violations.flatMap((v) =>
       v.nodes.map((n): RawFinding => ({
@@ -167,7 +171,7 @@ export async function runLayerA(input: LayerAInput, opts: LayerAOptions = {}): P
 
   try {
     const [axeFindings, pa11yFindings] = await Promise.all([
-      runAxe(url, opts.browser),
+      runAxe(url, opts.browser, opts.navWaitUntil ?? "load"),
       runPa11y(url),
     ]);
     return normalize([...axeFindings, ...pa11yFindings]);

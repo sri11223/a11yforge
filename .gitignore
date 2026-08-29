@@ -25,6 +25,9 @@ out/
 !docs/results/
 !docs/results/**
 
+# real-world snapshots: keep provenance (source.json) + README + findings, not others' raw HTML
+corpus/real/**/index.html
+
 # OS / editor
 .DS_Store
 Thumbs.db
