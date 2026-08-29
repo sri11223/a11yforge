@@ -6,6 +6,22 @@ differs. Accessibility is the proving ground: the rare domain where **"looks fix
 and "is fixed" (a screen-reader user succeeds) diverge measurably**, so the difference between a
 careful agent and a careless one becomes a number.
 
+## What it is (20 seconds)
+
+- **The tool** — point it at any page and it finds the barriers a scanner misses:
+  ```bash
+  npm ci && npm run audit -- <url|path>   # → Layer A/B/C gap report; exit 1 if scanner-clean-but-broken
+  ```
+  (A published `npx a11yforge audit <url>` lands with npm packaging; the GitHub Action already
+  works today — see "Use in CI" below.)
+- **The proof** — a reproducible eval showing the method works: the ablation **23 → 9 → 0**
+  (scanner-only verification ships 23 broken pages; the full stack ships 0) and **20 live sites**
+  with **127** barriers hidden from scanners.
+
+**Dev journey (CI):** a developer opens a PR → the A11yForge check **blocks the merge** on a
+scanner-clean-but-broken page (keyboard trap, wrong reading order, meaningless alt) → they fix it,
+or the agent escalates it to human review. The false-green never merges.
+
 Automated scanners catch only ~13–57% of real WCAG issues. The FTC fined accessiBe $1M (2025)
 for false compliance claims. WebAIM Million: 95.9% of homepages still fail. A page can pass
 every automated check and still trap a keyboard user, scramble reading order, or ship a
