@@ -15,7 +15,7 @@ import { calibratedGateMode } from "../src/harness/scan-all.js";
  * to sites we don't own; we only read public pages, as any browser does. Sites that bot-block
  * or fail to render are SKIPPED with an honest reason — never fabricated.
  *
- * Run from dist/: node dist/eval/audit-real-15.js   (uses OPENROUTER_API_KEY + JUDGE_MODEL for
+ * Run from dist/: node dist/eval/audit-real-20.js   (uses OPENROUTER_API_KEY + JUDGE_MODEL for
  * Layer C if present; otherwise deterministic backstops only).
  */
 
@@ -176,7 +176,7 @@ ${partialRows.length ? `\n## Per-layer partial data (transparency)\n\n| Site | W
 - Live sites change and A/B-test; counts are a snapshot at the timestamp above.
 - Layer C used ${report.judge}.
 - **Detection-only** — we never modify or publish fixes to sites we don't own.
-- Full machine-readable data incl. per-finding messages and per-layer errors: \`real-world-15.json\`.
+- Full machine-readable data incl. per-finding messages and per-layer errors: \`real-world-20.json\`.
 `;
 }
 
@@ -188,9 +188,9 @@ async function main(): Promise<void> {
   // Regenerate the markdown from an existing JSON without re-auditing (report-format tweaks).
   if (process.env.REGEN_ONLY === "1") {
     const { readFileSync } = await import("node:fs");
-    const report = JSON.parse(readFileSync(join(process.cwd(), "out", "real-world-15.json"), "utf8"));
-    writeFileSync(join(process.cwd(), "out", "real-world-15.md"), buildMarkdown(report), "utf8");
-    console.log("Regenerated out/real-world-15.md from existing JSON.");
+    const report = JSON.parse(readFileSync(join(process.cwd(), "out", "real-world-20.json"), "utf8"));
+    writeFileSync(join(process.cwd(), "out", "real-world-20.md"), buildMarkdown(report), "utf8");
+    console.log("Regenerated out/real-world-20.md from existing JSON.");
     return;
   }
 
@@ -230,14 +230,14 @@ async function main(): Promise<void> {
   };
 
   mkdirSync(join(process.cwd(), "out"), { recursive: true });
-  writeFileSync(join(process.cwd(), "out", "real-world-15.json"), JSON.stringify(report, null, 2) + "\n", "utf8");
+  writeFileSync(join(process.cwd(), "out", "real-world-20.json"), JSON.stringify(report, null, 2) + "\n", "utf8");
 
-  writeFileSync(join(process.cwd(), "out", "real-world-15.md"), buildMarkdown(report), "utf8");
+  writeFileSync(join(process.cwd(), "out", "real-world-20.md"), buildMarkdown(report), "utf8");
 
   console.log(`\nAudited ${ok.length}/${results.length} sites (skipped ${skipped.length}).`);
   console.log(`Totals — A:${report.totals.layerA}  B:${report.totals.layerB}  C:${report.totals.layerC}  hidden:${report.totals.hiddenFromScanner}`);
   console.log(`Scanner-clean pages: ${report.totals.scannerCleanPages}, of which ${scannerCleanButBroken} still fail B/C.`);
-  console.log(`Wrote out/real-world-15.json + out/real-world-15.md`);
+  console.log(`Wrote out/real-world-20.json + out/real-world-20.md`);
 }
 
 main().catch((e: unknown) => { console.error(e); process.exitCode = 1; });

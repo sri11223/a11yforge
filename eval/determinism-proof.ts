@@ -60,7 +60,8 @@ ${ablationHashes.map((h, i) => `- run ${i + 1}: \`${h}\``).join("\n")}
 ## Result
 
 **${pass ? "PASS" : "FAIL"}** — metrics ${metricsMatch ? "identical" : "DIFFER"}, ablation ${ablationMatch ? "identical" : "DIFFER"} across all three runs.
-Reproduced with no API key in replay mode; the evaluation is byte-for-byte deterministic.
+Reproduced with no API key in replay mode: the pipeline reproduces byte-for-byte from committed
+cassettes — this is offline-replay reproducibility, not a claim that the LLM itself is deterministic.
 
 > Reconfirmed under the final code: after the universal-escalation invariant was added
 > (\`src/agents/advanced.ts\`), this proof was re-run and the 27-page \`metrics.json\` and

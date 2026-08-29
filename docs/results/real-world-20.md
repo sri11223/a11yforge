@@ -72,4 +72,4 @@ _No sites were skipped: all 20 navigated and were audited._
 - Live sites change and A/B-test; counts are a snapshot at the timestamp above.
 - Layer C used on (openai/gpt-4o-mini).
 - **Detection-only** — we never modify or publish fixes to sites we don't own.
-- Full machine-readable data incl. per-finding messages and per-layer errors: `real-world-15.json`.
+- Full machine-readable data incl. per-finding messages and per-layer errors: `real-world-20.json`.

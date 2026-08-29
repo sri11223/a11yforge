@@ -14,7 +14,9 @@ verified (tsc + tests green) before the next.
 - **Fixer = `anthropic/claude-sonnet-5`** — generates behavioral (Layer B) fixes for both the
   baseline (single-shot) and the advanced agent (targeted, inside the verify-loop).
 - **Judge = `openai/gpt-4o-mini`** — Layer C semantic judge, a **different model family** from
-  the fixer so it never grades its own dialect. Calibrated to Cohen's κ = 0.98 (hard gate).
+  the fixer so it never grades its own dialect. Calibrated to Cohen's κ = 0.98 (hard gate ≥ 0.6).
+  Scope, stated honestly: that κ is judge-vs-expert-labels agreement on a single-annotator,
+  team-authored 64-item anchor set — a calibration check, not an inter-annotator reliability study.
 
 **Deterministic tooling (no LLM):** axe-core + pa11y (Layer A), Guidepup
 virtual-screen-reader + Chrome DevTools Protocol AX tree (Layer B), cheerio (Layer C

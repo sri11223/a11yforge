@@ -11,8 +11,8 @@ confidently-hallucinated `alt`.
 
 ## Three numbers (reproduced offline — [`docs/results/`](docs/results/))
 
-1. **Gap = 95.8%** — of the 24 axe-clean pages in our corpus, 23 still fail the
-   screen-reader/keyboard or semantic layers.
+1. **Gap = 95.8%** — our sealed corpus is **27 pages** (15 adversarial + 12 injected); **24**
+   are axe-clean, and of those **23 still fail** the screen-reader/keyboard or semantic layers.
 2. **Harm shipped: baseline 8 → advanced 0** — a fair single-shot fixer ships 6 regressions +
    2 false-fixes; the verify-loop + regression guard ship zero.
 3. **Integrity: 2 escalations, 0 guesses** — where an alt can't be grounded in the page's own
@@ -33,9 +33,11 @@ or with only Docker:
 docker compose run --rm eval    # same numbers, no local Node needed
 ```
 
-Both replay committed LLM cassettes (`A11YFORGE_MODE=replay`) — deterministic, no OpenRouter
-key, near-zero cost. Full walkthrough + expected output: [`REPRODUCE.md`](REPRODUCE.md).
-Determinism proof (3× byte-identical): [`docs/results/DETERMINISM.md`](docs/results/DETERMINISM.md).
+Both replay committed LLM cassettes (`A11YFORGE_MODE=replay`) — **reproducible byte-for-byte**
+(the pipeline replays identically offline; this is not a claim that the LLM itself is
+deterministic), no OpenRouter key, near-zero cost. Full walkthrough + expected output:
+[`REPRODUCE.md`](REPRODUCE.md). Reproducibility proof (3× byte-identical replay):
+[`docs/results/DETERMINISM.md`](docs/results/DETERMINISM.md).
 
 ## Use in CI — block the false-green before merge
 
@@ -79,8 +81,10 @@ Locally, the same check: `npm run audit -- <url|path> [--ci] [--no-llm] [--html 
   transcript** as evidence + cross-check — it does not drive the decisions. *Simulator of
   order/operability/name, not a bug-for-bug NVDA/JAWS replica.*
 - **Layer C — semantic (calibrated LLM judge):** meaningfulness of alt/labels only, validated
-  against a 64-item expert anchor set (**Cohen's κ = 0.98**, hard gate); deterministic
-  backstops keep the finding alive even when the judge is weak. **Alt is never LLM-invented** —
+  against a 64-item expert anchor set (**Cohen's κ = 0.98**, hard gate ≥ 0.6). *That κ is
+  judge-vs-expert-labels agreement on a single-annotator, team-authored anchor set — a
+  calibration check, not inter-annotator reliability.* Deterministic backstops keep the finding
+  alive even when the judge is weak. **Alt is never LLM-invented** —
   grounded rule-fix or human checkpoint, so confident hallucination is structurally impossible.
 
 ## Agents

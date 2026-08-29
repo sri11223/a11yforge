@@ -153,7 +153,10 @@ manifested there), so the determinism-proven headline result is unaffected.
 ## Calibration
 
 The Layer C semantic judge is calibrated against a 64-item expert anchor set:
-**Cohen's κ = 0.9792** (category) / **1.0** (binary) → hard gate. Reproduces offline.
+**Cohen's κ = 0.9792** (category) / **1.0** (binary) → hard gate ≥ 0.6. Reproduces offline.
+_Honest scope: this is judge-vs-expert-labels agreement on a **single-annotator, team-authored**
+anchor set — a calibration check that the judge tracks our labels, **not** an inter-annotator
+reliability study._
 
 ## Experiments we removed (kept for honesty)
 
