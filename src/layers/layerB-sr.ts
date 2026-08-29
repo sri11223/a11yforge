@@ -368,7 +368,10 @@ async function checkLiveRegions(page: Page): Promise<RawB[]> {
     }
   }
 
-  const mutated = await page.evaluate(() => (window as unknown as { __mut: string[] }).__mut);
+  // Guard: a clicked "button" can trigger navigation/re-render that wipes the page context, so
+  // window.__mut may be undefined by the time we read it back. Degrade to no findings rather than
+  // throwing (previously this surfaced as a caught "[layerB] check failed …reading 'map'").
+  const mutated = (await page.evaluate(() => (window as unknown as { __mut?: string[] }).__mut)) ?? [];
   return mutated.map((sel) => ({
     wcag: "4.1.3",
     selector: sel,
