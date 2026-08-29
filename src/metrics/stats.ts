@@ -68,7 +68,10 @@ export interface McNemarResult {
 export function mcNemar(b: number, c: number): McNemarResult {
   const n = b + c;
   if (n === 0) return { statistic: 0, pValue: 1, b, c };
-  const statistic = Math.pow(Math.abs(b - c) - 1, 2) / n;
+  // Continuity correction, clamped: max(0, |b−c|−1) so that b≈c yields χ²=0 rather than a
+  // spurious small positive value (a bare (|b−c|−1)² gives 1/n when b==c).
+  const delta = Math.max(0, Math.abs(b - c) - 1);
+  const statistic = (delta * delta) / n;
   // Survival function of chi-square with 1 df = erfc(sqrt(x/2)).
   const pValue = erfc(Math.sqrt(statistic / 2));
   return { statistic, pValue, b, c };

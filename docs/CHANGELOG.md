@@ -154,8 +154,8 @@ escalates 4 to a human.
 b=6, c=0, χ²=4.17, **p=0.041**. We flag two caveats and do **not** headline it: (1) it is measured
 on our own constructed benchmark, not in the wild; (2) the crossing of α=0.05 is a *byproduct of a
 correctness fix* we made mid-run (below), not of widening-to-chase-p. Conversely, the **cost of
-conservatism is real and significant in the baseline's favour**: the baseline true-fixes **7**
-issues (McNemar p=0.023) that the advanced agent instead escalates. "Fixes fewer, ships zero
+conservatism is real and significant in the baseline's favour**: the baseline true-fixes **6**
+issues (McNemar p=0.041) that the advanced agent instead escalates. "Fixes fewer, ships zero
 broken pages" is the trade, stated plainly.
 
 **The self-catch (our thesis, on us).** Widening the corpus caught *our own agent* silently

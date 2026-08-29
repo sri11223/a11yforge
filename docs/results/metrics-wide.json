@@ -64,10 +64,10 @@
   },
   "mcnemar": {
     "trueFix": {
-      "b": 7,
+      "b": 6,
       "c": 0,
-      "statistic": 5.143,
-      "p": 0.0233
+      "statistic": 4.167,
+      "p": 0.0412
     },
     "falseFix": {
       "b": 2,

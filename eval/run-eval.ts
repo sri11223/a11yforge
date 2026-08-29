@@ -107,13 +107,17 @@ async function main(): Promise<void> {
   const base = summarize("baseline", baseScores);
   const adv = summarize("advanced", advScores);
 
-  // Paired McNemar on per-issue outcomes (issue set identical across agents).
-  const baseIssues = baseScores.flatMap((s) => s.issues);
-  const advIssues = advScores.flatMap((s) => s.issues);
-  const idx = new Map(advIssues.map((i) => [i.key + "@" + i.selector, i]));
+  // Paired McNemar on per-issue outcomes. The pairing key MUST include the page identity
+  // (bucket + slug): page-independent selectors like "html > body" (from the tab-order / heading
+  // checks) repeat across pages, so keying only on layer:wcag:selector collides across the
+  // positive-tabindex pages and collapses/cross-matches the pairs. Pair per (page, issue).
+  const pairKey = (bucket: string, slug: string, i: PageScore["issues"][number]) =>
+    `${bucket}/${slug}::${i.key}@${i.selector ?? ""}`;
+  const baseIssues = pairs.flatMap((p) => p.baseline.issues.map((i) => ({ k: pairKey(p.bucket, p.slug, i), i })));
+  const advIndex = new Map(pairs.flatMap((p) => p.advanced.issues.map((i) => [pairKey(p.bucket, p.slug, i), i] as const)));
   let tfB = 0, tfC = 0, ffB = 0, ffC = 0;
-  for (const bi of baseIssues) {
-    const ai = idx.get(bi.key + "@" + bi.selector);
+  for (const { k, i: bi } of baseIssues) {
+    const ai = advIndex.get(k);
     if (!ai) continue;
     const bTrue = bi.klass === "true-fix", aTrue = ai.klass === "true-fix";
     if (bTrue && !aTrue) tfB++;
