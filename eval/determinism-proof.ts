@@ -61,6 +61,11 @@ ${ablationHashes.map((h, i) => `- run ${i + 1}: \`${h}\``).join("\n")}
 
 **${pass ? "PASS" : "FAIL"}** — metrics ${metricsMatch ? "identical" : "DIFFER"}, ablation ${ablationMatch ? "identical" : "DIFFER"} across all three runs.
 Reproduced with no API key in replay mode; the evaluation is byte-for-byte deterministic.
+
+> Reconfirmed under the final code: after the universal-escalation invariant was added
+> (\`src/agents/advanced.ts\`), this proof was re-run and the 27-page \`metrics.json\` and
+> \`ablation.json\` remain byte-identical to the sealed values above — the fix is a proven no-op
+> on the headline corpus (see CHANGELOG "Robustness at scale").
 `;
 
 writeFileSync(OUT, md, "utf8");
