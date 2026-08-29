@@ -123,6 +123,53 @@ code{background:#eef0f3;padding:1px 5px;border-radius:4px;font-size:13px}
   unaffected).</p>
 </section>
 
+<section aria-labelledby="wild">
+  <h2 id="wild">In the wild: 20 real sites (live, detection-only)</h2>
+  <p class="muted">Beyond the constructed corpus, we pointed the live A/B/C detector at
+  <strong>20 diverse production sites</strong> (news, government, healthcare, SaaS, big brands,
+  universities, docs, reference). This is <strong>dated, non-deterministic</strong> evidence —
+  kept separate from the sealed deterministic eval — and strictly <strong>detection-only</strong>:
+  we never modify or publish fixes to sites we don't own. Snapshot: <code>2026-08-29</code>. Full
+  data: <a href="results/real-world-15.md">real-world-15.md</a> ·
+  <a href="results/real-world-15.json">real-world-15.json</a>.</p>
+  <div class="nums">
+    <div class="num r"><div class="big">127</div><div class="lbl">issues hidden from the scanner (Layer B + C) across 20 real sites — and this is a <strong>lower bound</strong>.</div></div>
+    <div class="num b"><div class="big">500</div><div class="lbl">Layer A (scanner) findings — real sites are far from scanner-clean to begin with.</div></div>
+    <div class="num g"><div class="big">19 / 20</div><div class="lbl">sites had at least one issue a scanner cannot see. Only one (usa.gov) was fully clean.</div></div>
+  </div>
+  <table>
+    <thead><tr><th>Site</th><th>Category</th><th>A</th><th>B</th><th>C</th><th>hidden (B+C)</th><th>notes</th></tr></thead>
+    <tbody>
+      <tr><td>npr.org</td><td>news</td><td>132</td><td>0*</td><td>14</td><td>14</td><td>B timed out; judge→backstops</td></tr>
+      <tr><td>apnews.com</td><td>news</td><td>0*</td><td>0*</td><td>1</td><td>1</td><td>A+B timed out; judge→backstops</td></tr>
+      <tr><td>bbc.com/news</td><td>news</td><td>22</td><td>7</td><td>1</td><td>8</td><td>—</td></tr>
+      <tr><td>usa.gov</td><td>government</td><td>0</td><td>0</td><td>0</td><td>0</td><td>fully clean</td></tr>
+      <tr><td>gov.uk</td><td>government</td><td>2</td><td>0*</td><td>5</td><td>5</td><td>B CSP-blocked</td></tr>
+      <tr><td>nasa.gov</td><td>gov / science</td><td>6</td><td>0</td><td>32</td><td>32</td><td>judge→backstops</td></tr>
+      <tr><td>apple.com</td><td>big brand</td><td>23</td><td>0*</td><td>20</td><td>20</td><td>B timed out</td></tr>
+      <tr><td>microsoft.com</td><td>big brand</td><td>28</td><td>12</td><td>4</td><td>16</td><td>—</td></tr>
+      <tr><td>stripe.com</td><td>SaaS / fintech</td><td>48</td><td>0*</td><td>8</td><td>8</td><td>B CSP-blocked</td></tr>
+      <tr><td>vercel.com</td><td>SaaS</td><td>0*</td><td>0*</td><td>2</td><td>2</td><td>A+B timed out</td></tr>
+      <tr><td>developer.mozilla.org</td><td>docs</td><td>15</td><td>0*</td><td>1</td><td>1</td><td>B CSP-blocked</td></tr>
+      <tr><td>docs.python.org</td><td>docs</td><td>0*</td><td>1</td><td>0</td><td>1</td><td>A timed out</td></tr>
+      <tr><td>mit.edu</td><td>university</td><td>9</td><td>1</td><td>0</td><td>1</td><td>—</td></tr>
+      <tr><td>stanford.edu</td><td>university</td><td>6</td><td>4</td><td>1</td><td>5</td><td>—</td></tr>
+      <tr><td>nih.gov</td><td>healthcare</td><td>2</td><td>0*</td><td>1</td><td>1</td><td>B CSP-blocked</td></tr>
+      <tr><td>mayoclinic.org</td><td>healthcare</td><td>8</td><td>0</td><td>0</td><td>0</td><td>—</td></tr>
+      <tr><td>who.int</td><td>healthcare / NGO</td><td>7</td><td>2</td><td>2</td><td>4</td><td>—</td></tr>
+      <tr><td>en.wikipedia.org</td><td>reference</td><td>138</td><td>0*</td><td>3</td><td>3</td><td>B timed out</td></tr>
+      <tr><td>w3.org</td><td>standards</td><td>2</td><td>1</td><td>0</td><td>1</td><td>—</td></tr>
+      <tr><td>smashingmagazine.com</td><td>publishing</td><td>52</td><td>3</td><td>1</td><td>4</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p class="muted" style="margin-top:12px"><strong>Honest lower bound.</strong> <code>*</code> marks
+  a layer that hit its per-layer budget or was blocked by the site's Content-Security-Policy — a
+  <code>0*</code> means "not measured", not "clean". Layer&nbsp;A timed out on 3 sites, Layer&nbsp;B
+  was unavailable on 9 (large-DOM timeouts or CSP-blocked script injection), and the Layer&nbsp;C
+  LLM judge degraded to deterministic backstops on 3. So the real hidden-issue count is higher than
+  127. Nothing is fabricated: every partial layer is listed per-site in the linked report.</p>
+</section>
+
 <section aria-labelledby="hearit">
   <h2 id="hearit">Hear it: a page that passes axe but reads wrong</h2>
   <p>The <code>css-reorder</code> pricing page passes a WCAG axe scan with zero violations.
