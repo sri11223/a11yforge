@@ -137,6 +137,12 @@ code{background:#eef0f3;padding:1px 5px;border-radius:4px;font-size:13px}
     <div class="num b"><div class="big">500</div><div class="lbl">Layer A (scanner) findings — real sites are far from scanner-clean to begin with.</div></div>
     <div class="num g"><div class="big">19 / 20</div><div class="lbl">sites had at least one issue a scanner cannot see. Only one (usa.gov) was fully clean.</div></div>
   </div>
+  <p><strong>Scanners aren't useless — and we're not claiming they are.</strong> Real sites have
+  plenty of Layer-A violations too (500 here), and axe/pa11y catch those. The point is the
+  <strong>additional 127 barriers in the B/C classes a scanner cannot see</strong> — keyboard
+  traps, broken reading order, and meaningless or missing accessible names — sitting on top of the
+  scanner's own findings. A11yForge reports both; only the full A/B/C stack surfaces the second
+  kind.</p>
   <table>
     <thead><tr><th>Site</th><th>Category</th><th>A</th><th>B</th><th>C</th><th>hidden (B+C)</th><th>notes</th></tr></thead>
     <tbody>
