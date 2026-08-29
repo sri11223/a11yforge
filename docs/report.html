@@ -73,6 +73,7 @@ html{scroll-behavior:smooth}
   <a href="#hearit">Hear it</a>
   <a href="#seeit">See it</a>
   <a href="#sig">Significance</a>
+  <a href="#traces">Traces</a>
   <a href="#reproduce">Reproduce</a>
 </nav>
 
@@ -516,6 +517,20 @@ html{scroll-behavior:smooth}
   The direction is unambiguous and the ablation (which doesn't depend on discordant-pair
   counts) is the decisive per-layer evidence. Honest read: strong, consistent, not yet
   statistically significant — widen the corpus to confirm, not to chase a p-value.</p>
+</section>
+
+<section aria-labelledby="traces">
+  <h2 id="traces">Agent trajectories — traces for every agent we used</h2>
+  <p class="muted">The full trace picture lives in
+  <a href="trajectories/README.md"><code>docs/trajectories/</code></a>:
+  per-page runtime decision traces (detect → route → fix attempts → regression-guard → verify →
+  accept/escalate → outcome, readable Markdown + raw JSONL), two deep-dives that quote the
+  <strong>actual model I/O</strong> from the 151 committed cassettes — a
+  <strong>reflexion</strong> (a keyboard fix rejected on attempt 1, accepted on attempt 2 after the
+  verifier's diagnostic is fed back) and a <strong>baseline-vs-advanced contrast</strong> (the
+  baseline ships a confident hallucinated alt; the advanced agent escalates instead of guessing) —
+  and the coding-agent build trace. The cassettes themselves (<code>{model, temperature, seed,
+  messages}</code> + response) are the raw model traces; the whole eval replays from them offline.</p>
 </section>
 
 <footer id="reproduce">
