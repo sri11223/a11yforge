@@ -66,7 +66,7 @@ interface RawFinding {
 }
 
 async function runAxe(url: string, shared?: Browser): Promise<RawFinding[]> {
-  const browser = shared ?? (await chromium.launch());
+  const browser = shared ?? (await chromium.launch({ args: ["--no-sandbox", "--disable-dev-shm-usage"] }));
   const context = await browser.newContext();
   const page = await context.newPage();
   try {
@@ -94,6 +94,8 @@ async function runPa11y(url: string): Promise<RawFinding[]> {
     standard: "WCAG2AA",
     includeWarnings: false,
     includeNotices: false,
+    // Needed when running as root in Docker (pa11y drives Chromium via Puppeteer).
+    chromeLaunchConfig: { args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"] },
   });
   return res.issues
     .filter((i) => i.type === "error")

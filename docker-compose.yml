@@ -1,0 +1,26 @@
+services:
+  # One command → the full offline evaluation (no API key). Writes out/metrics.json.
+  #   docker compose run --rm eval
+  eval:
+    build: .
+    environment:
+      - A11YFORGE_MODE=replay
+    volumes:
+      - ./out:/app/out
+
+  # 3× byte-identical determinism proof → docs/results/determinism-proof.txt
+  #   docker compose run --rm determinism
+  determinism:
+    build: .
+    environment:
+      - A11YFORGE_MODE=replay
+    command: ["node", "dist/eval/determinism-proof.js"]
+    volumes:
+      - ./out:/app/out
+      - ./docs/results:/app/docs/results
+
+  # Full test suite (deterministic layers + agents, offline).
+  #   docker compose run --rm test
+  test:
+    build: .
+    command: ["npm", "test"]

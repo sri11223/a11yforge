@@ -45,7 +45,17 @@ For each key decision below: **Alternatives → Tradeoffs → Decision + why.**
 - Virtual SR is **deterministic, cross-platform, headless-Docker-friendly**, and reads the *real* accessibility tree (role/name/state), which is exactly what focus-order / operability / accessible-name checks need. Its limitation: it **approximates** SR navigation and announcement; it is not a bug-for-bug replica of any shipping SR's announcement strings.
 - Pure CDP is **fully deterministic** with no extra moving parts and gives roles/names/states/focusability directly, but it models the *tree* rather than *SR navigation semantics*, so it's a weaker instrument for "what would a user actually experience walking this page."
 
-**Decision — B primary, C as corroborating cross-check, C as the degraded fallback.**
+> **⚠ Correction (implementation reality — see [`CODING_AGENT.md`](CODING_AGENT.md)):**
+> This planned "virtual-SR primary" decision was **reversed in implementation**, and we
+> keep the original text here only as the historical plan. In the shipped code the
+> **deterministic CDP/DOM checks are the source of truth for Layer B findings** (focus-order
+> Tab walk, `getEventListeners` operability, MutationObserver live-region, heading/skip-link,
+> bounding-box order); the **virtual-SR provides the announcement transcript as evidence +
+> cross-check**, not the detection. This is stricter, deterministic, and it's why the metrics
+> are byte-identical whether the SR is engaged or not. (A bug had the SR silently disabled for
+> several steps; the findings never depended on it — confirmed by byte-identical re-runs.)
+
+**Decision (as planned) — B primary, C as corroborating cross-check, C as the degraded fallback.**
 - **Primary:** `@guidepup/virtual-screen-reader` drives the Layer-B traversal.
 - **Cross-check:** every Layer-B run also pulls `Accessibility.getFullAXTree` via CDP and asserts the two agree on roles/names/focusable set (belt-and-suspenders; disagreement is logged as a warning, not a silent pass).
 - **Fallback:** if virtual-SR proves flaky in CI, Layer B degrades to the **pure-CDP** walk (focus-order Tab-cycle, trap detection, accessible-name presence) which is 100% deterministic. The finding survives the fallback.
@@ -194,7 +204,7 @@ Two granularities everywhere: **per-issue** (each ground-truth violation) and **
 ## Locked decisions — summary
 
 1. **Verify-loop:** per-violation fix + local accept criteria + whole-page regression sweep; regression guard is a *pre-commit gate*; bounded reflexion (max 3) with structured feedback; ambiguous → human checkpoint.
-2. **Layer B:** virtual-SR primary, CDP AX-tree cross-check, pure-CDP fallback; honest "simulator, not NVDA/JAWS" caveat; optional real-SR spot-check off the critical path.
+2. **Layer B:** *(plan)* virtual-SR primary, CDP cross-check, pure-CDP fallback. **⚠ Implemented reality (see [`CODING_AGENT.md`](CODING_AGENT.md)):** deterministic CDP/DOM checks are the source of truth for findings; virtual-SR is the announcement transcript + cross-check. Honest "simulator, not NVDA/JAWS" caveat; optional real-SR spot-check off the critical path.
 3. **Layer C:** κ-gated LLM judge (≥0.6 hard / 0.4–0.6 advisory / <0.4 backstops-only); deterministic semantic backstops keep the finding alive; fixer ≠ judge model family.
 4. **Corpus:** injected + adversarial + real, provenance-tagged; JSON ground-truth manifest with informative/decorative flag and expected catching layer.
 5. **Metrics:** gap% / true-fix / regression / false-fix, per-issue + per-page; McNemar for paired significance; Wilson CIs + raw counts + explicit n; κ published.

@@ -69,7 +69,12 @@ function ablation(scores: PageScore[]): {
 }
 
 async function main(): Promise<void> {
-  const browser = await chromium.launch();
+  // Self-contained offline defaults: the reproducible path needs no key and no shell env.
+  process.env.A11YFORGE_MODE ??= "replay";
+  process.env.FIXER_MODEL ??= "anthropic/claude-sonnet-5";
+  process.env.JUDGE_MODEL ??= "openai/gpt-4o-mini";
+
+  const browser = await chromium.launch({ args: ["--no-sandbox", "--disable-dev-shm-usage"] });
   const pairs: PagePair[] = [];
   try {
     for (const dir of BUCKETS) {

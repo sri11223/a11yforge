@@ -554,7 +554,7 @@ export async function runLayerB(input: LayerBInput, opts: LayerBOptions = {}): P
     cleanup = () => rmSync(dir, { recursive: true, force: true });
   }
 
-  const browser = opts.browser ?? (await chromium.launch());
+  const browser = opts.browser ?? (await chromium.launch({ args: ["--no-sandbox", "--disable-dev-shm-usage"] }));
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const page = await context.newPage();
   const client = await context.newCDPSession(page);

@@ -13,7 +13,11 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",
-    "eval": "echo \"[eval] placeholder — wired in a later step\" && exit 0"
+    "eval": "tsc && node dist/eval/run-eval.js",
+    "ablation": "tsc && node dist/eval/ablation-gated.js",
+    "report": "tsc && node dist/eval/build-report.js",
+    "trajectories": "tsc && node dist/eval/export-trajectories.js",
+    "determinism": "tsc && node dist/eval/determinism-proof.js"
   },
   "license": "MIT",
   "dependencies": {

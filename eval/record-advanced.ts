@@ -24,7 +24,7 @@ async function main(): Promise<void> {
     .filter((s) => !only || s === only)
     .sort();
 
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ["--no-sandbox", "--disable-dev-shm-usage"] });
   const memory: FixMemory = new Map();
   try {
     for (const slug of slugs) {

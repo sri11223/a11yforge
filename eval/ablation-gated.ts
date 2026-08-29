@@ -22,7 +22,11 @@ const GATES: { label: string; layers: Layer[] }[] = [
 const BUCKETS = ["adversarial", "injected"].map((b) => join(process.cwd(), "corpus", b));
 
 async function main(): Promise<void> {
-  const browser: Browser = await chromium.launch();
+  process.env.A11YFORGE_MODE ??= "replay";
+  process.env.FIXER_MODEL ??= "anthropic/claude-sonnet-5";
+  process.env.JUDGE_MODEL ??= "openai/gpt-4o-mini";
+
+  const browser: Browser = await chromium.launch({ args: ["--no-sandbox", "--disable-dev-shm-usage"] });
   const rows: Record<string, { falseFixPages: number; trueFixPages: number; needsReviewPages: number }> = {};
   for (const g of GATES) rows[g.label] = { falseFixPages: 0, trueFixPages: 0, needsReviewPages: 0 };
 

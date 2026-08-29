@@ -23,7 +23,7 @@ async function main(): Promise<void> {
     .map((d) => d.name)
     .sort();
 
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ["--no-sandbox", "--disable-dev-shm-usage"] });
   try {
     for (const slug of slugs) {
       const html = readFileSync(join(DIR, slug, "index.html"), "utf8");

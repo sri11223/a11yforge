@@ -19,8 +19,12 @@ const OUT = join(process.cwd(), "docs", "trajectories");
 const short = (f: Finding) => ({ layer: f.layer, wcag: f.wcag, selector: f.selector, message: f.message });
 
 async function main(): Promise<void> {
+  process.env.A11YFORGE_MODE ??= "replay";
+  process.env.FIXER_MODEL ??= "anthropic/claude-sonnet-5";
+  process.env.JUDGE_MODEL ??= "openai/gpt-4o-mini";
+
   mkdirSync(OUT, { recursive: true });
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ["--no-sandbox", "--disable-dev-shm-usage"] });
   const index: string[] = [];
   try {
     for (const slug of CASES) {

@@ -44,7 +44,7 @@ async function spokenFor(browser: import("playwright").Browser, slug: string): P
 }
 
 async function main(): Promise<void> {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ["--no-sandbox", "--disable-dev-shm-usage"] });
   const result: Record<string, string[]> = {};
   try {
     for (const slug of PAGES) result[slug] = await spokenFor(browser, slug);
