@@ -8,18 +8,34 @@ careful agent and a careless one becomes a number.
 
 ## What it is (20 seconds)
 
-- **The tool** — point it at any page and it finds the barriers a scanner misses:
+- **The tool** — point it at any page and it finds the barriers a scanner misses. This is the path
+  we actually run, so it is the one we recommend:
   ```bash
-  npx github:sri11223/a11yforge audit <url|path>   # zero-install; builds on fetch
-  # or, in a clone:  npm ci && npm run audit -- <url|path>
-  # → Layer A/B/C gap report; exit 1 if scanner-clean-but-broken
+  git clone https://github.com/sri11223/a11yforge && cd a11yforge
+  npm ci
+  npx playwright install chromium        # required — see the note below
+  npm run audit -- <url|path>            # → Layer A/B/C gap report; exit 1 if scanner-clean-but-broken
   ```
-  (Needs Chromium for the deterministic A+B layers: `npx playwright install chromium`. Layer C's
-  judge is optional — set `OPENROUTER_API_KEY` + `JUDGE_MODEL`, else it uses deterministic
-  backstops. A published `npx a11yforge` follows once released to npm; the GitHub Action works today.)
-- **The proof** — a reproducible eval showing the method works: the ablation **23 → 9 → 0**
-  (scanner-only verification ships 23 broken pages; the full stack ships 0) and **20 live sites**
-  with **206** barriers hidden from scanners (141 excluding one site's repeated animation-ticker finding).
+  **Why the explicit browser step:** `playwright@1.62.1` ships **no postinstall**, so installing this
+  package does *not* download a browser. Layers A and B both drive Playwright Chromium, so without
+  that step the audit fails at launch. (pa11y's bundled Puppeteer *does* fetch its own Chrome on
+  install, which is why only Playwright needs the extra command.)
+  Layer C's judge is optional — set `OPENROUTER_API_KEY` + `JUDGE_MODEL`, else it falls back to
+  deterministic backstops.
+  <details><summary>Alternative: <code>npx github:…</code> (untested — read this first)</summary>
+
+  `npx github:sri11223/a11yforge audit <url|path>` should work once the repo is public and after a
+  separate `npx playwright install chromium`, because the `prepare` script builds on fetch. We have
+  **not verified it end-to-end** — the repo was private while this was written, so the path could not
+  be exercised, and our packaging test installed a local tarball with the browser download skipped.
+  Treat it as unproven until someone runs it. A published `npx a11yforge` follows if we release to npm;
+  the **GitHub Action works today** (see "Use in CI").
+  </details>
+- **The proof** — a reproducible offline eval: the ablation **23 → 9 → 0** (scanner-only verification
+  ships 23 broken pages; the full stack ships 0), replayed byte-for-byte from committed cassettes.
+- **The field check** — separately, a *live, dated, detection-only* audit of **20 production sites**
+  found **206** barriers hidden from scanners (141 excluding one site's repeated animation-ticker
+  finding). Live sites change, so this one is evidence, not a reproducible fixture.
 
 **Dev journey (CI):** a developer opens a PR → the A11yForge check **blocks the merge** on a
 scanner-clean-but-broken page (keyboard trap, wrong reading order, meaningless alt) → they fix it,
@@ -43,8 +59,8 @@ confidently-hallucinated `alt`.
    false-fixes; the verify-loop + regression guard ship **zero** (same model, same prompt).
    Holds on the sealed 27 and on the extended 45, where it reaches significance — with the
    caveats below, which we state rather than let a reader find.
-4. **Integrity — 2 escalations, 0 guesses.** Where an alt can't be grounded in the page's own
-   markup, the agent flags it for a human instead of inventing a description.
+4. **Integrity — 2 escalations, 0 guesses** (n=27; 4 at n=45). Where an alt can't be grounded in
+   the page's own markup, the agent flags it for a human instead of inventing a description.
 
 ### Measured twice: the sealed 27, and an extended 45
 

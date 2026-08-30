@@ -72,7 +72,7 @@ html{scroll-behavior:smooth}
   <a href="#wild">Real sites</a>
   <a href="#hearit">Hear it</a>
   <a href="#seeit">See it</a>
-  <a href="#sig">Significance</a>
+  <a href="#sig">Claim hierarchy</a>
   <a href="#narration">Narration diff</a>
   <a href="#related">Related work</a>
   <a href="#traces">Traces</a>
@@ -107,7 +107,7 @@ html{scroll-behavior:smooth}
     <div class="num b"><div class="big">206</div>
       <div class="lbl"><strong>Real-world.</strong> Barriers hidden from scanners (Layer B+C) across 20 live production sites — an honest lower bound. Scanner-clean ≠ usable, in the wild.</div></div>
     <div class="num g"><div class="big">8 → 0</div>
-      <div class="lbl"><strong>Mechanism (case study).</strong> Harmful changes the baseline ships vs the verify-loop — same model, same prompt, only the pipeline differs. Existence proof of the method; not statistically significant at n=27 (see below).</div></div>
+      <div class="lbl"><strong>Mechanism.</strong> Harmful changes the baseline ships vs the verify-loop — same model, same prompt, only the pipeline differs. Zero counter-examples across all 45 pages; significant on the extended 45-page set, not at n=27 (that corpus has an α-floor of 0.0625) — <a href="#sig">see the claim hierarchy</a>.</div></div>
   </div>
   <p class="muted"><strong>The gap number, honestly:</strong> on our sealed corpus (27 pages =
   15 adversarial + 12 injected), 23 of the 24 axe-clean pages still fail Layer B/C — <strong>95.8%</strong>.
