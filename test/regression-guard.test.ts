@@ -13,11 +13,13 @@ import { snapshot, checkRegression } from "../src/agents/regression-guard.js";
  * The accept-side cases matter as much as the rejections: a guard that rejected everything would
  * pass every rejection test and be useless. Those cases prove it DISCRIMINATES.
  *
- * SCOPE, STATED HONESTLY: the guard compares deterministic cheerio DOM-shape snapshots (visible
- * text tokens, focusable count, image count, informative-figure alt emptying). It has no notion of
- * computed style or ARIA visibility, so CSS-hiding and aria-hidden laundering are NOT caught by
- * this gate — the two "known limitation" tests at the bottom characterize that gap explicitly
- * rather than leave it undocumented.
+ * SCOPE, STATED HONESTLY: the guard compares deterministic cheerio DOM-shape snapshots — visible
+ * text tokens, focusable count, image count, informative-figure alt emptying, and (since the
+ * hardening pass) inline display:none / visibility:hidden, the `hidden` attribute, and aria-hidden
+ * classified risky-vs-decorative. It reads markup, not computed style, so a hiding cheat expressed
+ * through an external stylesheet class rather than these markup signals would still pass this gate.
+ * The remaining alt residual is also named: a bare, generically-named <img> outside a <figure>
+ * emptied to alt="" is caught by neither this gate nor the Layer C backstop.
  */
 
 const verdict = (before: string, after: string) => checkRegression(snapshot(before), snapshot(after));
@@ -90,24 +92,59 @@ describe("regression guard ACCEPTS legitimate fixes (proves it discriminates)", 
   });
 });
 
-describe("regression guard: KNOWN LIMITATIONS (characterized, not endorsed)", () => {
+describe("regression guard REJECTS hiding-to-pass (the gap that used to be characterized here)", () => {
   /**
-   * These two assert CURRENT behaviour so the gap is visible and locked: the guard's snapshots are
-   * DOM-shape only (cheerio, no layout/ARIA resolution), so visibility-based laundering slips past
-   * THIS gate. Documented deliberately — if we later teach the guard about hiding, these tests
-   * fail loudly and must be updated, which is exactly the signal we want.
+   * These two started life asserting the OPPOSITE — they documented a real blind spot, deliberately
+   * written to fail loudly if the guard was ever hardened. It has been, so they now assert the
+   * rejection instead. Hiding is the cheat that would otherwise slip through the entire stack,
+   * because Layer B's visibility filter drops hidden elements, making a hidden violation "resolve".
    */
-  it("display:none on an informative element is NOT caught by this gate (DOM-shape only)", () => {
+  it("display:none on previously-visible informative content → rejected", () => {
     const before = page(`<main><p>Important notice about your order.</p><img src="a.jpg" alt="Order diagram"></main>`);
     const after = page(`<main><p style="display:none">Important notice about your order.</p><img src="a.jpg" alt="Order diagram" style="display:none"></main>`);
     const r = verdict(before, after);
-    expect(r.ok).toBe(true); // gap: cheerio text() and img count are unchanged by CSS hiding
+    expect(r.ok).toBe(false);
+    expect(r.reasons.join(" ")).toMatch(/hidden with inline display:none \/ visibility:hidden \(0 → 2\)/);
   });
 
-  it('aria-hidden="true" on a focusable control is NOT caught by this gate', () => {
+  it("visibility:hidden on previously-visible content → rejected", () => {
+    const before = page(`<main><p>Delivery is delayed by two days.</p></main>`);
+    const after = page(`<main><p style="visibility: hidden">Delivery is delayed by two days.</p></main>`);
+    const r = verdict(before, after);
+    expect(r.ok).toBe(false);
+    expect(r.reasons.join(" ")).toMatch(/hidden with inline display:none \/ visibility:hidden/);
+  });
+
+  it("the hidden attribute on previously-visible content → rejected", () => {
+    const before = page(`<main><p>Your card was declined.</p></main>`);
+    const after = page(`<main><p hidden>Your card was declined.</p></main>`);
+    const r = verdict(before, after);
+    expect(r.ok).toBe(false);
+    expect(r.reasons.join(" ")).toMatch(/hidden with the hidden attribute \(0 → 1\)/);
+  });
+
+  it('aria-hidden="true" on a focusable control → rejected', () => {
     const before = page(`<main><button type="button" aria-label="Play">&#9654;</button></main>`);
     const after = page(`<main><button type="button" aria-label="Play" aria-hidden="true">&#9654;</button></main>`);
     const r = verdict(before, after);
-    expect(r.ok).toBe(true); // gap: the focusable selector does not resolve ARIA visibility
+    expect(r.ok).toBe(false);
+    expect(r.reasons.join(" ")).toMatch(/aria-hidden="true" was put on something a user needs/);
+  });
+
+  it('aria-hidden="true" on a wrapper containing a control or text → rejected', () => {
+    const before = page(`<main><div><p>Checkout total: $42</p><button type="button">Pay now</button></div></main>`);
+    const after = page(`<main><div aria-hidden="true"><p>Checkout total: $42</p><button type="button">Pay now</button></div></main>`);
+    const r = verdict(before, after);
+    expect(r.ok).toBe(false);
+    expect(r.reasons.join(" ")).toMatch(/aria-hidden="true" was put on something a user needs/);
+  });
+
+  it('aria-hidden="true" on a DECORATIVE glyph → still ACCEPTED (this is correct practice)', () => {
+    // Our own fixer emits exactly this: hide the text-free, non-focusable glyph inside an
+    // already-labelled control so a screen reader does not announce it twice. A guard that
+    // rejected this would break real fixes — 7 committed cassettes do it.
+    const before = page(`<main><button type="button" aria-label="Play track"><span>&#9654;</span></button></main>`);
+    const after = page(`<main><button type="button" aria-label="Play track"><span aria-hidden="true">&#9654;</span></button></main>`);
+    expect(verdict(before, after)).toEqual({ ok: true, reasons: [] });
   });
 });

@@ -4,14 +4,16 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import * as cheerio from "cheerio";
 import { runAdvanced } from "../src/agents/advanced.js";
+import { isRiskyAriaHidden } from "../src/agents/regression-guard.js";
 
 /**
  * Measured proof that NO reported fix is a hidden-content artifact.
  *
- * WHY THIS EXISTS: the regression guard is DOM-shape only, so CSS hiding and `aria-hidden`
- * laundering are not caught by that gate — and worse, Layer B's visibility filter drops hidden
- * elements, so hiding an offending control would make its violation "resolve" across the stack.
- * Until now we could only ASSERT that our numbers contain no hiding artifacts. This measures it.
+ * WHY THIS EXISTS: hiding is the cheat that would otherwise slip through the whole stack, because
+ * Layer B's visibility filter drops hidden elements, so a hidden violation "resolves". The guard now
+ * REJECTS markup-level hiding (see test/regression-guard.test.ts), but a gate only stops what it is
+ * shown; this file is the independent measurement that our REPORTED numbers contain no hiding
+ * artifact — asserted before, measured here, and it keeps holding as the guard evolves.
  *
  * COVERAGE ARGUMENT: an applied fix is either (a) an LLM candidate — every one of which came from
  * a committed cassette, and `every candidate in the sealed prompt set` is checked below, a superset
@@ -24,8 +26,6 @@ import { runAdvanced } from "../src/agents/advanced.js";
  * the glyph twice. Laundering is hiding something a user needs: a focusable control, an element
  * containing a focusable control, or element text. We measure the risky class, not the benign one.
  */
-
-const FOCUSABLE = "a[href],button,input,select,textarea,[tabindex]";
 
 interface HidingProfile {
   /** inline style display:none / visibility:hidden */
@@ -46,11 +46,10 @@ function hidingProfile(html: string): HidingProfile {
   const hiddenAttr = $("[hidden]").length;
   let ariaHiddenRisky = 0;
   let ariaHiddenDecorative = 0;
+  // Imported from the guard itself, so this measurement and the gate can never disagree about
+  // what "risky" means (the guard now rejects on the same predicate).
   $('[aria-hidden="true"]').each((_i, e) => {
-    const $e = $(e);
-    const words = ($e.text() ?? "").trim().split(/\s+/).filter((w) => /[a-z0-9]/i.test(w)).length;
-    const risky = $e.is(FOCUSABLE) || $e.find(FOCUSABLE).length > 0 || words > 0;
-    if (risky) ariaHiddenRisky++;
+    if (isRiskyAriaHidden($, e)) ariaHiddenRisky++;
     else ariaHiddenDecorative++;
   });
   return { inlineHidden, hiddenAttr, ariaHiddenRisky, ariaHiddenDecorative };

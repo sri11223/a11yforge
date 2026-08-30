@@ -16,10 +16,36 @@ export interface DomSnapshot {
   images: number;
   interactive: number;
   emptyAltInFigure: number;
+  /** elements hidden via inline style (display:none / visibility:hidden) */
+  inlineHidden: number;
+  /** elements carrying the boolean `hidden` attribute */
+  hiddenAttr: number;
+  /** aria-hidden="true" on something a user needs — see isRiskyAriaHidden */
+  ariaHiddenRisky: number;
+  /** aria-hidden="true" on a text-free, non-focusable decorative element (legitimate) */
+  ariaHiddenDecorative: number;
 }
 
 const FOCUSABLE = "a[href],button,input,select,textarea,[tabindex]";
 const INTERACTIVE = "a[href],button,input,select,textarea,[role=button],[role=link],[onclick]";
+
+/**
+ * Is this `aria-hidden="true"` hiding something the user needs?
+ *
+ * RISKY: the element is focusable, contains a focusable descendant, or carries text — hiding any of
+ * those from assistive tech removes something real.
+ * LEGITIMATE: a text-free, non-focusable decorative node — e.g. `<span aria-hidden="true">▶</span>`
+ * inside an already-labelled button, which stops the glyph being announced twice. That is the
+ * recommended pattern, and our own fixer emits it, so the guard must NOT reject it.
+ *
+ * Exported so the corpus-wide hiding audit (test/no-hidden-content.test.ts) uses this exact
+ * definition: the gate and the measurement can then never disagree about what "risky" means.
+ */
+export function isRiskyAriaHidden($: cheerio.CheerioAPI, el: Parameters<cheerio.CheerioAPI>[0]): boolean {
+  const $el = $(el);
+  const words = ($el.text() ?? "").trim().split(/\s+/).filter((w) => /[a-z0-9]/i.test(w)).length;
+  return $el.is(FOCUSABLE) || $el.find(FOCUSABLE).length > 0 || words > 0;
+}
 
 export function snapshot(html: string): DomSnapshot {
   const $ = cheerio.load(html);
@@ -39,12 +65,26 @@ export function snapshot(html: string): DomSnapshot {
       if (!capDescriptive) emptyAltInFigure++;
     }
   });
+  const inlineHidden = $("[style]").filter((_i, el) =>
+    /display\s*:\s*none|visibility\s*:\s*hidden/i.test($(el).attr("style") ?? ""),
+  ).length;
+  let ariaHiddenRisky = 0;
+  let ariaHiddenDecorative = 0;
+  $('[aria-hidden="true"]').each((_i, el) => {
+    if (isRiskyAriaHidden($, el)) ariaHiddenRisky++;
+    else ariaHiddenDecorative++;
+  });
+
   return {
     textTokens,
     focusable: $(FOCUSABLE).length,
     images: $("img").length,
     interactive: $(INTERACTIVE).length,
     emptyAltInFigure,
+    inlineHidden,
+    hiddenAttr: $("[hidden]").length,
+    ariaHiddenRisky,
+    ariaHiddenDecorative,
   };
 }
 
@@ -81,6 +121,19 @@ export function checkRegression(before: DomSnapshot, after: DomSnapshot): Regres
   }
   if (after.emptyAltInFigure > before.emptyAltInFigure) {
     reasons.push(`an informative image (in a <figure>) was emptied to alt="" to satisfy a checker`);
+  }
+  // Hiding-to-pass: the cheat that would otherwise slip through the whole stack, because Layer B's
+  // visibility filter drops hidden elements, so a hidden violation "resolves". Decorative
+  // aria-hidden (a text-free, non-focusable glyph inside a labelled control) is deliberately NOT
+  // counted — that is the recommended pattern and our own fixer emits it.
+  if (after.inlineHidden > before.inlineHidden) {
+    reasons.push(`content was hidden with inline display:none / visibility:hidden (${before.inlineHidden} → ${after.inlineHidden}) — hiding is not fixing`);
+  }
+  if (after.hiddenAttr > before.hiddenAttr) {
+    reasons.push(`content was hidden with the hidden attribute (${before.hiddenAttr} → ${after.hiddenAttr}) — hiding is not fixing`);
+  }
+  if (after.ariaHiddenRisky > before.ariaHiddenRisky) {
+    reasons.push(`aria-hidden="true" was put on something a user needs — focusable, containing a control, or carrying text (${before.ariaHiddenRisky} → ${after.ariaHiddenRisky})`);
   }
   return { ok: reasons.length === 0, reasons };
 }
