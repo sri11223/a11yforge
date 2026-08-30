@@ -32,10 +32,16 @@ cassettes — this is offline-replay reproducibility, not a claim that the LLM i
 > `ablation.json` remain byte-identical to the sealed values above — the fix is a proven no-op
 > on the headline corpus (see CHANGELOG "Robustness at scale").
 
-> **Also verified from a fresh clone (2026-08-30).** A `git clone` of origin at `06a0d2e` into a new
+> **Also verified from a fresh clone (2026-08-30).** A `git clone` of origin at `60e7204` into a new
 > directory, fresh `node_modules` via `npm ci`, an **empty** `PLAYWRIGHT_BROWSERS_PATH` with
 > `chromium-1234` installed separately by `npx playwright install chromium`, Node v22.22.3:
 > `npm run eval` produced an `out/metrics.json` byte-identical to the committed `metrics.json`
 > (SHA-256 `071387c287b8…`), and `npm test` passed 157/157. Cold: the clone, `node_modules`,
 > `dist/`, the Playwright browser cache. NOT varied: same machine, same OS (Windows), same Node
 > version — cross-platform and cross-machine reproduction are untested and not claimed.
+
+> _SHA lineage, for exactness: the clone above was taken while that snapshot was commit
+> `06a0d2e`. The history was afterwards rewritten to drop a commit-message trailer — messages
+> only, no content — so the same snapshot is now commit `60e7204`. Its tree
+> (`c3dc6a9e1a8869f01e6ed8c62a5781870f8048db`) is byte-identical to the tree that was cloned and
+> reproduced, which is why the citation still holds. We did not re-run the clone after the rewrite._

@@ -139,7 +139,7 @@ deterministic), no OpenRouter key, near-zero cost. Full walkthrough + expected o
 [`docs/results/DETERMINISM.md`](docs/results/DETERMINISM.md).
 
 **Verified from a fresh clone (2026-08-30).** Not just re-run in the authoring tree: a `git clone`
-of origin at `06a0d2e` into a new directory, fresh `node_modules` via `npm ci`, an **empty**
+of origin at `60e7204` into a new directory, fresh `node_modules` via `npm ci`, an **empty**
 `PLAYWRIGHT_BROWSERS_PATH` with `chromium-1234` installed separately, Node v22.22.3 — `npm run eval`
 produced an `out/metrics.json` **byte-identical** to the committed
 [`docs/results/metrics.json`](docs/results/metrics.json), and `npm test` passed 157/157. Cold: the
