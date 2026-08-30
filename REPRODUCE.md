@@ -93,11 +93,12 @@ false-fixes caught by adding Layer C: 9
 - `npm run trajectories` — regenerates `docs/trajectories/` (27 traces + index).
 - `npm run determinism` — the 3× proof (below).
 
-> **Do not run `npm run report`.** It regenerates `docs/report.html` from
-> `src/report/html-report.ts`, which produces an *older, shorter* report (7 sections) and would
-> overwrite the committed 733-line report — discarding the real-world audit, the narration diff,
-> the related-work comparison, the before/after screenshots and the claim hierarchy. The committed
-> `docs/report.html` is the authoritative artifact; that generator has not been kept in step with it.
+**About `docs/report.html`.** It is a **hand-authored document**, not a generated one. It cites the
+generated artifacts in [`docs/results/`](docs/results/) — `metrics.json`, `ablation.json`,
+`sr-transcript.json`, `real-world-20.json` — and *those* are the reproducible outputs, via
+`npm run eval`, `npm run ablation` and the scripts in `eval/`. There is deliberately no report
+generator: an earlier one existed, drifted out of step with the hand-authored report, and was
+removed rather than left able to overwrite it.
 
 ## Determinism proof (3× byte-identical)
 

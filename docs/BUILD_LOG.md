@@ -413,6 +413,8 @@ announcement-string equivalence.
 
 **Done**
 - `src/report/html-report.ts` + `eval/build-report.ts` → `docs/report.html`: self-contained,
+  *(both files were later **removed** — the report became hand-authored and the stale generator could
+  have overwritten it; see the deletion commit.)*
   accessible end-to-end report — problem/user framing, three numbers (gap 95.8% / harm 8→0 /
   integrity), the {A}/{A,B}/{A,B,C} ablation as the hero (23→9→0 bars), the "hear it" SR
   transcript (css-reorder read Enterprise→Starter→Team), the confident-hallucination hot

@@ -44,7 +44,6 @@
     "lint": "eslint .",
     "eval": "tsc && node dist/eval/run-eval.js",
     "ablation": "tsc && node dist/eval/ablation-gated.js",
-    "report": "tsc && node dist/eval/build-report.js",
     "trajectories": "tsc && node dist/eval/export-trajectories.js",
     "determinism": "tsc && node dist/eval/determinism-proof.js",
     "audit": "tsc && node dist/src/cli/audit.js audit",
