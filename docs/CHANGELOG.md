@@ -170,6 +170,28 @@ silently (it previously applied only to ungrounded alt). The fix moved advanced'
 from 2 → 0 on the wide corpus and is **byte-identical on the sealed 27-page corpus** (the bug never
 manifested there), so the determinism-proven headline result is unaffected.
 
+## Related work — independent convergence
+
+Three 2025–26 papers independently converged on parts of this design while we were building; the
+full comparison table (theirs vs our deltas) is in [`report.html`](report.html#related) and
+[`README`](../README.md#related-work--independent-convergence-and-how-we-differ). Summary:
+
+- **Verified Repair** ([arXiv:2608.24913](https://arxiv.org/abs/2608.24913), Wanscher et al.) — the
+  closest work: independently invented an accept-only-if-violations-strictly-decrease loop and a
+  seeded-violation benchmark. **It also corroborates our central claim from the outside:** their
+  dual-condition protocol found unverified generation *improved and regressed pages at similar
+  rates* (24 improvements vs 20 regressions). They are CSS-only; we repair HTML/ARIA/alt and add
+  the CDP a11y-tree, screen-reader-transcript and calibrated-judge layers, plus a published κ
+  (they report no inter-rater statistic) and replay against a real LLM fixer (they used stub
+  generators).
+- **AccessGuru** ([arXiv:2507.19549](https://arxiv.org/abs/2507.19549), Fathallah et al.) — their
+  Syntactic/Semantic/Layout taxonomy parallels our mechanical/semantic/behavioral routing
+  (acknowledged, not claimed as ours); we add the pre-commit regression guard and the
+  grounded-or-escalate alt rule.
+- **A11YRepair** ([arXiv:2606.21926](https://arxiv.org/abs/2606.21926), Huang et al., ASE 2026) —
+  repo-level repair with patches merged into major open-source projects. **Our honest scope limit:**
+  A11yForge is single-page; our contribution is verification depth per fix, not repair breadth.
+
 ## Calibration
 
 The Layer C semantic judge is calibrated against a 64-item expert anchor set:

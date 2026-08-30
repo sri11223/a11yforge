@@ -73,6 +73,7 @@ html{scroll-behavior:smooth}
   <a href="#hearit">Hear it</a>
   <a href="#seeit">See it</a>
   <a href="#sig">Significance</a>
+  <a href="#related">Related work</a>
   <a href="#traces">Traces</a>
   <a href="#reproduce">Reproduce</a>
 </nav>
@@ -528,6 +529,51 @@ html{scroll-behavior:smooth}
   The direction is unambiguous and the ablation (which doesn't depend on discordant-pair
   counts) is the decisive per-layer evidence. Honest read: strong, consistent, not yet
   statistically significant — widen the corpus to confirm, not to chase a p-value.</p>
+</section>
+
+<section aria-labelledby="related">
+  <h2 id="related">Related work — independent convergence, and how we differ</h2>
+  <p>Three 2025–26 papers converged, in parallel with this build, on parts of the same design.
+  We did not predate them and we do not claim to outperform them overall. Two points are worth
+  making plainly: <strong>an independent group measuring harm found the same thing we did</strong>,
+  and our contribution is <strong>depth of verification per fix</strong>, not repair breadth.</p>
+
+  <p class="callout"><strong>External corroboration of our central claim.</strong> Wanscher et al.
+  ran a dual-condition protocol — deliberately "measuring harm as carefully as benefit" — over six
+  small open-weight models on twenty live sites, and report that <strong>unverified generation
+  improved and regressed pages at similar rates (24 improvements vs 20 regressions)</strong>. That
+  is an independent team, different stack, reaching our conclusion: a fixer you don't verify is
+  roughly as likely to break a page as help it. Our contribution is the verification that closes
+  that gap (harm 8 → 0, same model, same prompt).</p>
+
+  <table>
+    <thead><tr><th scope="col">Work</th><th scope="col">What they do</th><th scope="col">How A11yForge differs</th></tr></thead>
+    <tbody>
+      <tr>
+        <th scope="row"><strong>Verified Repair</strong><br><span class="muted">Wanscher, Lorensen, Shafiq, Moghaddam, Alipour — <a href="https://arxiv.org/abs/2608.24913">arXiv:2608.24913</a></span></th>
+        <td>Privacy-preserving Chrome extension; local small models (7B–14B); <strong>additive CSS</strong> targeting 18 WCAG/W3C cognitive-accessibility metrics; an audit–inject–verify loop that <strong>accepts a change only if violations strictly decrease</strong>; a trilingual seeded-violation benchmark (57 seeded violations detected with no false positives; 126 harmful candidates rejected).</td>
+        <td>Closest to us — they independently invented the accept-only-if-violations-decrease gate and the seeded-violation benchmark. Differences: they are <strong>CSS-only and never generate content</strong>; we repair HTML/ARIA/alt. They verify with axe + computed-style probes; we add a <strong>CDP accessibility-tree layer, a virtual-screen-reader transcript, and a calibrated LLM judge</strong>. They had a single evaluator and report no inter-rater reliability statistic (they flag this as a limitation); we publish <strong>Cohen's κ</strong> against a human anchor set (itself single-annotator — see our caveat). Their benchmark guarantees were validated with <strong>stub generators</strong>; ours is exercised against a <strong>real LLM fixer</strong> under cassette-sealed byte-identical replay.</td>
+      </tr>
+      <tr>
+        <th scope="row"><strong>AccessGuru</strong><br><span class="muted">Fathallah, Hernández, Staab — <a href="https://arxiv.org/abs/2507.19549">arXiv:2507.19549</a></span></th>
+        <td>Taxonomy of <strong>Syntactic / Semantic / Layout</strong> violations driving both prompting and metrics; benchmark built from real-world violations; semantic accuracy judged against human expert corrections; reports up to <strong>84%</strong> average violation-score decrease vs at most 50% for prior methods.</td>
+        <td>Their taxonomy <strong>parallels our mechanical / semantic / behavioral routing</strong> — we acknowledge that honestly rather than claim novelty for the split. We add a <strong>pre-commit regression guard</strong> (fix-by-deletion or hiding is rejected at the gate, before anything is committed) and a structural <strong>grounded-or-escalate rule for alt text</strong> — neither of which they have.</td>
+      </tr>
+      <tr>
+        <th scope="row"><strong>A11YRepair</strong><br><span class="muted">Huang, Zhu, Zhang, Xie, Chen — <a href="https://arxiv.org/abs/2606.21926">arXiv:2606.21926</a>, ASE 2026</span></th>
+        <td><strong>Repo-level source-code repair</strong>: clusters structurally related violations and decomposes them by root cause; WCAG-driven knowledge for localization and patch synthesis; A11YBench of 60 real GitHub projects; patches <strong>merged into projects from Google, Microsoft, Facebook, IBM, Kubernetes, Docker and Alibaba</strong>.</td>
+        <td><strong>Our scope limitation, stated out loud:</strong> they operate repo-level across many files and have landed patches in major open-source projects; <strong>A11yForge is single-page</strong>. Our contribution is orthogonal — <strong>verification depth per fix</strong>, not repair breadth. A11YRepair is the stronger result on coverage; we are the stronger result on proving a fix is actually usable.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="muted" style="margin-top:12px">Where we believe we are distinct, stated with the same
+  hedging we use for our own numbers: <strong>we are not aware of any tool or paper that ships</strong>
+  (a) a screen-reader-transcript verification layer inside the fix loop, (b) a structural
+  <em>grounded-or-escalate</em> invariant that makes alt-text hallucination impossible rather than
+  discouraged, or (c) a fully cassette-sealed, byte-identical-replayable remediation evaluation. Each
+  number above is attributable to the paper it came from; ours are in
+  <a href="results/metrics.json">metrics.json</a> and the sections above.</p>
 </section>
 
 <section aria-labelledby="traces">

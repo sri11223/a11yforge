@@ -126,6 +126,29 @@ Locally, the same check: `npm run audit -- <url|path> [--ci] [--no-llm] [--html 
   verify-loop [A,B,C] → regression guard (rejects fix-by-delete/hide) → human checkpoint for
   ungroundable alt → memory. Only the pipeline differs from the baseline.
 
+## Related work — independent convergence, and how we differ
+
+Three 2025–26 papers converged, in parallel with this build, on parts of the same design. We do not
+predate them and do not claim to outperform them overall; our contribution is **depth of
+verification per fix**, not repair breadth.
+
+**External corroboration of our central claim:** Wanscher et al. ran a dual-condition protocol
+measuring harm as carefully as benefit — six small open-weight models over twenty live sites — and
+report that **unverified generation improved and regressed pages at similar rates (24 improvements
+vs 20 regressions)**. An independent team, different stack, our conclusion. A11yForge's verification
+is what closes that gap (harm 8 → 0, same model and prompt).
+
+| Work | Theirs | Ours (delta) |
+|---|---|---|
+| **Verified Repair** — Wanscher, Lorensen, Shafiq, Moghaddam, Alipour ([arXiv:2608.24913](https://arxiv.org/abs/2608.24913)) | Chrome extension, local 7B–14B models, **additive CSS** over 18 WCAG/W3C cognitive metrics; audit–inject–verify that **accepts only if violations strictly decrease**; trilingual seeded-violation benchmark (57 detected, no false positives; 126 harmful candidates rejected) | Closest work — they independently invented the strictly-decrease gate and seeded benchmark. They are **CSS-only, never generate content**; we repair HTML/ARIA/alt. They verify via axe + computed-style probes; we add a **CDP a11y-tree layer, a virtual-screen-reader transcript, and a calibrated LLM judge**. They report **no inter-rater statistic** (their flagged limitation); we publish **Cohen's κ** vs a human anchor set. Their guarantees were validated with **stub generators**; ours against a **real LLM fixer** under byte-identical cassette replay |
+| **AccessGuru** — Fathallah, Hernández, Staab ([arXiv:2507.19549](https://arxiv.org/abs/2507.19549)) | **Syntactic / Semantic / Layout** taxonomy driving prompting + metrics; real-world-violation benchmark; semantic accuracy vs human expert corrections; up to **84%** avg violation-score decrease (vs ≤50% prior) | Their taxonomy **parallels our mechanical/semantic/behavioral routing** — acknowledged, not claimed as ours. We add a **pre-commit regression guard** (fix-by-deletion/hiding rejected at the gate) and a structural **grounded-or-escalate** rule for alt text |
+| **A11YRepair** — Huang, Zhu, Zhang, Xie, Chen ([arXiv:2606.21926](https://arxiv.org/abs/2606.21926), ASE 2026) | **Repo-level** source repair: clusters related violations, decomposes by root cause, WCAG-driven localization/synthesis; A11YBench (60 real GitHub projects); patches **merged into Google, Microsoft, Facebook, IBM, Kubernetes, Docker, Alibaba** projects | **Our scope limitation, said plainly:** they are repo-level across many files with landed upstream patches; **A11yForge is single-page**. Orthogonal contribution — verification depth per fix, not breadth |
+
+Stated with the same hedging as our own numbers: **we are not aware of any tool or paper that
+ships** (a) a screen-reader-transcript verification layer inside the fix loop, (b) a structural
+*grounded-or-escalate* invariant making alt hallucination impossible rather than discouraged, or
+(c) a fully cassette-sealed, byte-identical-replayable remediation evaluation.
+
 ## Deliverables
 
 - **Code + improvement changelog:** this repo · [`docs/CHANGELOG.md`](docs/CHANGELOG.md)
