@@ -31,3 +31,11 @@ cassettes — this is offline-replay reproducibility, not a claim that the LLM i
 > (`src/agents/advanced.ts`), this proof was re-run and the 27-page `metrics.json` and
 > `ablation.json` remain byte-identical to the sealed values above — the fix is a proven no-op
 > on the headline corpus (see CHANGELOG "Robustness at scale").
+
+> **Also verified from a fresh clone (2026-08-30).** A `git clone` of origin at `06a0d2e` into a new
+> directory, fresh `node_modules` via `npm ci`, an **empty** `PLAYWRIGHT_BROWSERS_PATH` with
+> `chromium-1234` installed separately by `npx playwright install chromium`, Node v22.22.3:
+> `npm run eval` produced an `out/metrics.json` byte-identical to the committed `metrics.json`
+> (SHA-256 `071387c287b8…`), and `npm test` passed 157/157. Cold: the clone, `node_modules`,
+> `dist/`, the Playwright browser cache. NOT varied: same machine, same OS (Windows), same Node
+> version — cross-platform and cross-machine reproduction are untested and not claimed.

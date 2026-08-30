@@ -720,6 +720,13 @@ html{scroll-behavior:smooth}
 </section>
 
 <footer id="reproduce">
+  <p><strong>Verified from a fresh clone (2026-08-30):</strong> a clone of origin at
+  <code>06a0d2e</code> into a new directory, fresh <code>node_modules</code>, an empty
+  <code>PLAYWRIGHT_BROWSERS_PATH</code> with <code>chromium-1234</code> installed separately, Node
+  v22.22.3 — <code>npm run eval</code> produced <code>out/metrics.json</code> <strong>byte-identical</strong>
+  to the committed <a href="results/metrics.json">metrics.json</a>, and <code>npm test</code> passed
+  157/157. Cold: clone, node_modules, dist, browser cache. Not varied: same machine, same OS, same
+  Node — cross-platform reproduction is untested and not claimed.</p>
   <p>Reproducible byte-for-byte from committed cassettes (<code>A11YFORGE_MODE=replay</code>) —
   offline replay, not a claim the LLM is deterministic.
   Fixer = <span class="tag">claude-sonnet-5</span> · Judge = <span class="tag">gpt-4o-mini</span>
