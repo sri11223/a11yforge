@@ -107,8 +107,13 @@ numbers can mean opposite things:
 - For **true-fix** the event is a success, so \`b\` large ⇒ the baseline fixed issues the verified
   agent did not ⇒ **favours the baseline**.
 
-At n=45 both \`harmfulPages\` and \`trueFix\` are \`b=6, c=0, p=0.041\` — *the same triple pointing in
-opposite directions*. Every row below therefore states the direction in words.
+This is not a hypothetical: **the collision occurs in both corpora.**
+
+- \`metrics.json\` (n=${n27}): \`trueFix\` and \`falseFix\` are both \`b=${m27.mcnemar.trueFix.b}, c=${m27.mcnemar.trueFix.c}, χ²=${m27.mcnemar.trueFix.statistic}, p=${fmtP(m27.mcnemar.trueFix.p)}\` — identical, and trueFix favours the baseline while falseFix favours the verified agent.
+- \`metrics-wide.json\` (n=${n45}): \`trueFix\` and \`harmfulPages\` are both \`b=${m45.mcnemar.trueFix.b}, c=${m45.mcnemar.trueFix.c}, χ²=${m45.mcnemar.trueFix.statistic}, p=${fmtP(m45.mcnemar.trueFix.p)}\` — likewise opposite.
+
+**Identical \`(b, c, χ², p)\` can carry opposite meaning, so direction is the load-bearing field, not
+the p-value.** Every row below states it in words, and we never present bare b/c anywhere.
 
 ## 3. Paired tests, both corpora
 
@@ -118,7 +123,7 @@ opposite directions*. Every row below therefore states the direction in words.
 |---|---|---|---|---|---|---|---|
 ${contrastRows(m27.mcnemar).join("\n")}
 
-### Replication corpus (n=${n45} pages, ${m45.n.issues} issues)
+### Extended corpus (n=${n45} pages, ${m45.n.issues} issues) — a SUPERSET of the 27, not a separate study
 
 | Contrast | b (baseline-only) | c (advanced-only) | χ² | p (χ², published) | p (exact, authoritative) | sig. at α=.05 | direction |
 |---|---|---|---|---|---|---|---|
@@ -129,9 +134,18 @@ directionally identical but **underpowered at n=27** (exact p=${fmtP(exactTwoSid
 ${m27.mcnemar.harmfulPages.b + m27.mcnemar.harmfulPages.c} discordant pairs). We do not claim significance on the sealed corpus.
 And the coverage contrast is **significant against us** at n=45 — see §5.
 
+> **The most important caveat on this page, stated before anyone else can find it.** The n=45 set is a
+> **superset** of the sealed 27 — same 27 pages plus 18 more (\`injected-v2\`), not a second
+> independent study. And the 18 additional pages contributed exactly **one** additional discordant
+> pair on the harm contrast (b goes ${m27.mcnemar.harmfulPages.b} → ${m45.mcnemar.harmfulPages.b}). Since the exact two-sided p for b=${m27.mcnemar.harmfulPages.b}, c=0 is
+> ${fmtP(exactTwoSided(m27.mcnemar.harmfulPages.b, 0))} and for b=${m45.mcnemar.harmfulPages.b}, c=0 is ${fmtP(exactTwoSided(m45.mcnemar.harmfulPages.b, 0))}, **crossing α=0.05 rests on that single extra
+> harmed page.** The effect is consistent and one-sided in every measurement we have (c=0 on every
+> harm contrast, both corpora), but "significant at n=45" is one page away from "not significant at
+> n=27" and we are not going to present it as more than that.
+
 ## 4. Effect sizes, not just p-values
 
-| | n=${n27} (sealed) | n=${n45} (replication) |
+| | n=${n27} (sealed) | n=${n45} (extended superset) |
 |---|---|---|
 | Harmful pages, baseline | ${h27b} — ${ci(h27b, n27)} | ${h45b} — ${ci(h45b, n45)} |
 | Harmful pages, verified agent | ${h27a} — ${ci(h27a, n27)} | ${h45a} — ${ci(h45a, n45)} |
@@ -170,18 +184,19 @@ in opposite directions. A measured trade-off is the honest result; a clean sweep
 Three **nested** verification conditions, each strictly containing the last, scored by the same
 full A/B/C harness — false-fix pages shipped:
 
-| Verify gate | n=${n27} (sealed) | n=${n45} (replication) |
+| Verify gate | n=${n27} (sealed) | n=${n45} (extended superset) |
 |---|---|---|
 | \`{A}\` scanner only | ${a27.rows["{A}"].falseFixPages} | ${a45.rows["{A}"].falseFixPages} |
 | \`{A,B}\` + screen-reader/keyboard | ${a27.rows["{A,B}"].falseFixPages} | ${a45.rows["{A,B}"].falseFixPages} |
 | \`{A,B,C}\` + semantic | ${a27.rows["{A,B,C}"].falseFixPages} | ${a45.rows["{A,B,C}"].falseFixPages} |
 
-The relationship is **monotone in verification depth and replicates on both corpora**. We are
+The relationship is **monotone in verification depth and holds on both the sealed 27 and the extended 45**. We are
 careful about what this is: a dose-response pattern across nested conditions, **not a formal
 statistical test** — we run no trend test and claim no p-value for it. But it does not depend on
 discordant-pair counts, which is precisely why we treat it as our strongest evidence at this n: a
-single p-value can be an artifact of five pairs; a monotone gradient reproduced on two independently
-constructed corpora is much harder to explain away.
+single p-value can be an artifact of five pairs; a monotone gradient that holds when the corpus is extended by 18 differently-generated pages is much
+harder to explain away. (It is the same gradient measured twice on nested sets, not two independent
+studies — see the caveat in §3.)
 
 ## 7. Power and limitations
 
@@ -189,11 +204,13 @@ constructed corpora is much harder to explain away.
   headline contrast. With c=0, the *smallest attainable* two-sided exact p at b=5 is 0.0625 — the
   sealed corpus **cannot** reach α=0.05 on this contrast no matter how one-sided the result. That is
   a property of the design, not a finding.
-- **Two corpora, not two samples of the world.** Both are adversarial-by-construction, built to
-  isolate what scanners miss. The gap percentages characterize the corpora, not field prevalence.
-- **The replication is larger but not independent of us.** injected-v2 was generated by us, by a
-  different procedure than the original injected bucket. It is a replication in construction, not an
-  external dataset.
+- **Not two independent studies.** n=45 is a **superset** of n=27 (adversarial + injected + the 18
+  new injected-v2 pages), so the two rows are nested measurements, not replications in the strict
+  sense. Both corpora are adversarial-by-construction, built to isolate what scanners miss, so the
+  gap percentages characterize the corpora, not field prevalence.
+- **The extension is larger but still ours.** injected-v2 was generated by us, by a different
+  procedure than the original injected bucket. It adds differently-constructed pages; it is not an
+  external dataset, and it does not make n=45 independent of n=27.
 - **Single-annotator κ.** The Layer-C judge's κ=0.98 is agreement with one team-authored anchor set —
   a calibration check, not inter-annotator reliability.
 - **The 20-site real-world audit is detection-only.** No fixes were applied to sites we don't own, so

@@ -63,7 +63,17 @@ export interface McNemarResult {
 
 /**
  * McNemar's test on a paired 2x2 table (with continuity correction).
- * b = baseline-only successes, c = advanced-only successes.
+ *
+ * b = the BASELINE-only event, c = the ADVANCED-only event. The convention is uniform, but the
+ * event's valence is NOT: it is a SUCCESS for the trueFix/falseFix contrasts and a FAILURE for the
+ * regression/harmful-page contrasts. So a large b favours the baseline in the first case and the
+ * verified agent in the second — identical (b, c, χ², p) can carry opposite meaning, and the caller
+ * owns the direction. See docs/results/STATISTICS.md §2.
+ *
+ * NOTE on the estimator: this is the chi-square approximation, which is conventionally invalid at
+ * small discordant counts (b+c < ~25); ours are 5-6. The exact binomial (sign) test is computed
+ * alongside in eval/stats-supplement.ts and is authoritative. This function is left as-is on
+ * purpose — its output is embedded in the sealed, byte-identical metrics artifacts.
  */
 export function mcNemar(b: number, c: number): McNemarResult {
   const n = b + c;
