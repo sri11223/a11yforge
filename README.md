@@ -74,8 +74,30 @@ invariant, and every forgone issue is accounted for — at n=45, **4 escalated t
 unresolved = 8 declined**, against the baseline's 0.
 
 So the quantified trade: **forgo 8 issues of automatic coverage, eliminate 10 harmful changes across
-6 pages** — both effects significant at n=45, in opposite directions. Full derivation, exact tests,
-effect sizes (ARR, NNT) and limitations: [`docs/results/STATISTICS.md`](docs/results/STATISTICS.md).
+6 pages** — both effects significant at n=45, in opposite directions.
+
+### The claim hierarchy — and the p-value is *not* the top of it
+
+Ordered by robustness, not by which number sounds best:
+
+1. **Zero counter-examples (primary).** Across **all 45 pages**, on every harm contrast in both
+   sets, the advanced-only cell is **c = 0** — not one case where the verified agent harmed a page
+   the baseline left intact, false-fixed where the baseline did not, or regressed where it did not.
+   No counter-examples, and it does not hinge on a single pair.
+2. **Categorical harm elimination.** 8 → 0 and 10 → 0 harmful changes; false-fix rate 4.3% → 0% and
+   2.9% → 0%; harmful-page rate 18.5% → 0% and 13.3% → 0%, with **non-overlapping Wilson intervals
+   at n=45**. Counts, not inference.
+3. **Dose-response.** False-fix pages fall monotonically with verification depth — 23 → 9 → 0 and
+   38 → 13 → 0, same shape on both sets, independent of discordant-pair counts. (A pattern, not a
+   formal trend test.)
+4. **The significance test, last, with its fragility inline.** Harm is significant at n=45 (exact
+   0.031) but not at n=27 (exact 0.0625 — which is the *α-floor* there), and the crossing rests on a
+   single additional discordant pair. It corroborates; it does not carry the argument.
+
+**The significance test is the weakest evidence we have here, not the strongest — the robust finding
+is that across 45 pages the verified agent never once did harm the baseline avoided.** Full
+derivation, exact tests, effect sizes (ARR, NNT) and limitations:
+[`docs/results/STATISTICS.md`](docs/results/STATISTICS.md).
 
 **The gap number, honestly:** on the sealed corpus (27 pages = 15 adversarial + 12 injected), 23 of
 the 24 axe-clean pages still fail Layer B/C — **95.8%**. The corpus is *adversarial by construction*

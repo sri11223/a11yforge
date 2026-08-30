@@ -558,22 +558,61 @@ html{scroll-behavior:smooth}
 </section>
 
 <section aria-labelledby="sig">
-  <h2 id="sig">Significance — reported honestly</h2>
-  <p>Paired McNemar (n=27 pages, 46 issues). The advanced agent never does worse,
-  so every discordant pair is baseline-only (c=0) — which means McNemar cannot certify an
-  effect no matter how one-sided:</p>
+  <h2 id="sig">Evidence, strongest first — and the p-value is <em>not</em> the strongest</h2>
+  <p>Our claim hierarchy is deliberately ordered by robustness, not by which number sounds
+  best. The significance test comes <strong>last</strong>, because it is the most fragile thing
+  on this page.</p>
+
+  <h3>1. Zero counter-examples — the primary result</h3>
+  <p>Across <strong>all 45 pages</strong>, on every harm contrast in both sets, the
+  advanced-only cell is <strong>c = 0</strong>: there is <strong>not one case where the verified
+  agent harmed a page the baseline left intact, false-fixed where the baseline did not, or
+  regressed where the baseline did not.</strong> A perfect directional record with no
+  counter-examples, and — unlike the p-value — it does not hinge on a single pair.</p>
+
+  <h3>2. Categorical harm elimination</h3>
+  <p>Harmful changes shipped: <strong>8 → 0</strong> (n=27) and <strong>10 → 0</strong> (n=45).
+  False-fix rate <strong>4.3% → 0%</strong> and <strong>2.9% → 0%</strong>; harmful-page rate
+  <strong>18.5% → 0%</strong> and <strong>13.3% → 0%</strong>, with <strong>non-overlapping
+  Wilson 95% intervals at n=45</strong> (13.3% [6.3, 26.2] vs 0.0% [0.0, 7.9]). Counts, not
+  inference.</p>
+
+  <h3>3. Dose-response across nested verification layers</h3>
+  <p>False-fix pages shipped fall monotonically as verification deepens — <strong>23 → 9 → 0</strong>
+  and <strong>38 → 13 → 0</strong> — the same shape on both sets. A large monotone gradient, not a
+  marginal effect, and it does not depend on discordant-pair counts at all. (Dose-response pattern,
+  not a formal trend test — we run none.)</p>
+
+  <h3>4. The significance test, last, with its fragility inline</h3>
+  <p>Paired McNemar. Every row states its <strong>direction in words</strong>, because identical
+  <code>(b, c, χ², p)</code> can carry opposite meaning — <code>b</code> is always the
+  baseline-only event, but that event is a <em>failure</em> for the harm contrasts and a
+  <em>success</em> for true-fix:</p>
   <table>
-    <thead><tr><th scope="col">Contrast</th><th scope="col">b</th><th scope="col">c</th><th scope="col">χ²</th><th scope="col">p</th><th scope="col">significant?</th></tr></thead>
+    <thead><tr><th scope="col">Contrast</th><th scope="col">b (baseline-only)</th><th scope="col">c (advanced-only)</th><th scope="col">p (χ²)</th><th scope="col">p (exact)</th><th scope="col">n=27 / n=45</th><th scope="col">direction</th></tr></thead>
     <tbody>
-    <tr><th scope="row">harmful pages</th><td>5</td><td>0</td><td>3.2</td><td>0.0736</td><td>no — trend</td></tr>
-    <tr><th scope="row">regressions</th><td>3</td><td>0</td><td>1.333</td><td>0.2482</td><td>no</td></tr>
-    <tr><th scope="row">false-fix</th><td>2</td><td>0</td><td>0.5</td><td>0.4795</td><td>no</td></tr>
+    <tr><th scope="row">harmful pages</th><td>5 / 6</td><td>0 / 0</td><td>0.0736 / 0.0412</td><td><strong>0.0625 / 0.0313</strong></td><td>not sig. / <strong>sig.</strong></td><td>favours <strong>verified agent</strong></td></tr>
+    <tr><th scope="row">regressions</th><td>3 / 4</td><td>0 / 0</td><td>0.2482 / 0.1336</td><td>0.2500 / 0.1250</td><td>not sig. / not sig.</td><td>favours <strong>verified agent</strong></td></tr>
+    <tr><th scope="row">false-fix</th><td>2 / 2</td><td>0 / 0</td><td>0.4795 / 0.4795</td><td>0.5000 / 0.5000</td><td>not sig. / not sig.</td><td>favours <strong>verified agent</strong></td></tr>
+    <tr><th scope="row">true-fix (coverage)</th><td>2 / 6</td><td>0 / 0</td><td>0.4795 / 0.0412</td><td>0.5000 / <strong>0.0313</strong></td><td>not sig. / <strong>sig.</strong></td><td>favours <strong>baseline</strong></td></tr>
     </tbody>
   </table>
-  <p class="muted" style="margin-top:12px">We do not overclaim: none reach α=0.05 at this n.
-  The direction is unambiguous and the ablation (which doesn't depend on discordant-pair
-  counts) is the decisive per-layer evidence. Honest read: strong, consistent, not yet
-  statistically significant — widen the corpus to confirm, not to chase a p-value.</p>
+  <p class="muted" style="margin-top:12px">We include the row that goes against us. The
+  coverage contrast is <strong>significant in the baseline's favour at n=45</strong> — that is the
+  deliberate-abstention trade-off quantified above, not a hidden defect. Note also that
+  <code>c=0</code> on true-fix means the verified agent never uniquely fixed something the baseline
+  missed; only on the <em>harm</em> contrasts is <code>c=0</code> a point in our favour, and we do
+  not blur the two.</p>
+  <p class="muted"><strong>The fragility, stated plainly.</strong> At n=27 nothing reaches α=0.05,
+  and it <em>cannot</em>: with c=0 and b=5 the smallest attainable two-sided exact p is 0.0625 — an
+  α-floor imposed by the design. At n=45 harm does reach significance (exact 0.031), but the 45-page
+  set is a <strong>superset</strong> of the 27 and the 18 extra pages contributed exactly
+  <strong>one</strong> additional discordant pair (b: 5 → 6), so that crossing rests on a single
+  additional harmed page.</p>
+  <p><strong>So: the significance test is the weakest evidence here, not the strongest. The robust
+  finding is that across 45 pages the verified agent never once did harm the baseline avoided.</strong>
+  Full derivation, exact tests, effect sizes and limitations:
+  <a href="results/STATISTICS.md">STATISTICS.md</a>.</p>
 </section>
 
 <section aria-labelledby="narration">

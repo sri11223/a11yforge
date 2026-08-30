@@ -81,6 +81,29 @@ hand-entered. Sources: [\`metrics.json\`](metrics.json) (sealed, n=27),
 [\`metrics-wide.json\`](metrics-wide.json) (n=45), [\`ablation.json\`](ablation.json),
 [\`ablation-wide.json\`](ablation-wide.json).
 
+## 0. The claim hierarchy — the p-value is deliberately LAST
+
+Ordered by robustness, not by which number sounds best:
+
+1. **Zero counter-examples (primary).** Across all ${n45} pages, on every *harm* contrast in both
+   sets, the advanced-only cell is **c = 0**: not one case where the verified agent harmed a page the
+   baseline left intact, false-fixed where the baseline did not, or regressed where the baseline did
+   not. No counter-examples, and it does not hinge on a single discordant pair.
+2. **Categorical harm elimination.** Harmful changes ${m27.harm.harmfulChanges.baseline} → ${m27.harm.harmfulChanges.advanced} (n=${n27}) and
+   ${m45.harm.harmfulChanges.baseline} → ${m45.harm.harmfulChanges.advanced} (n=${n45}); false-fix rate ${m27.falseFixRate.baseline} → ${m27.falseFixRate.advanced} and
+   ${m45.falseFixRate.baseline} → ${m45.falseFixRate.advanced}; harmful-page rate ${m27.harm.harmfulPageRate.baseline} → ${m27.harm.harmfulPageRate.advanced} and
+   ${m45.harm.harmfulPageRate.baseline} → ${m45.harm.harmfulPageRate.advanced} — **non-overlapping Wilson intervals at n=${n45}**. Counts, not inference.
+3. **Dose-response across nested verification layers** (§6): ${a27.rows["{A}"].falseFixPages}→${a27.rows["{A,B}"].falseFixPages}→${a27.rows["{A,B,C}"].falseFixPages} and
+   ${a45.rows["{A}"].falseFixPages}→${a45.rows["{A,B}"].falseFixPages}→${a45.rows["{A,B,C}"].falseFixPages}, the same monotone shape on both sets, independent of discordant-pair counts.
+4. **The significance test, last** (§3), with its fragility inline.
+
+> **The significance test is the weakest evidence on this page, not the strongest. The robust finding
+> is that across ${n45} pages the verified agent never once did harm the baseline avoided.**
+
+One precision note we will not blur: \`c = 0\` on the **true-fix** contrast is *not* a point in our
+favour — it means the verified agent never uniquely fixed something the baseline missed. Only on the
+**harm** contrasts does \`c = 0\` count as evidence for us.
+
 ## 1. Why this file exists: the chi-square in the sealed files is the wrong test at our n
 
 \`src/metrics/stats.ts\` implements McNemar's test with the chi-square approximation and a
