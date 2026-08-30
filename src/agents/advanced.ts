@@ -66,6 +66,25 @@ export interface AdvancedOptions {
   layers?: Layer[];
 }
 
+/**
+ * The exact reflexion diagnostic the agent feeds back to itself after a rejected attempt.
+ *
+ * Exported and consumed by eval/export-trajectories.ts so a published trace can only ever show the
+ * text the agent actually sent — a duplicated template in the exporter would drift and turn the
+ * trace into fiction. Returns "" when the attempt was accepted (nothing is fed back).
+ */
+export function reflexionFeedback(
+  it: Pick<Iteration, "guardOk" | "guardReasons" | "targetResolved" | "newFindings">,
+): string {
+  if (!it.guardOk) {
+    return `Your change removed or emptied content: ${it.guardReasons.join("; ")}. Fix the issue WITHOUT deleting or hiding content.`;
+  }
+  return [
+    it.targetResolved ? "" : "The target issue is still present after your change.",
+    it.newFindings.length ? `Your change introduced NEW accessibility issues that must also be resolved: ${it.newFindings.join(", ")}.` : "",
+  ].filter(Boolean).join(" ");
+}
+
 const key = (f: { wcag?: string; selector?: string }) => `${f.wcag ?? "?"}|${f.selector ?? ""}`;
 const sig = (f: Finding) => `${f.layer}:${f.wcag ?? "?"}:${(f.detail as { rule?: string })?.rule ?? (f.detail as { category?: string })?.category ?? ""}`;
 
@@ -218,7 +237,7 @@ export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Pro
       const guard = checkRegression(snapshot(working), snapshot(candidate));
       if (!guard.ok) {
         iterations.push({ attempt, strategy, guardOk: false, guardReasons: guard.reasons, targetResolved: false, newFindings: [], accepted: false, note: "regression guard rejected (content loss)" });
-        feedback = `Your change removed or emptied content: ${guard.reasons.join("; ")}. Fix the issue WITHOUT deleting or hiding content.`;
+        feedback = reflexionFeedback({ guardOk: false, guardReasons: guard.reasons, targetResolved: false, newFindings: [] });
         if (strategy === "rule") { outcome = "regressed"; break; }
         continue;
       }
@@ -237,10 +256,7 @@ export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Pro
         memory.set(sig(target), { strategy });
         break;
       }
-      feedback = [
-        targetResolved ? "" : "The target issue is still present after your change.",
-        newFindings.length ? `Your change introduced NEW accessibility issues that must also be resolved: ${newFindings.join(", ")}.` : "",
-      ].filter(Boolean).join(" ");
+      feedback = reflexionFeedback({ guardOk: true, guardReasons: [], targetResolved, newFindings });
       if (strategy === "rule") { outcome = target.layer === "C" ? "needs-review" : "unresolved"; break; }
     }
 
