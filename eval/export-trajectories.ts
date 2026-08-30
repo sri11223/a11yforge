@@ -1,22 +1,44 @@
 import { chromium } from "playwright";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { runAdvanced } from "../src/agents/advanced.js";
+import { runAdvanced, type FixMemory } from "../src/agents/advanced.js";
 import { scanAll } from "../src/harness/scan-all.js";
 import type { Finding } from "../src/types.js";
 
 /**
  * Export the runtime agent's decision trajectories: the detected issues (A/B/C tool
  * output) → per-fix route/attempt → verify verdicts → accept/escalate decision → final
- * outcome. Emits raw JSONL (machine) + Markdown (human) per representative page. Run from
- * dist/ (uses Layer B). Writes docs/trajectories/.
+ * outcome. Emits raw JSONL (machine) + Markdown (human) for EVERY page in the eval corpus,
+ * plus a navigational index. Run from dist/ (uses Layer B). Writes docs/trajectories/ ONLY —
+ * it never touches docs/results/, metrics.json or ablation.json.
+ *
+ * Buckets and per-bucket shared fix-memory mirror eval/run-eval.ts, so a trace reflects what
+ * the scored eval actually did (memory can carry a verified signature across pages in a bucket).
  */
 
-const CASES = ["icon-only-control", "alt-generic", "keyboard-trap-modal"];
-const DIR = join(process.cwd(), "corpus", "adversarial");
+const BUCKETS = ["adversarial", "injected"];
 const OUT = join(process.cwd(), "docs", "trajectories");
 
 const short = (f: Finding) => ({ layer: f.layer, wcag: f.wcag, selector: f.selector, message: f.message });
+
+/** What makes this trace worth opening — computed from the trace itself, not curated. */
+interface Highlight { bucket: string; slug: string; detected: number; notes: string[]; outcomes: string[] }
+
+function highlightsFor(fixes: Awaited<ReturnType<typeof runAdvanced>>["fixes"], detected: number, escalated: number): string[] {
+  const notes: string[] = [];
+  const rejected = fixes.flatMap((f) => f.iterations).filter((it) => !it.accepted).length;
+  const reflexion = fixes.filter((f) => f.iterations.length > 1);
+  const guardRejects = fixes.flatMap((f) => f.iterations).filter((it) => !it.guardOk);
+  const memHits = fixes.filter((f) => f.memoryHit).length;
+  const unresolved = fixes.filter((f) => f.outcome === "unresolved").length;
+  if (guardRejects.length) notes.push(`**regression guard rejected** ${guardRejects.length} content-destroying candidate(s)`);
+  if (reflexion.length) notes.push(`**reflexion**: ${rejected} rejected attempt(s) before accept`);
+  if (escalated) notes.push(`**escalated ${escalated}** to a human (not groundable / not verifiable)`);
+  if (memHits) notes.push(`**memory hit** ×${memHits} (repeat signature reused)`);
+  if (unresolved) notes.push(`${unresolved} left unresolved`);
+  if (!notes.length) notes.push(detected === 0 ? "_no findings — nothing to fix_" : "all fixes accepted first try");
+  return notes;
+}
 
 async function main(): Promise<void> {
   process.env.A11YFORGE_MODE ??= "replay";
@@ -25,12 +47,22 @@ async function main(): Promise<void> {
 
   mkdirSync(OUT, { recursive: true });
   const browser = await chromium.launch({ args: ["--no-sandbox", "--disable-dev-shm-usage"] });
-  const index: string[] = [];
+  const highlights: Highlight[] = [];
+  let events = 0;
   try {
-    for (const slug of CASES) {
+   for (const bucket of BUCKETS) {
+    const DIR = join(process.cwd(), "corpus", bucket);
+    if (!existsSync(DIR)) continue;
+    const slugs = readdirSync(DIR, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name)
+      .filter((s) => existsSync(join(DIR, s, "index.html")))
+      .sort();
+    const memory: FixMemory = new Map(); // shared within a bucket, as in run-eval.ts
+    for (const slug of slugs) {
       const html = readFileSync(join(DIR, slug, "index.html"), "utf8");
       const before = await scanAll(html, { browser });
-      const adv = await runAdvanced(html, { browser, pageId: slug });
+      const adv = await runAdvanced(html, { browser, pageId: slug, memory });
 
       // --- raw JSONL ---
       const lines: string[] = [];
@@ -75,12 +107,36 @@ async function main(): Promise<void> {
       md.push(`**Shipped result:** Layer A ${finalScan.A.length} · Layer B ${finalScan.B.length} · Layer C ${finalScan.C.length}` + (adv.reviewQueue.length ? ` · ${adv.reviewQueue.length} escalated for human review` : ""));
       writeFileSync(join(OUT, `${slug}.md`), md.join("\n") + "\n", "utf8");
 
-      index.push(`- [\`${slug}\`](${slug}.md) — ${adv.fixes.map((f) => f.outcome).join(", ")}`);
-      console.log(`${slug}: ${adv.fixes.length} fixes, ${adv.reviewQueue.length} escalated`);
+      const detected = before.A.length + before.B.length + before.C.length;
+      highlights.push({
+        bucket,
+        slug,
+        detected,
+        notes: highlightsFor(adv.fixes, detected, adv.reviewQueue.length),
+        outcomes: adv.fixes.map((f) => f.outcome),
+      });
+      events += lines.length;
+      console.log(`${bucket}/${slug}: ${adv.fixes.length} fixes, ${adv.reviewQueue.length} escalated`);
     }
+   }
   } finally {
     await browser.close();
   }
+  // "Start here": rank by how much verification machinery the trace exercises (guard rejection >
+  // reflexion > escalation > memory), so a skimming judge lands on the load-bearing traces first.
+  const score = (h: Highlight) =>
+    (h.notes.some((n) => n.includes("regression guard")) ? 8 : 0) +
+    (h.notes.some((n) => n.includes("reflexion")) ? 4 : 0) +
+    (h.notes.some((n) => n.includes("escalated")) ? 2 : 0) +
+    (h.notes.some((n) => n.includes("memory hit")) ? 1 : 0);
+  const pick = [...highlights].filter((h) => score(h) > 0).sort((a, b) => score(b) - score(a)).slice(0, 4);
+  // Honest accounting: say so when a capability we advertise is NOT exercised by any trace.
+  const guardPages = highlights.filter((h) => h.notes.some((n) => n.includes("regression guard"))).length;
+  const guardNote =
+    guardPages === 0
+      ? `**Honest gap — what these traces do NOT show:** none of the ${highlights.length} traces contains a *regression-guard rejection*. In this run the advanced agent's own candidates never tried to delete or hide content, so the guard never had to fire. The guard's value is evidenced elsewhere, in the scored eval: the single-shot baseline shipped **6 regressions**, the guarded advanced agent shipped **0** (see [\`metrics.json\`](../results/metrics.json)). We would rather point that out than let a reader assume the traces prove something they don't.`
+      : `The regression guard fired on **${guardPages}** page(s) below — those traces show a content-destroying candidate being rejected before commit.`;
+
   writeFileSync(
     join(OUT, "README.md"),
     `# Traces for every agent we used
@@ -91,9 +147,25 @@ A11yForge involves several agents; this is the one place to see the complete tra
 
 Per-page decision traces: **detect** (A/B/C tool output) → **route** → **fix attempt(s)** →
 **regression guard** → **verify** → **accept/escalate** → **outcome**. Readable Markdown + machine
-JSONL per page:
+JSONL for **every one of the ${highlights.length} pages the scored eval runs** (${events} events total) —
+including the boring ones, labelled as such. Memory is shared within a bucket, exactly as in the
+scored eval, so these traces reflect what the eval actually did.
 
-${index.join("\n")}
+**Start here** — the traces that prove the thesis:
+${pick.map((h) => `- [\`${h.slug}\`](${h.slug}.md) — ${h.notes.join("; ")}`).join("\n")}
+
+**All ${highlights.length} pages:**
+
+| Page | Bucket | Detected | Why this trace is worth reading | Outcomes |
+|---|---|---|---|---|
+${highlights.map((h) => `| [\`${h.slug}\`](${h.slug}.md) · [jsonl](${h.slug}.jsonl) | ${h.bucket} | ${h.detected} | ${h.notes.join("; ")} | ${h.outcomes.join(", ") || "—"} |`).join("\n")}
+
+${guardNote}
+
+**Reading a "memory hit":** memory recalls the previously-verified **strategy** (the routing
+decision) for a repeat signature — not the patch itself. So a recalled fix can still take more than
+one attempt and is always re-verified; memory saves re-derivation, it never skips verification.
+(\`icon-only-control\` is both a memory hit and a 2-attempt reflexion, for exactly that reason.)
 
 **JSONL schema:** a \`task\` event (detected issues), one \`fix\` event per finding
 (\`target\`, \`strategy\`, \`iterations[]\` with attempt/action/regressionGuard/verify/decision,

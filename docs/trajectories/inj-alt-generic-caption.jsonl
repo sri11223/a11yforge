@@ -1,0 +1,3 @@
+{"event":"task","page":"inj-alt-generic-caption","detected":[{"layer":"C","wcag":"1.1.1","selector":"img[src=\"assets/dawn.jpg\"]","message":"Alt text is a generic placeholder (\"image\") that does not describe the image."}]}
+{"event":"fix","target":{"layer":"C","wcag":"1.1.1","selector":"img[src=\"assets/dawn.jpg\"]"},"strategy":"rule","iterations":[{"attempt":1,"action":"deterministic rule fix","regressionGuard":{"ok":true,"reasons":[]},"verify":{"targetResolved":true,"newFindings":[]},"decision":"ACCEPT"}],"outcome":"true-fix","memoryHit":false}
+{"event":"result","page":"inj-alt-generic-caption","reviewQueue":[],"memoryHits":0,"outcomes":{"true-fix":1}}

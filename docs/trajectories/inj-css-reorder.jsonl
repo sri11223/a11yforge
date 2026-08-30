@@ -1,0 +1,3 @@
+{"event":"task","page":"inj-css-reorder","detected":[{"layer":"B","wcag":"1.3.2","selector":"body > main > div","message":"Visual order differs from DOM/reading order: children are shown in a different sequence (via CSS 'order') than a screen reader reads them, distorting meaning."}]}
+{"event":"fix","target":{"layer":"B","wcag":"1.3.2","selector":"body > main > div"},"strategy":"llm","iterations":[{"attempt":1,"action":"LLM targeted fix","regressionGuard":{"ok":true,"reasons":[]},"verify":{"targetResolved":true,"newFindings":[]},"decision":"ACCEPT"}],"outcome":"true-fix","memoryHit":false}
+{"event":"result","page":"inj-css-reorder","reviewQueue":[],"memoryHits":0,"outcomes":{"true-fix":1}}

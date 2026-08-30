@@ -1,0 +1,3 @@
+{"event":"task","page":"aria-label-contradicts","detected":[{"layer":"C","wcag":"2.5.3","selector":"#email","message":"Accessible name (\"Phone number\") contradicts the visible label (\"Email address\"), so a screen-reader user is told the wrong thing."}]}
+{"event":"fix","target":{"layer":"C","wcag":"2.5.3","selector":"#email"},"strategy":"rule","iterations":[{"attempt":1,"action":"deterministic rule fix","regressionGuard":{"ok":true,"reasons":[]},"verify":{"targetResolved":true,"newFindings":[]},"decision":"ACCEPT"}],"outcome":"true-fix","memoryHit":false}
+{"event":"result","page":"aria-label-contradicts","reviewQueue":[],"memoryHits":0,"outcomes":{"true-fix":1}}

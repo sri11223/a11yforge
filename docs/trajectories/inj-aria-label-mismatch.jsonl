@@ -1,0 +1,3 @@
+{"event":"task","page":"inj-aria-label-mismatch","detected":[{"layer":"C","wcag":"2.5.3","selector":"#cc","message":"Accessible name (\"Expiry date\") contradicts the visible label (\"Card number\"), so a screen-reader user is told the wrong thing."}]}
+{"event":"fix","target":{"layer":"C","wcag":"2.5.3","selector":"#cc"},"strategy":"rule","iterations":[{"attempt":1,"action":"deterministic rule fix","regressionGuard":{"ok":true,"reasons":[]},"verify":{"targetResolved":true,"newFindings":[]},"decision":"ACCEPT"}],"outcome":"true-fix","memoryHit":false}
+{"event":"result","page":"inj-aria-label-mismatch","reviewQueue":[],"memoryHits":0,"outcomes":{"true-fix":1}}

@@ -1,0 +1,3 @@
+{"event":"task","page":"skip-link-broken","detected":[{"layer":"B","wcag":"2.4.1","selector":"body > a","message":"In-page/skip link points to \"#main-content\" but no element with that id exists, so activating it does not move focus (bypass fails)."}]}
+{"event":"fix","target":{"layer":"B","wcag":"2.4.1","selector":"body > a"},"strategy":"llm","iterations":[{"attempt":1,"action":"LLM targeted fix","regressionGuard":{"ok":true,"reasons":[]},"verify":{"targetResolved":true,"newFindings":[]},"decision":"ACCEPT"}],"outcome":"true-fix","memoryHit":false}
+{"event":"result","page":"skip-link-broken","reviewQueue":[],"memoryHits":0,"outcomes":{"true-fix":1}}

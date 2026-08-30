@@ -1,0 +1,3 @@
+{"event":"task","page":"heading-skip","detected":[{"layer":"B","wcag":"1.3.1","selector":"body > main > h4:nth-of-type(1)","message":"Heading outline skips a level: <h1> is followed by <h4> (levels 2..3 are skipped), so screen-reader heading navigation is broken."}]}
+{"event":"fix","target":{"layer":"B","wcag":"1.3.1","selector":"body > main > h4:nth-of-type(1)"},"strategy":"llm","iterations":[{"attempt":1,"action":"LLM targeted fix","regressionGuard":{"ok":true,"reasons":[]},"verify":{"targetResolved":true,"newFindings":[]},"decision":"ACCEPT"}],"outcome":"true-fix","memoryHit":false}
+{"event":"result","page":"heading-skip","reviewQueue":[],"memoryHits":0,"outcomes":{"true-fix":1}}

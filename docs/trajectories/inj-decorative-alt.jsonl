@@ -1,0 +1,3 @@
+{"event":"task","page":"inj-decorative-alt","detected":[{"layer":"C","wcag":"1.1.1","selector":"img[src=\"assets/swirl.svg\"]","message":"Alt text describes a decorative element (\"decorative ornamental divider swirl\"); a decorative image should use empty alt=\"\" to avoid screen-reader noise."}]}
+{"event":"fix","target":{"layer":"C","wcag":"1.1.1","selector":"img[src=\"assets/swirl.svg\"]"},"strategy":"rule","iterations":[{"attempt":1,"action":"deterministic rule fix","regressionGuard":{"ok":true,"reasons":[]},"verify":{"targetResolved":true,"newFindings":[]},"decision":"ACCEPT"}],"outcome":"true-fix","memoryHit":false}
+{"event":"result","page":"inj-decorative-alt","reviewQueue":[],"memoryHits":0,"outcomes":{"true-fix":1}}

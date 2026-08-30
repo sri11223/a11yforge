@@ -7,7 +7,7 @@
 
 **Agent decisions:**
 
-### B [2.1.1] `body > main > div:nth-of-type(1) > div:nth-of-type(3)` → **true-fix** (llm)
+### B [2.1.1] `body > main > div:nth-of-type(1) > div:nth-of-type(3)` → **true-fix** (llm) · memory-hit (strategy recalled from an earlier verified fix)
 - _reflexion: 2 attempts — a rejected attempt's diagnostic is fed back into the next try._
 - attempt 1: LLM targeted fix → guard ok · verify: target still present, new findings [none] → **REJECT — feed failure back and retry**
 - attempt 2: LLM targeted fix → guard ok · verify: target resolved, new findings [none] → **ACCEPT**
