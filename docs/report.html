@@ -73,6 +73,7 @@ html{scroll-behavior:smooth}
   <a href="#hearit">Hear it</a>
   <a href="#seeit">See it</a>
   <a href="#sig">Significance</a>
+  <a href="#narration">Narration diff</a>
   <a href="#related">Related work</a>
   <a href="#traces">Traces</a>
   <a href="#reproduce">Reproduce</a>
@@ -103,7 +104,7 @@ html{scroll-behavior:smooth}
   <div class="nums">
     <div class="num r"><div class="big">23 → 0</div>
       <div class="lbl"><strong>Categorical (ablation).</strong> A scanner-only verify gate ships 23 broken pages as "compliant"; the full A/B/C stack ships 0. Proof by construction, no statistics needed. ({A}=23 → {A,B}=9 → {A,B,C}=0.)</div></div>
-    <div class="num b"><div class="big">127</div>
+    <div class="num b"><div class="big">206</div>
       <div class="lbl"><strong>Real-world.</strong> Barriers hidden from scanners (Layer B+C) across 20 live production sites — an honest lower bound. Scanner-clean ≠ usable, in the wild.</div></div>
     <div class="num g"><div class="big">8 → 0</div>
       <div class="lbl"><strong>Mechanism (case study).</strong> Harmful changes the baseline ships vs the verify-loop — same model, same prompt, only the pipeline differs. Existence proof of the method; not statistically significant at n=27 (see below).</div></div>
@@ -112,7 +113,7 @@ html{scroll-behavior:smooth}
   15 adversarial + 12 injected), 23 of the 24 axe-clean pages still fail Layer B/C — <strong>95.8%</strong>.
   But the corpus is <em>adversarial by construction</em>: it was built to isolate what scanners miss,
   so this characterizes the corpus, not the prevalence of the gap in the wild. The real-world number
-  above (127 across 20 sites) is the field evidence.</p>
+  above (206 across 20 sites, 141 excluding one site’s repeated ticker finding) is the field evidence.</p>
 </section>
 
 <section aria-labelledby="ablation">
@@ -141,7 +142,7 @@ html{scroll-behavior:smooth}
       <tr><td><strong>C</strong> — calibrated judge + backstops</td><td>Meaningfulness of alt/labels (generic, filename, contradicting, decorative)</td><td>11 of 30</td><td>96</td><td>"is this alt <em>meaningful</em>?" is a semantic judgment, not a presence check</td></tr>
     </tbody>
   </table>
-  <p class="muted">So <strong>28 of 30</strong> sealed-corpus barriers — and 127 of the real-site
+  <p class="muted">So <strong>28 of 30</strong> sealed-corpus barriers — and 206 of the real-site
   findings — are outside axe's reach entirely. <em>Honest limits:</em> these counts are per-layer
   <strong>class</strong> from the committed corpus manifests + the 20-site run; the committed data
   does not split Layer&nbsp;A into axe-vs-pa11y or Layer&nbsp;C into backstop-vs-judge at the
@@ -529,6 +530,51 @@ html{scroll-behavior:smooth}
   The direction is unambiguous and the ablation (which doesn't depend on discordant-pair
   counts) is the decisive per-layer evidence. Honest read: strong, consistent, not yet
   statistically significant — widen the corpus to confirm, not to chase a p-value.</p>
+</section>
+
+<section aria-labelledby="narration">
+  <h2 id="narration">Hear the difference: a real screen-reader narration diff</h2>
+  <p>Every line below is <strong>captured output</strong>, not prose we wrote: the Guidepup virtual
+  screen reader traverses the original DOM and then the agent's shipped DOM, and we diff the two
+  spoken-phrase logs. <code>-</code> is what a blind user heard <strong>before</strong> the fix,
+  <code>+</code> what they hear <strong>after</strong>. Full artifact, all 27 pages:
+  <a href="trajectories/narration-diff.md">narration-diff.md</a> ·
+  <a href="trajectories/narration-diff.json">narration-diff.json</a>.</p>
+
+  <p class="muted"><code>placeholder-as-label</code> — five form fields that a scanner and a
+  sighted reviewer both wave through. The placeholder is not an accessible name:</p>
+  <div class="hearit">
+    <div><span class="sr">Before:</span> textbox, placeholder Full name</div>
+    <div><span class="sr">Before:</span> textbox, placeholder Email address</div>
+    <div style="margin-top:8px"><span class="visual">After:</span> textbox, <strong>Full name</strong>, placeholder Full name</div>
+    <div><span class="visual">After:</span> textbox, <strong>Email address</strong>, placeholder Email address</div>
+  </div>
+
+  <p class="muted" style="margin-top:14px"><code>inj-alt-filename-heading</code> — the user stops
+  hearing a camera filename read aloud, and the heading outline is repaired:</p>
+  <div class="hearit">
+    <div><span class="sr">Before:</span> image, IMG_5521.jpg · heading, Jordan Lee, level 3</div>
+    <div style="margin-top:8px"><span class="visual">After:</span> <em>(image no longer announced — grounded by the adjacent heading, so <code>alt=""</code>)</em> · heading, Jordan Lee, <strong>level 2</strong></div>
+  </div>
+
+  <p style="margin-top:14px"><strong>16 of 27 pages produced an audible difference; 11 did not — and
+  we publish both.</strong> The 11 are <em>operability</em> repairs (making a control keyboard-
+  reachable, letting Escape dismiss a dialog). A reading-order traversal visits content whether or
+  not it is focusable, and those controls already had accessible names, so the transcript is
+  legitimately identical. Those fixes are evidenced the other way — by the Layer-B finding
+  <em>disappearing</em> in the page's <a href="trajectories/README.md">trajectory</a>. Announcement
+  diffs prove the name/reading-order/text class; finding-disappearance proves the operability class;
+  neither is asked to carry the other's weight.</p>
+
+  <p class="muted"><strong>Honest scope.</strong> This is a <em>virtual</em> screen reader — a
+  deterministic simulation of reading order, operability and accessible-name presence. It is
+  <strong>not</strong> a bug-for-bug replica of NVDA, JAWS or VoiceOver, and <strong>not a
+  substitute for testing with real screen-reader users</strong>; automation complements manual AT
+  testing rather than replacing it. Each capture is a fixed 121-announcement window, so short pages
+  wrap and repeat — we therefore report <strong>distinct</strong> changed announcements with the pass
+  count, never raw diff lines. And the transcript is <em>evidence, not the detector</em>: Layer-B
+  findings come from the deterministic checks, so this window cannot move
+  <a href="results/metrics.json">metrics.json</a>.</p>
 </section>
 
 <section aria-labelledby="related">

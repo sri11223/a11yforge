@@ -65,6 +65,11 @@ one attempt and is always re-verified; memory saves re-derivation, it never skip
 (`target`, `strategy`, `iterations[]` with attempt/action/regressionGuard/verify/decision,
 `outcome`, `memoryHit`), and a `result` event (`reviewQueue`, `memoryHits`, outcome tally).
 
+**What a screen-reader user hears — real captured narration diff:**
+- [narration-diff.md](narration-diff.md) — the Guidepup virtual SR traversing the original vs the
+  shipped DOM on all 27 pages, diffed. 16 pages changed audibly; the 11 that didn't are operability
+  repairs (invisible to a reading-order traversal) and are listed with that reason.
+
 **Deep dives — real model I/O, quoted from the committed cassettes:**
 - **Reflexion** — [reflexion-icon-only-control.md](reflexion-icon-only-control.md): a Layer-B fix
   REJECTED on attempt 1, ACCEPTED on attempt 2 after the verifier's diagnostic is fed back.
