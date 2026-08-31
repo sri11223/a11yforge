@@ -27,7 +27,9 @@ import { join, resolve, basename } from "node:path";
  */
 
 const REPO = resolve(import.meta.dirname, "..");
-const OUT = join(REPO, "docs", "trajectories", "coding-agent");
+// Root-level on purpose: coding-agent disclosure is a required deliverable, so it should be visible
+// on opening the repo rather than three directories down.
+const OUT = join(REPO, "coding-agent-trajectories");
 const ARG_MAX = 400; // per tool-call argument summary
 
 // ── inputs ───────────────────────────────────────────────────────────────────
@@ -205,17 +207,21 @@ for (let i = 0; i < all.length - 1 && showcase.length < 4; i++) {
 
 writeFileSync(join(OUT, "README.md"), `# Coding-agent trajectory — the two-agent build loop
 
-_[← all traces](../README.md) · narrative counterpart: [\`WORK_TRAJECTORY.md\`](../../WORK_TRAJECTORY.md) · tool disclosure: [\`CODING_AGENT.md\`](../../CODING_AGENT.md)_
+_Runtime-agent traces: [\`docs/trajectories/\`](../docs/trajectories/) · narrative counterpart: [\`docs/WORK_TRAJECTORY.md\`](../docs/WORK_TRAJECTORY.md) · tool disclosure: [\`docs/CODING_AGENT.md\`](../docs/CODING_AGENT.md)_
 
-This is the machine-extracted record of the agents that **built this repo**, as opposed to the
-runtime agent that fixes pages (whose traces are the other files in [\`../\`](../)). Two Claude Code
-sessions ran the build as a loop: an **orchestrator** holding the plan and verifying each result, and
-a **builder** doing the work in the repo. \`WORK_TRAJECTORY.md\` tells that story in prose; this is the
-underlying data, so the prose can be checked rather than taken on trust.
+**In one sentence:** the complete conversation and tool calls of the two Claude Code (Opus 5) agents
+that built this repository — an **orchestrator** that planned and verified, and a **builder** that did
+the work.
+
+This is the *coding*-agent deliverable. The agent that **runs** — the one that finds and fixes
+accessibility barriers — has its own traces in
+[\`docs/trajectories/\`](../docs/trajectories/). This folder is the agents that **built** it.
+[\`docs/WORK_TRAJECTORY.md\`](../docs/WORK_TRAJECTORY.md) tells the same story in prose; these files are
+the underlying data, so the prose can be checked rather than taken on trust.
 
 ## What is in here, and what is deliberately not
 
-Extracted by [\`eval/export-coding-trajectory.mjs\`](../../../eval/export-coding-trajectory.mjs) on an
+Extracted by [\`eval/export-coding-trajectory.mjs\`](../eval/export-coding-trajectory.mjs) on an
 **allow-list** basis — fields are copied in by name, rather than raw text being scrubbed on the way
 out:
 
@@ -271,6 +277,33 @@ are pattern names, not values.
 \`\`\`json
 ${JSON.stringify(counts, null, 2)}
 \`\`\`
+
+## How to read a record
+
+One JSON object per line:
+
+\`\`\`json
+{"ts":"2026-08-29T…Z","role":"user","text":"the orchestrator's instruction, in full"}
+{"ts":"2026-08-29T…Z","role":"assistant","text":"the builder's reasoning","toolCalls":[
+  {"tool":"Bash","arg":"npm test","truncated":false},
+  {"tool":"Edit","arg":"src/agents/advanced.ts","truncated":false}]}
+\`\`\`
+
+\`role: "user"\` is the **orchestrator** — it planned, sent one step at a time, and verified each
+result against the real files. \`role: "assistant"\` is the **builder** — it did the work in the repo.
+\`arg\` is the command, path or pattern; \`truncated\` marks the few that exceeded ${ARG_MAX} characters.
+
+## Signposted highlights
+
+Jump straight to the loop working. Line numbers are into \`23af0c63.jsonl\`, the main session.
+
+| Line | What to look for |
+| --- | --- |
+| **~95** | **The Layer-A \`heading-skip\` self-catch.** A probe found that pa11y flags heading-skip only as a *warning* and axe's rule is *best-practice* — including them would also have flagged two Layer-B-exclusive pages and broken the gap proof. The builder reported the deviation instead of taking the flattering option; the criterion was reclassified A→B. |
+| **~576, ~625** | **The silently-disabled virtual screen reader.** Layer B's SR had been inert since it was written, from a wrong module-resolve path. Found late, fixed, and then *proved* the metrics were byte-identical afterwards — so the fix moved no number and the finding could be published without re-measuring. |
+| **~3046** | **Removing the LLM alt path.** An early router sent semantic alt to the model, which confidently invented descriptions for images it could not see. The path was deleted rather than tuned, and alt became rule-from-grounding-or-escalate. |
+| **~3222, ~3311** | **The harm number partly deconstructed.** The builder traced 3 of the 8 headline harmful changes to a *blind oracle* — a live-region check that only clicks real \`<button>\` elements — and published the sensitivity analysis rather than leaving it to be found. |
+| **~3359** | **The builder refuses its own orchestrator.** Told to publish the raw 56 MB transcripts behind a regex deny-list, it scanned first, found the orchestrator's own numbers wrong (2 \`sk-*\` matches, not 1; 133 \`API_KEY\` mentions, not 75), found a tail of \`_authToken\`/\`PRIVATE KEY\`/\`GITHUB_TOKEN\` the patterns missed, and found third-party project paths that were not the user's to publish — then declined, with evidence, and proposed this allow-list instead. The orchestrator agreed it had been wrong. |
 
 ## Files
 

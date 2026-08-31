@@ -94,7 +94,7 @@ summarised.
 
 ## 4. Coding agents — the machine-extracted build loop
 
-[`coding-agent/`](coding-agent/) — the orchestrator/builder sessions that **built this repo**, one
+[`coding-agent-trajectories/`](../../coding-agent-trajectories/) — the orchestrator/builder sessions that **built this repo**, one
 JSON object per turn: every orchestrator instruction in full, every builder turn, and every tool call
 with its name and a short argument summary. **Tool-result bodies are omitted entirely**, and secrets,
 the local username and unrelated project names are redacted; the exporter re-scans its own output and

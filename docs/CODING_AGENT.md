@@ -13,7 +13,7 @@ The step sequence was brainstorm → scaffold → layers → agents → metrics 
 verified (tsc + tests green) before the next. The narrative side of that loop, step by step with
 commits, is [`WORK_TRAJECTORY.md`](WORK_TRAJECTORY.md); the machine-extracted side — every
 orchestrator instruction and every builder tool call — is
-[`trajectories/coding-agent/`](trajectories/coding-agent/). Tool-result bodies are omitted from that
+[`coding-agent-trajectories/`](../coding-agent-trajectories/). Tool-result bodies are omitted from that
 export by design, so it records the *loop*, not command output.
 
 **Attribution caveat, stated because this document is the disclosure.** The coding-agent

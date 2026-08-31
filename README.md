@@ -15,7 +15,7 @@ careful agent and a careless one becomes a number.
 | **Reproduce** | Offline, no API key, ~60 seconds:<br>`npm ci && npx playwright install chromium`<br>`node dist/src/cli/audit.js audit corpus/adversarial/keyboard-trap-modal/index.html --no-llm; echo $?` → **1** |
 
 **Start here:** [demo video (4:41)](video/a11yforge-demo.mp4) · [full report](docs/report.html) ·
-[agent trajectories](docs/trajectories/) · [statistics & limitations](docs/results/STATISTICS.md) ·
+[runtime agent traces](docs/trajectories/) · [coding-agent trajectories](coding-agent-trajectories/) · [statistics & limitations](docs/results/STATISTICS.md) ·
 [how to reproduce](REPRODUCE.md)
 
 ## Who this is for, and what's blocking them
@@ -284,8 +284,14 @@ ships** (a) a screen-reader-transcript verification layer inside the fix loop, (
 - **Agent trajectories:** [`docs/trajectories/`](docs/trajectories/) — "Traces for every agent we
   used": runtime decision traces (readable + raw JSONL), a [reflexion deep-dive](docs/trajectories/reflexion-icon-only-control.md)
   and a [baseline-vs-advanced contrast](docs/trajectories/contrast-alt-generic.md) quoting the
-  actual model I/O from the 151 committed [`cassettes/`](cassettes/), plus the coding-agent build trace.
-- **Coding-agent trajectory (how the repo was built):** [`docs/WORK_TRAJECTORY.md`](docs/WORK_TRAJECTORY.md) — the two-agent (orchestrator + builder) build trace, step by step, each backed by a commit
+  actual model I/O from the 151 committed [`cassettes/`](cassettes/). This folder is the agent that **runs**; [`coding-agent-trajectories/`](coding-agent-trajectories/) is the agents that **built** it.
+- **Coding-agent trajectory (how the repo was built):**
+  [`coding-agent-trajectories/`](coding-agent-trajectories/) — the machine-extracted record: **3,402
+  turns, 169 orchestrator instructions, 1,969 tool calls, 73 commits** across the two Claude Code
+  (Opus 5) sessions that wrote this repo. Every prompt and every tool call; `tool_result` bodies
+  excluded by an allow-list, because command stdout is where credentials live. Narrative counterpart:
+  [`docs/WORK_TRAJECTORY.md`](docs/WORK_TRAJECTORY.md) — the same loop step by step, each step backed
+  by a commit.
 - **Coding-agent disclosure & build arc:** [`docs/CODING_AGENT.md`](docs/CODING_AGENT.md)
 - **Design decisions:** [`docs/BRAINSTORM.md`](docs/BRAINSTORM.md) · **Build log:** [`docs/BUILD_LOG.md`](docs/BUILD_LOG.md)
 

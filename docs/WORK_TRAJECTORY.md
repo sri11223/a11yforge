@@ -6,7 +6,7 @@ agent's own traces are in [`trajectories/`](trajectories/); the tool disclosure 
 [`CODING_AGENT.md`](CODING_AGENT.md).
 
 > **The machine-checkable counterpart to this narrative** is
-> [`trajectories/coding-agent/`](trajectories/coding-agent/): every orchestrator instruction and every
+> [`coding-agent-trajectories/`](../coding-agent-trajectories/): every orchestrator instruction and every
 > builder tool call, extracted from the session records. Tool-result bodies are omitted and secrets
 > redacted — see that folder's README for why.
 
