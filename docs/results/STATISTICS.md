@@ -229,3 +229,18 @@ studies — see the caveat in §3.)
 | exact p-values, ARR, NNT | computed here from those same b/c values |
 | ablation 23→9→0 / 38→13→0 | `ablation.json`, `ablation-wide.json` → `rows` |
 | coverage 44 vs 42 / 66 vs 60, abstentions | `baseline`/`advanced` → `trueFix`, `needsReview`, `unresolved` |
+
+## 9. Known engineering issues, not affecting any number above
+
+- **pa11y's Puppeteer browser can be orphaned.** `runPa11y()` in
+  `src/layers/layerA-scanners.ts` calls `pa11y(url, …)` with no `try`/`finally`. pa11y launches its
+  own Puppeteer Chrome internally and closes it on the success path, so if the call throws — timeout,
+  navigation error — that browser survives. Observed: **17 orphaned Chrome processes** from
+  `~/.cache/puppeteer/chrome/` after an otherwise idle session. Worth a `finally`-based teardown;
+  **not yet fixed.** It cannot affect any published figure — an orphaned process holds no state the
+  scan reads, and every number here comes from a run that completed — but it will exhaust a machine
+  over a long session. Note that the *Playwright* path in the same file (lines 73–89) does close its
+  browser in `finally`; this is specific to the pa11y path.
+- **The live-region oracle only clicks real `<button>` elements** (`layerB-sr.ts:357`), which makes
+  part of the harm contrast a measurement artifact. Quantified in the sensitivity analysis above; the
+  fix is to click `[role=button]`, `[role=switch]` and `[role=tab]` too, and it is unmeasured.
