@@ -198,7 +198,10 @@ export async function runAdvanced(html: string, opts: AdvancedOptions = {}): Pro
       const rule = (target.detail as { rule?: string })?.rule;
       if ((rule === "generic-word" || rule === "filename-as-alt" || rule === "informative-emptied") && !findAltGrounding(working, target.selector ?? "").grounded) {
         reviewQueue.push({ pageId: opts.pageId, finding: target, selector: target.selector ?? "", reason: "alt text cannot be grounded in the page markup (no caption/heading/link); a confident description would be a hallucination" });
-        fixes.push({ layer: "C", wcag: target.wcag, selector: target.selector, strategy: "checkpoint", outcome: "needs-review", attempts: 0, iterations: [], note: "ungrounded alt → human checkpoint" });
+        // memoryHit belongs on THIS record too: memoryHits was already incremented above, so
+        // omitting it here made the counter disagree with its own records (3 vs 2 on alt-generic).
+        // A recalled strategy that then escalates is still a recall — record it as one.
+        fixes.push({ layer: "C", wcag: target.wcag, selector: target.selector, strategy: "checkpoint", outcome: "needs-review", attempts: 0, iterations: [], memoryHit: memHit, note: "ungrounded alt → human checkpoint" });
         continue;
       }
     }

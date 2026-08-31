@@ -50,7 +50,7 @@ the advanced agent ships **zero false-fixes and zero regressions**, where the ba
 **8 harmful changes (2 false-fixes + 6 regressions) across 5 distinct pages — 18.5% of the
 corpus** (Wilson 95% CI [8.2, 36.7]). Advanced's harmful-page rate: 0% [0.0, 12.5].
 
-### The 4 false-fixes the baseline shipped (and what advanced did)
+### The 4 false-fix *pages* the baseline shipped (2 false-fix issues) — and what advanced did
 
 - **icon-only-control** & **inj-icon-focus** — the baseline upgraded the icon controls to
   real buttons (fixing keyboard operability) but their state text now updates in a

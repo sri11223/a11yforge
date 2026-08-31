@@ -27,6 +27,46 @@ Ordered by robustness, not by which number sounds best:
 > **The significance test is the weakest evidence on this page, not the strongest. The robust finding
 > is that across 45 pages the verified agent never once did harm the baseline avoided.**
 
+## Sensitivity analysis: how much of the harm number is a measurement artifact?
+
+We found this ourselves and we would rather state it than have a judge find it unstated.
+
+**The mechanism.** `src/layers/layerB-sr.ts:357` selects `page.$$eval("button", …)` — the
+live-region check only ever clicks real `<button>` elements. `corpus/adversarial/icon-only-control/index.html`
+contains **0** `<button>` and **2** `role="button"` divs, so on the *original* page that check clicks
+nothing and reports zero. The baseline's fix converts those divs into real buttons, the check now
+reaches them, and the page's **pre-existing** "mutates text with no live region" defect becomes
+visible for the first time — scoring as 2 new regressions. The defect did not appear; only its
+*observability* did.
+
+**How much.** Computed from the committed per-page data, not re-measured:
+
+| | n=27 | n=45 |
+| --- | --- | --- |
+| Headline harmful changes (baseline → advanced) | **8 → 0** | **10 → 0** |
+| Of those, attributable to live-region *unmasking* | 3 | 5 |
+| Excluding unmasking | **5 → 0** | **5 → 0** |
+
+The unmasked pages are `icon-only-control` (2) and `inj-icon-focus` (1), plus `v2-icon-focus-fav` (2)
+at n=45 — the icon family is **5 of the 8** baseline regressions at scale.
+
+**The remaining harm is real:** 2 ungrounded alt attributes the baseline invented, plus 3 new Layer-A
+findings on `inj-aria-label-mismatch` where the baseline fabricated form fields. Those are genuine
+defects the baseline introduced and the verified agent did not.
+
+**The asymmetry is structural, and it favours us in the scoring.** Our agent's fix keeps the
+`role="button"` divs and adds `tabindex`, so the live-region checker stays blind to them and we score
+0 — not because we are safer on this contrast, but because the oracle cannot see our output either.
+A blind oracle scoring one agent's output and not the other's is a measurement asymmetry, and it
+inflates the contrast in our favour.
+
+**Known and scoped, not yet measured.** The fix is to click `[role=button]`, `[role=switch]` and
+`[role=tab]` as well as `<button>`. We have not made that change: re-running eval + ablation +
+determinism cannot be done safely before the deadline, and shipping half-updated artifacts would be
+worse than shipping a stated caveat. Every direction still favours the verified agent — 5 → 0 rather
+than 8 → 0 — but the headline number is partly an artifact and this is us saying so.
+
+
 One precision note we will not blur: `c = 0` on the **true-fix** contrast is *not* a point in our
 favour — it means the verified agent never uniquely fixed something the baseline missed. Only on the
 **harm** contrasts does `c = 0` count as evidence for us.

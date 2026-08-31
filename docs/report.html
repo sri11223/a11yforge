@@ -83,12 +83,12 @@ html{scroll-behavior:smooth}
   <h2 id="why">The problem &amp; who it's for</h2>
   <p>Front-end and accessibility/QA engineers are told a page is "accessible" when an
   automated scanner (axe, WAVE, Lighthouse) reports zero violations. But scanners only catch
-  the mechanically-checkable subset of WCAG — roughly <strong>13–57%</strong> of real issues.
+  the mechanically-checkable subset of WCAG — about <strong>57% of issue instances</strong> (<a href="https://www.deque.com/automated-accessibility-coverage-report/">Deque</a>) but only <strong>13&ndash;30% of WCAG success criteria</strong> reliably (<a href="https://accessible.org/automated-scans-wcag/">accessible.org</a>).
   A page can pass every automated check and still trap a keyboard user, scramble reading
   order, or ship <code>alt="image"</code>.</p>
   <p>The market has monetized the gap: the FTC fined accessiBe <strong>$1M in 2025</strong>
   for false compliance claims built on scanner output, and WebAIM's Million report finds
-  <strong>95.9%</strong> of homepages still fail. A11yForge measures that gap and closes it
+  <strong>95.9%</strong> of homepages still fail (<a href="https://webaim.org/projects/million/">WebAIM Million</a>, 2026 edition). A11yForge measures that gap and closes it
   with fixes gated on real usability — verified with a screen reader, not just re-scanned.</p>
   <p class="muted">Honest scope: Layer B's virtual screen reader is a <strong>deterministic
   simulator</strong> of reading order, operability, and accessible name — not a bug-for-bug
@@ -105,7 +105,7 @@ html{scroll-behavior:smooth}
     <div class="num r"><div class="big">23 → 0</div>
       <div class="lbl"><strong>Categorical (ablation).</strong> A scanner-only verify gate ships 23 broken pages as "compliant"; the full A/B/C stack ships 0. Proof by construction, no statistics needed. ({A}=23 → {A,B}=9 → {A,B,C}=0.)</div></div>
     <div class="num b"><div class="big">206</div>
-      <div class="lbl"><strong>Real-world.</strong> Barriers hidden from scanners (Layer B+C) across 20 live production sites — an honest lower bound. Scanner-clean ≠ usable, in the wild.</div></div>
+      <div class="lbl"><strong>Real-world.</strong> Barriers hidden from scanners (Layer B+C) across 20 live production sites — an honest lower bound. These 206 sit <em>on top of</em> the 552 the scanners already caught: scanners miss a great deal even on pages they do flag. <strong>What this sample cannot show:</strong> only 1 of 20 sites was scanner-clean at all (usa.gov) and it was genuinely clean, so &ldquo;scanner-clean but broken&rdquo; rests on the constructed corpus, not on this run.</div></div>
     <div class="num g"><div class="big">8 → 0</div>
       <div class="lbl"><strong>Mechanism.</strong> Harmful changes the baseline ships vs the verify-loop — same model, same prompt, only the pipeline differs. Zero counter-examples across all 45 pages; significant on the extended 45-page set, not at n=27 (that corpus has an α-floor of 0.0625) — <a href="#sig">see the claim hierarchy</a>.</div></div>
   </div>
@@ -158,6 +158,49 @@ html{scroll-behavior:smooth}
   <p><strong>So the quantified trade is: forgo 8 issues of automatic coverage, eliminate 10 harmful
   changes across 6 pages — both effects significant at n=45, in opposite directions.</strong> A
   measured trade-off is the real result. A clean sweep would have been less believable.</p>
+</section>
+
+
+<section aria-labelledby="sensitivity">
+  <h2 id="sensitivity">Sensitivity: how much of 8 &rarr; 0 is a measurement artifact?</h2>
+  <p>We found this ourselves. <code>src/layers/layerB-sr.ts:357</code> selects
+  <code>page.$$eval("button", &hellip;)</code> &mdash; the live-region check only ever clicks real
+  <code>&lt;button&gt;</code> elements. <code>icon-only-control</code> has <strong>0</strong>
+  <code>&lt;button&gt;</code> and <strong>2</strong> <code>role="button"</code> divs, so on the
+  original page that check clicks nothing. The baseline's fix turns those divs into real buttons, the
+  checker reaches them, and a <em>pre-existing</em> missing-live-region defect becomes visible &mdash;
+  scoring as 2 new regressions. The defect did not appear; only its observability did.</p>
+  <table>
+    <thead><tr><th>Measure</th><th>n=27</th><th>n=45</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Headline harmful changes</th><td><strong>8 &rarr; 0</strong></td><td><strong>10 &rarr; 0</strong></td></tr>
+      <tr><th scope="row">Attributable to live-region unmasking</th><td>3</td><td>5</td></tr>
+      <tr><th scope="row">Excluding unmasking</th><td><strong>5 &rarr; 0</strong></td><td><strong>5 &rarr; 0</strong></td></tr>
+    </tbody>
+  </table>
+  <p class="muted"><strong>The asymmetry is structural and it favours us.</strong> Our fix keeps the
+  <code>role="button"</code> divs and adds <code>tabindex</code>, so the checker stays blind to our
+  output too and we score 0 &mdash; not because we are safer on this contrast, but because the oracle
+  cannot see either agent's result. The remaining harm is real: 2 ungrounded alt attributes plus 3 new
+  Layer-A findings on <code>inj-aria-label-mismatch</code>, where the baseline fabricated form fields.
+  <strong>Known and scoped:</strong> the fix is to click <code>[role=button]</code>,
+  <code>[role=switch]</code> and <code>[role=tab]</code> too. We have not made it &mdash; re-running
+  eval + ablation + determinism cannot be done safely before the deadline, and half-updated artifacts
+  would be worse than a stated caveat. Full derivation:
+  <a href="results/STATISTICS.md">STATISTICS.md</a>.</p>
+</section>
+
+<section aria-labelledby="judgescope">
+  <h2 id="judgescope">Which Layer C do the published numbers use?</h2>
+  <p><strong>The deterministic backstops, not the LLM judge.</strong>
+  <code>src/harness/scan-all.ts:46</code> defaults <code>useJudge</code> to <code>false</code> and no
+  eval caller overrides it, so in <code>run-eval</code> and the ablation Layer C is
+  <em>deterministic backstops only</em> &mdash; <code>layerC-judge.ts</code> returns them immediately.
+  The calibrated judge (Cohen&rsquo;s &kappa; = 0.9792, hard gate &ge; 0.6) runs in the CLI
+  (<code>a11yforge audit</code>) and in the 20-site field audit.</p>
+  <p class="muted">This is why the headline replays byte-identically with no API key: the reported
+  numbers depend on no LLM judgement at all. Wherever this page says &ldquo;hard gate &ge; 0.6&rdquo;,
+  that describes the judge path, not the arm of the ablation labelled C.</p>
 </section>
 
 <section aria-labelledby="ablation">
@@ -328,13 +371,14 @@ html{scroll-behavior:smooth}
 
   <div class="shot">
     <div class="pair">
-      <figure><img src="assets/shots/alt-generic-before.png" alt="Portfolio page as shipped: broken images expose their generic alt text — image, photo, image, picture.">
-        <figcaption class="before">Before — <b>generic / meaningless alt</b></figcaption></figure>
-      <figure><img src="assets/shots/alt-generic-after.png" alt="After the advanced agent: the captioned grid images have empty alt, while the uncaptioned hero still reads image because it was escalated, not guessed.">
-        <figcaption class="after">After — <b>grounded or escalated, never guessed</b></figcaption></figure>
+      <figure><img src="assets/shots/alt-generic-before.png" alt="The alt-generic portfolio page: a hero image above a three-image project grid, each grid image with a visible caption beneath it. This single screenshot is both the before and the after — they are pixel-identical.">
+        <figcaption>Before <em>and</em> after — <b>one screenshot, because the fix is invisible</b>.
+        These two files are byte-identical (same SHA), which is the point: nothing a sighted user
+        sees changes. The difference is in the markup, shown below.</figcaption></figure>
     </div>
-    <p class="muted"><code>alt-generic</code>: a real portfolio page — and again the two images are
-    identical, because a correct alt fix is <strong>invisible</strong> once the images load. Under
+    <p class="muted"><code>alt-generic</code>: a real portfolio page. A correct alt fix is
+    <strong>invisible</strong> once the images load, so there is only one screenshot here rather than
+    a before/after pair that would imply a visible change. Under
     the hood the difference is real: the three grid images have captions to ground them, so their
     meaningless “photo/image/picture” alt becomes <code>alt=""</code>; the hero has <strong>no
     caption to ground a description</strong>, so the advanced agent leaves it untouched and
@@ -654,7 +698,7 @@ html{scroll-behavior:smooth}
   deterministic simulation of reading order, operability and accessible-name presence. It is
   <strong>not</strong> a bug-for-bug replica of NVDA, JAWS or VoiceOver, and <strong>not a
   substitute for testing with real screen-reader users</strong>; automation complements manual AT
-  testing rather than replacing it. Each capture is a fixed 121-announcement window, so short pages
+  testing rather than replacing it. Each capture is a 121-announcement window on 26 of 27 pages; <code>aria-label-contradicts</code> terminates early at 21. So short pages
   wrap and repeat — we therefore report <strong>distinct</strong> changed announcements with the pass
   count, never raw diff lines. And the transcript is <em>evidence, not the detector</em>: Layer-B
   findings come from the deterministic checks, so this window cannot move

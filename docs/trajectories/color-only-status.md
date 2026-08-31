@@ -17,9 +17,13 @@ whose own verdicts are traced in [`judge-verdicts.md`](judge-verdicts.md).
 
 **Detected issues (A/B/C tool output):**
 
-_None. All three layers scanned this page and found nothing to fix, so the agent
-correctly made no change. This trace is intentionally empty — it is published rather
-than omitted so the set covers every page in the eval, not only the eventful ones._
+_None — and that is a **detection miss, not a clean page.** `manifest.json` seeds
+WCAG 1.4.1 (`status-color-only`), which no layer surfaced, so the
+agent never saw it and could not have fixed it. Published as a trace so the gap is visible
+rather than absent._
+
+- **The manifest expected layer C to catch 1.4.1. It did not.**
+  Manifest rationale, quoted as the *expectation* rather than as what happened: The status cell contains only a coloured `<span>`. Contrast is fine and there is no non-text-content rule to trip, so axe is clean. Use of Colour (1.4.1) has no reliable automated axe test; Layer C flags that the status carries meaning by colour alone with no text alternative.
 
 **Agent decisions:**
 

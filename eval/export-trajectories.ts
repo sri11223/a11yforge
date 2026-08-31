@@ -24,12 +24,15 @@ const scored: { perPage?: { page: string; baseline?: any; advanced?: any }[] } =
   ? JSON.parse(readFileSync(METRICS, "utf8"))
   : {};
 
+/** Backtick bare markup fragments (`<span>`, `alt=""`) so markdown renders them as code. */
+const asCode = (t: string) => t.replace(/<([a-z][a-z0-9-]*)>/gi, "`<$1>`");
+
 const short = (f: Finding) => ({ layer: f.layer, wcag: f.wcag, selector: f.selector, message: f.message });
 
 /** What makes this trace worth opening — computed from the trace itself, not curated. */
 interface Highlight { bucket: string; slug: string; detected: number; notes: string[]; outcomes: string[] }
 
-function highlightsFor(fixes: Awaited<ReturnType<typeof runAdvanced>>["fixes"], detected: number, escalated: number): string[] {
+function highlightsFor(fixes: Awaited<ReturnType<typeof runAdvanced>>["fixes"], detected: number, escalated: number, missed: string[] = []): string[] {
   const notes: string[] = [];
   const rejected = fixes.flatMap((f) => f.iterations).filter((it) => !it.accepted).length;
   const reflexion = fixes.filter((f) => f.iterations.length > 1);
@@ -41,6 +44,9 @@ function highlightsFor(fixes: Awaited<ReturnType<typeof runAdvanced>>["fixes"], 
   if (escalated) notes.push(`**escalated ${escalated}** to a human (not groundable / not verifiable)`);
   if (memHits) notes.push(`**memory hit** ×${memHits} (repeat signature reused)`);
   if (unresolved) notes.push(`${unresolved} left unresolved`);
+  // "nothing to fix" is only true if the manifest seeded nothing. Where it seeded a barrier no
+  // layer surfaced, the index row has to say so — otherwise the summary table launders the miss.
+  if (missed.length) notes.unshift(`**detection miss** — ${missed.join(", ")} seeded but never surfaced`);
   if (!notes.length) notes.push(detected === 0 ? "_no findings — nothing to fix_" : "all fixes accepted first try");
   return notes;
 }
@@ -68,6 +74,18 @@ async function main(): Promise<void> {
       const html = readFileSync(join(DIR, slug, "index.html"), "utf8");
       const before = await scanAll(html, { browser });
       const adv = await runAdvanced(html, { browser, pageId: slug, memory });
+
+      // MANIFEST-VS-DETECTED. The corpus manifest is ground truth: it says which barriers were
+      // seeded and which layer should catch each one. Comparing it against what the layers actually
+      // found is the only way a trace can tell a genuine clean page apart from a DETECTION MISS.
+      // Without this the exporter published "the agent correctly made no change" over an unfixed
+      // barrier — a clean-looking report over a real defect, which is the exact failure this
+      // project exists to condemn.
+      const mfPath = join(DIR, slug, "manifest.json");
+      const seeded: { id: string; wcag: string; expectedCatchingLayer?: string | null; notes?: string }[] =
+        existsSync(mfPath) ? (JSON.parse(readFileSync(mfPath, "utf8")).violations ?? []) : [];
+      const detectedWcag = new Set([...before.A, ...before.B, ...before.C].map((f) => f.wcag));
+      const missed = seeded.filter((v) => !detectedWcag.has(v.wcag));
 
       // --- raw JSONL ---
       const lines: string[] = [];
@@ -121,9 +139,30 @@ async function main(): Promise<void> {
       }
       md.push(`**Detected issues (A/B/C tool output):**\n`);
       if (before.A.length + before.B.length + before.C.length === 0) {
-        md.push(`_None. All three layers scanned this page and found nothing to fix, so the agent`);
-        md.push(`correctly made no change. This trace is intentionally empty — it is published rather`);
-        md.push(`than omitted so the set covers every page in the eval, not only the eventful ones._`);
+        if (missed.length > 0) {
+          md.push(`_None — and that is a **detection miss, not a clean page.** \`manifest.json\` seeds`);
+          md.push(`${missed.map((v) => `WCAG ${v.wcag} (\`${v.id}\`)`).join(", ")}, which no layer surfaced, so the`);
+          md.push(`agent never saw it and could not have fixed it. Published as a trace so the gap is visible`);
+          md.push(`rather than absent._
+`);
+          // The manifest note says what SHOULD have happened ("Layer C flags that…"). Quoting it as
+          // an explanation asserts the opposite of the finding it sits under, so attribute it as the
+          // expectation it is. Markup fragments are backticked or the renderer swallows them as HTML.
+          for (const v of missed) {
+            md.push(`- **The manifest expected layer ${v.expectedCatchingLayer ?? "?"} to catch ${v.wcag}. It did not.**`);
+            if (v.notes) md.push(`  Manifest rationale, quoted as the *expectation* rather than as what happened: ${asCode(v.notes)}`);
+          }
+        } else {
+          md.push(`_None. All three layers scanned this page and found nothing to fix, so the agent`);
+          md.push(`correctly made no change. This trace is intentionally empty — it is published rather`);
+          md.push(`than omitted so the set covers every page in the eval, not only the eventful ones._`);
+        }
+      } else if (missed.length > 0) {
+        md.push(`_**Partial detection.** \`manifest.json\` seeds ${seeded.length} barrier(s) on this page and the`);
+        md.push(`layers surfaced ${seeded.length - missed.length}. Not surfaced:`);
+        md.push(`${missed.map((v) => `WCAG ${v.wcag} (\`${v.id}\`, expected layer ${v.expectedCatchingLayer ?? "?"})`).join(", ")}.`);
+        md.push(`The fix below may resolve it in passing, but it was never detected, so nothing verified it._
+`);
       }
       for (const f of [...before.A, ...before.B, ...before.C]) md.push(`- \`${f.layer}\` [${f.wcag}] ${f.message} — \`${f.selector ?? ""}\``);
       md.push(`\n**Agent decisions:**\n`);
@@ -132,7 +171,15 @@ async function main(): Promise<void> {
         // internally, but no rule ran for it — printing "(rule)" would misattribute the work, so
         // label it for what it was.
         const sideEffect = f.note === "resolved by an earlier fix";
-        const how = sideEffect ? "no fix of its own — cleared by an earlier change" : f.strategy;
+        // A finding with zero iterations that ended unresolved was ROUTED to a fixer that had
+        // nothing to apply — no rule ran, so printing the bare strategy claims work that never
+        // happened. Same misattribution class as the side-effect case above.
+        const noRuleApplies = f.iterations.length === 0 && f.outcome === "unresolved";
+        const how = sideEffect
+          ? "no fix of its own — cleared by an earlier change"
+          : noRuleApplies
+            ? `routed to the ${f.strategy} fixer — no ${f.strategy} covers this criterion, so nothing was attempted`
+            : f.strategy;
         md.push(`### ${f.layer} [${f.wcag}] \`${f.selector ?? ""}\` → **${f.outcome}** (${how})${f.memoryHit ? " · memory-hit (strategy recalled from an earlier verified fix)" : ""}`);
         if (f.iterations.length === 0) md.push(`- ${f.note ?? "resolved by an earlier whole-page fix / escalated"}`);
         if (f.iterations.length > 1) md.push(`- _reflexion: ${f.iterations.length} attempts — a rejected attempt's diagnostic is fed back into the next try._`);
@@ -168,7 +215,7 @@ async function main(): Promise<void> {
         bucket,
         slug,
         detected,
-        notes: highlightsFor(adv.fixes, detected, adv.reviewQueue.length),
+        notes: highlightsFor(adv.fixes, detected, adv.reviewQueue.length, missed.map((v) => `WCAG ${v.wcag}`)),
         outcomes: adv.fixes.map((f) => f.outcome),
       });
       events += lines.length;

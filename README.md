@@ -13,8 +13,7 @@ its accessibility — and, standing behind them, the people who actually navigat
 keyboard and by screen reader.
 
 **Their bottleneck is that the only thing which scales is the thing that can't see the problem.**
-Automated scanners are cheap, fast and CI-friendly, and they catch roughly **13–57%** of real WCAG
-issues. Everything they miss — keyboard traps, scrambled reading order, a label that exists but
+Automated scanners are cheap, fast and CI-friendly, and they catch about **57% of issue instances** ([Deque](https://www.deque.com/automated-accessibility-coverage-report/)) but only **13–30% of WCAG success criteria** reliably ([accessible.org](https://accessible.org/automated-scans-wcag/)) — two different denominators, so we state both. Everything they miss — keyboard traps, scrambled reading order, a label that exists but
 means nothing — needs a human with a screen reader, which does not scale to every pull request. So
 teams ship a green check and an unusable page. Overlay widgets promise to close that gap and
 [don't](https://www.ftc.gov/news-events/news/press-releases/2025/01/ftc-order-requires-online-marketer-pay-1-million-deceptive-claims-its-ai-product-could-make-websites):
@@ -22,7 +21,7 @@ the FTC fined accessiBe **$1M** in 2025 for compliance claims built on exactly t
 And when a team hands the job to an LLM instead, they get a new failure — fixes that *look* right,
 pass the scanner, and are worse than the bug, because nothing in the loop can tell the difference.
 
-**Why closing it is worth doing.** WebAIM's Million report finds **95.9%** of homepages still fail
+**Why closing it is worth doing.** WebAIM's [Million report](https://webaim.org/projects/million/) (2026 edition, Feb 2026 data) finds **95.9%** of homepages still fail
 an automated check — and that check is the shallow one. The cost of the gap is paid twice: in legal
 exposure, and by every person who hits a dialog they cannot escape. What's been missing is not
 another detector but a way to **verify that a remediation actually worked** before it merges. That

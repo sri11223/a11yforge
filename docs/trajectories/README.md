@@ -12,7 +12,7 @@ scored eval, so these traces reflect what the eval actually did.
 
 **Start here** — the traces that prove the thesis, one per distinct capability:
 - [`icon-only-control`](icon-only-control.md) — **reflexion**: 1 rejected attempt(s) before accept; **memory hit** ×1 (repeat signature reused)
-- [`alt-generic`](alt-generic.md) — **escalated 1** to a human (not groundable / not verifiable); **memory hit** ×2 (repeat signature reused)
+- [`alt-generic`](alt-generic.md) — **escalated 1** to a human (not groundable / not verifiable); **memory hit** ×3 (repeat signature reused)
 - [`inj-form-label`](inj-form-label.md) — 1 left unresolved
 
 _3 entries, not four: each has to show a capability the ones above it do not, and in this run the regression guard never fired — see the honest gap below._
@@ -21,11 +21,11 @@ _3 entries, not four: each has to show a capability the ones above it do not, an
 
 | Page | Bucket | Detected | Why this trace is worth reading | Outcomes |
 |---|---|---|---|---|
-| [`alt-generic`](alt-generic.md) · [jsonl](alt-generic.jsonl) | adversarial | 4 | **escalated 1** to a human (not groundable / not verifiable); **memory hit** ×2 (repeat signature reused) | true-fix, needs-review, true-fix, true-fix |
+| [`alt-generic`](alt-generic.md) · [jsonl](alt-generic.jsonl) | adversarial | 4 | **escalated 1** to a human (not groundable / not verifiable); **memory hit** ×3 (repeat signature reused) | true-fix, needs-review, true-fix, true-fix |
 | [`alt-is-filename`](alt-is-filename.md) · [jsonl](alt-is-filename.jsonl) | adversarial | 3 | **memory hit** ×2 (repeat signature reused) | true-fix, true-fix, true-fix |
 | [`aria-label-contradicts`](aria-label-contradicts.md) · [jsonl](aria-label-contradicts.jsonl) | adversarial | 1 | all fixes accepted first try | true-fix |
-| [`color-only-status`](color-only-status.md) · [jsonl](color-only-status.jsonl) | adversarial | 0 | _no findings — nothing to fix_ | — |
-| [`css-reorder`](css-reorder.md) · [jsonl](css-reorder.jsonl) | adversarial | 1 | all fixes accepted first try | true-fix |
+| [`color-only-status`](color-only-status.md) · [jsonl](color-only-status.jsonl) | adversarial | 0 | **detection miss** — WCAG 1.4.1 seeded but never surfaced | — |
+| [`css-reorder`](css-reorder.md) · [jsonl](css-reorder.jsonl) | adversarial | 1 | **detection miss** — WCAG 2.4.3 seeded but never surfaced | true-fix |
 | [`div-button-no-keys`](div-button-no-keys.md) · [jsonl](div-button-no-keys.jsonl) | adversarial | 3 | all fixes accepted first try | true-fix, true-fix, true-fix |
 | [`heading-skip`](heading-skip.md) · [jsonl](heading-skip.jsonl) | adversarial | 1 | all fixes accepted first try | true-fix |
 | [`icon-only-control`](icon-only-control.md) · [jsonl](icon-only-control.jsonl) | adversarial | 2 | **reflexion**: 1 rejected attempt(s) before accept; **memory hit** ×1 (repeat signature reused) | true-fix, true-fix |

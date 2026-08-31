@@ -11,7 +11,7 @@ users**. Guidepup's own maintainers are explicit that automation complements rat
 manual AT testing, and we hold the same posture: this shows that the *announced experience* changed,
 not that a real user's task succeeded.
 
-**How to read the counts.** Each capture is a fixed **121-announcement window** (the
+**How to read the counts.** Each capture is a **121-announcement window on 26 of 27 pages** — `aria-label-contradicts` terminates early at 21 (the
 traversal is stepped a bounded number of times). On a long page that window is a truncated
 single pass; on a short page the traversal reaches `end of document` and **wraps**, so the
 window contains several passes and one real difference appears once per pass. We therefore

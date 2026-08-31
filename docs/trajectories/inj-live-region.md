@@ -22,7 +22,7 @@ whose own verdicts are traced in [`judge-verdicts.md`](judge-verdicts.md).
 
 **Agent decisions:**
 
-### A [3.2.2] `html > body > main > form` → **unresolved** (rule)
+### A [3.2.2] `html > body > main > form` → **unresolved** (routed to the rule fixer — no rule covers this criterion, so nothing was attempted)
 - not committed
 - **Why nothing shipped:** no deterministic rule covers WCAG 3.2.2, and Layer-A findings are always routed to the rule fixer, never to the LLM — so no fix was produced. **That is a coverage gap, not a judgement call.** The agent left the page **visibly failing** rather than invent markup it cannot verify: the violation stays detectable by any scanner, so this is an **unfixed issue, not a false green**. Closing it would mean adding a 3.2.2 rule.
 

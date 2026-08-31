@@ -36,7 +36,24 @@ for (let i = 1; i <= 3; i++) {
 
 const metricsMatch = metricsHashes.every((h) => h === metricsHashes[0]);
 const ablationMatch = ablationHashes.every((h) => h === ablationHashes[0]);
-const pass = metricsMatch && ablationMatch;
+
+// Self-consistency is not enough: three runs agreeing with EACH OTHER still passes if the pipeline
+// has drifted away from every published number. Compare against the committed artifacts too, so the
+// proof answers "did you get OUR numbers?" and not merely "did you get the same numbers twice?".
+const COMMITTED_METRICS = join(process.cwd(), "docs", "results", "metrics.json");
+const COMMITTED_ABLATION = join(process.cwd(), "docs", "results", "ablation.json");
+const committedMetrics = sha256(COMMITTED_METRICS);
+const committedAblation = sha256(COMMITTED_ABLATION);
+const metricsPublished = metricsHashes[0] === committedMetrics;
+const ablationPublished = ablationHashes[0] === committedAblation;
+if (!metricsPublished) {
+  console.error(`MISMATCH metrics.json: got ${metricsHashes[0]}, committed ${committedMetrics}`);
+}
+if (!ablationPublished) {
+  console.error(`MISMATCH ablation.json: got ${ablationHashes[0]}, committed ${committedAblation}`);
+}
+
+const pass = metricsMatch && ablationMatch && metricsPublished && ablationPublished;
 
 const md = `# Determinism proof — 3× byte-identical (offline replay, no API key)
 

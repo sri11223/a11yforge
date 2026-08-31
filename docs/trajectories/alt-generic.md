@@ -30,7 +30,7 @@ model request and response behind these decisions.
 ### C [1.1.1] `img[src="assets/harvest.jpg"]` → **true-fix** (rule)
 - attempt 1: deterministic rule fix → guard ok · verify: target resolved, new findings [none] → **ACCEPT**
 
-### C [1.1.1] `img[src="assets/hero.jpg"]` → **needs-review** (checkpoint)
+### C [1.1.1] `img[src="assets/hero.jpg"]` → **needs-review** (checkpoint) · memory-hit (strategy recalled from an earlier verified fix)
 - ungrounded alt → human checkpoint
 - → escalated to **human checkpoint**: alt left untouched (no fabricated description).
 

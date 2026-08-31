@@ -16,7 +16,7 @@ sites we do not own._
 > **These totals are a LOWER BOUND.** On big real DOMs some layers exceeded their per-layer
 > budget or were blocked by the site's Content-Security-Policy, and are marked `*` below (a
 > `0*` means "not measured", not "clean"): Layer A timed out on **2**, Layer B was
-> unavailable (timeout or CSP-blocked script injection) on **3**, and the Layer C LLM
+> unavailable on **3** (all large-DOM timeouts; after the CSP-safe injection no site is CSP-blocked), and the Layer C LLM
 > judge degraded to deterministic backstops on **3**. The real issue counts are higher.
 
 ## Per-site
@@ -44,7 +44,7 @@ sites we do not own._
 | www.w3.org | standards | 2 | 1 | 0 | 1 | no | — |
 | www.smashingmagazine.com | small business / publishing | 52 | 3 | 1 | 4 | no | — |
 
-_`*` = that layer hit its per-layer timeout or was CSP-blocked; the shown count is partial._
+_`*` = that layer hit its per-layer timeout; the shown count is partial._
 
 ## Per-layer partial data (transparency)
 

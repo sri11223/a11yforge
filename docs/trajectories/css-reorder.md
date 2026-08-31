@@ -17,6 +17,11 @@ whose own verdicts are traced in [`judge-verdicts.md`](judge-verdicts.md).
 
 **Detected issues (A/B/C tool output):**
 
+_**Partial detection.** `manifest.json` seeds 2 barrier(s) on this page and the
+layers surfaced 1. Not surfaced:
+WCAG 2.4.3 (`focus-order-mismatch`, expected layer B).
+The fix below may resolve it in passing, but it was never detected, so nothing verified it._
+
 - `B` [1.3.2] Visual order differs from DOM/reading order: children are shown in a different sequence (via CSS 'order') than a screen reader reads them, distorting meaning. — `body > main > section`
 
 **Agent decisions:**
