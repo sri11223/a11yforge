@@ -6,6 +6,28 @@ differs. Accessibility is the proving ground: the rare domain where **"looks fix
 and "is fixed" (a screen-reader user succeeds) diverge measurably**, so the difference between a
 careful agent and a careless one becomes a number.
 
+## Who this is for, and what's blocking them
+
+**The user we build for** is the developer or team who owns a web product and is accountable for
+its accessibility — and, standing behind them, the people who actually navigate that product by
+keyboard and by screen reader.
+
+**Their bottleneck is that the only thing which scales is the thing that can't see the problem.**
+Automated scanners are cheap, fast and CI-friendly, and they catch roughly **13–57%** of real WCAG
+issues. Everything they miss — keyboard traps, scrambled reading order, a label that exists but
+means nothing — needs a human with a screen reader, which does not scale to every pull request. So
+teams ship a green check and an unusable page. Overlay widgets promise to close that gap and
+[don't](https://www.ftc.gov/news-events/news/press-releases/2025/01/ftc-takes-action-against-accessibe-deceiving-consumers-about-its-ai-powered-web-accessibility-tool):
+the FTC fined accessiBe **$1M** in 2025 for compliance claims built on exactly that kind of output.
+And when a team hands the job to an LLM instead, they get a new failure — fixes that *look* right,
+pass the scanner, and are worse than the bug, because nothing in the loop can tell the difference.
+
+**Why closing it is worth doing.** WebAIM's Million report finds **95.9%** of homepages still fail
+an automated check — and that check is the shallow one. The cost of the gap is paid twice: in legal
+exposure, and by every person who hits a dialog they cannot escape. What's been missing is not
+another detector but a way to **verify that a remediation actually worked** before it merges. That
+is the whole of what A11yForge does.
+
 ## What it is (20 seconds)
 
 - **The tool** — point it at any page and it finds the barriers a scanner misses. This is the path
@@ -248,3 +270,43 @@ TypeScript / Node 22 · Playwright (Chromium, pinned) · axe-core · pa11y ·
 ## Status
 
 Complete. `npm test` (offline) green; metrics + ablation reproduce byte-identical.
+
+## The main failure mode
+
+**The dangerous failure is not laziness — it is confident hallucination.** A strong model asked to
+fix a generic `alt` will happily invent a description for an image it has never seen: *"Lumen
+product packaging boxes stacked in warm lighting."* Fluent, specific, plausible, and wrong. Every
+automated layer waves it through — axe passes it, the deterministic backstops pass it, and even a
+second LLM judge, also blind to the image, rates it meaningful. It is *more* dangerous than the
+original bug, because the original bug was at least detectable.
+
+That is why the fix is **structural, not a prompt instruction**: the agent may write `alt` only from
+grounding already present in the page (a caption, a heading, a link target), and where no grounding
+exists it leaves the original untouched and escalates to a human. Hallucination is made
+*impossible*, not *discouraged*. The honest cost is visible in our own numbers — the baseline fixes
+**more** issues than we do (44 vs 42 on the sealed corpus, 66 vs 60 extended, significant at n=45),
+because we decline 4 and 8 respectively where it declines none. We publish that row.
+
+Our other real limitations, stated in full in [`docs/results/STATISTICS.md`](docs/results/STATISTICS.md):
+significance on harm rests on a single additional discordant pair; the corpus is adversarial by
+construction, so **95.8%** is a property of the test set and not a field prevalence claim; κ is a
+single-annotator calibration check rather than a reliability study; Layer B is a deterministic
+simulator of reading order and operability, **not** a bug-for-bug NVDA/JAWS replica and no
+substitute for testing with real screen-reader users; and the 20-site field number is dated,
+detection-only, and a lower bound.
+
+## Hot take
+
+**Scanner-green is not a measure of accessibility — it is a measure of what your scanner can see,
+and an agent optimising against it will happily make the page worse while turning the check green.**
+
+The industry's mistake was not weak detection; it was treating *"the checker passes"* as
+*"the fix worked."* An LLM handed that objective learns the cheapest way to satisfy it: empty the
+`alt`, hide the offending node, invent a description. Every one of those is scanner-green and
+user-hostile, which is precisely why the FTC action landed.
+
+So the useful unit of progress in agentic remediation is not fix count — it is **harm shipped**, and
+the only defensible way to drive it to zero is to make the agent prove usability against layers the
+fixer cannot game, and to let it **refuse** when it cannot. An agent that declines is worth more
+than an agent that guesses. We would rather ship 42 verified fixes and 4 honest escalations than 44
+fixes and 8 harms we didn't notice.

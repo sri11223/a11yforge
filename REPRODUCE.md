@@ -87,6 +87,47 @@ false-fixes caught by adding Layer B: 14
 false-fixes caught by adding Layer C: 9
 ```
 
+### The solution itself, on any page you like
+
+The eval above measures the agent; this is the agent. It needs no key and no corpus — point it at a
+URL or a local file:
+
+```bash
+npm run audit -- corpus/adversarial/keyboard-trap-modal/index.html --no-llm
+npm run audit -- https://example.com
+npm run audit -- <url|path> --html gap.html      # also writes a standalone HTML report
+```
+
+Flags: `--no-llm` (deterministic backstops only, no key needed) · `--html <file>` ·
+`--timeout <ms>` (URL navigation, default 30000) · `--ci` (strict: non-zero if *any* issue is found,
+A/B or C) · `--help`.
+
+**Exit codes are the product:** `0` = nothing a scanner misses · `1` = gaps found · `2` = usage or
+fetch error. That `1` is what the GitHub Action turns into a failed check.
+
+**What to expect** on the trap page above: Layer A reports `0 violations — 'clean'`, then
+`SCANNER-CLEAN ≠ USABLE — 3 issue(s) a scanner cannot see`, listing WCAG 2.1.2 (focus trapped),
+2.1.1 (click handler on a non-focusable element) and 4.1.2 (no accessible name), each with a
+selector — and the process exits `1`.
+**Runtime** a few seconds per page. **Cost** $0 without a key; a fraction of a cent per page with
+one, since only Layer C calls a model.
+
+### The two arms being compared
+
+There is no separate baseline command: `npm run eval` runs **both** arms in the same process over
+the same corpus, same model, same seed, same token budget — only the pipeline differs, which is the
+point. If you want to read them:
+
+- **baseline** — [`src/agents/baseline.ts`](src/agents/baseline.ts): one LLM call given the page plus
+  the same Layer-A violation list, apply the output, stop. No routing, no verify-loop, no regression
+  guard, no checkpoint.
+- **advanced** — [`src/agents/advanced.ts`](src/agents/advanced.ts): route → fix attempt →
+  pre-commit regression guard → re-verify A/B/C → accept, reflex (max 3, diagnostic fed back), or
+  escalate.
+
+The comparison is **paired per issue** on identical pages, which is why McNemar is the right test and
+why `metrics.json` reports both arms side by side.
+
 ### Other entry points
 
 - `npm test` — the offline suite (157 tests, 13 files; needs Chromium installed as above).
