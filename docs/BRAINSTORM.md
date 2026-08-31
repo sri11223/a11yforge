@@ -195,7 +195,7 @@ Two granularities everywhere: **per-issue** (each ground-truth violation) and **
 **Decision — D.**
 - **Pin everything:** exact `axe-core` version (rule sets shift between minors), `pa11y` version, **Playwright + browser revision** pinned in the Dockerfile, Node version (`.nvmrc` + `engines`), committed `package-lock.json`, pinned OpenRouter **model ids**, `temperature=0`, fixed **seed**.
 - **LLM determinism via record/replay cassettes:** the reproducible eval runs against **recorded LLM responses** (keyed by a hash of the exact prompt), so results are deterministic offline and independent of live-model nondeterminism. A separate **live mode** (documented, needs an OpenRouter key) records fresh cassettes.
-- **One command:** `make eval` → `docker compose run eval` builds the image and runs the full pipeline end-to-end.
+- **One command:** `make docker-eval` → `docker compose run eval` builds the image and runs the full pipeline end-to-end. (`make eval` is the *local* Node path, not the Docker one.)
 - **Determinism proof:** run the full eval **3×** and assert the metrics JSON is **byte-identical** (hash and compare); publish the three matching hashes as the reproducibility proof.
 - **Trajectories:** every agent run emits a structured trajectory (input, each verify-loop iteration, layer verdicts, accept/reject decisions) for the "agent trajectories" deliverable.
 
@@ -209,4 +209,4 @@ Two granularities everywhere: **per-issue** (each ground-truth violation) and **
 4. **Corpus:** injected + adversarial + real, provenance-tagged; JSON ground-truth manifest with informative/decorative flag and expected catching layer.
 5. **Metrics:** gap% / true-fix / regression / false-fix, per-issue + per-page; McNemar for paired significance; Wilson CIs + raw counts + explicit n; κ published.
 6. **Baseline:** fair single-shot — same input, model, seed, budget; only the pipeline differs; scanner-only auto-fix as an extra reference row.
-7. **Reproducibility:** pinned deps + browser revision + lockfile; Docker; `make eval` one command; LLM record/replay cassettes; 3× byte-identical determinism proof.
+7. **Reproducibility:** pinned deps + browser revision + lockfile; Docker (`make docker-eval`); `make eval` for the local one-command run; LLM record/replay cassettes; 3× byte-identical determinism proof.

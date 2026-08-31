@@ -6,6 +6,18 @@ differs. Accessibility is the proving ground: the rare domain where **"looks fix
 and "is fixed" (a screen-reader user succeeds) diverge measurably**, so the difference between a
 careful agent and a careless one becomes a number.
 
+[![A11yForge gap check](https://github.com/sri11223/a11yforge/actions/workflows/a11y.yml/badge.svg)](https://github.com/sri11223/a11yforge/actions/workflows/a11y.yml)
+
+| | |
+| --- | --- |
+| **Problem** | A page can pass every automated scanner and still trap a keyboard user. Scanners check the mechanically-checkable subset of WCAG; agents that optimise against them ship fixes that are worse than the bug. |
+| **Result** | Same model, same prompt, only the verify-loop differs: **8 harmful changes → 0** on the sealed 27-page corpus. Of those 8, 3 are a measurement artifact we document rather than hide ([sensitivity analysis](docs/results/STATISTICS.md)) — excluding them it is 5 → 0. |
+| **Reproduce** | Offline, no API key, ~60 seconds:<br>`npm ci && npx playwright install chromium`<br>`node dist/src/cli/audit.js audit corpus/adversarial/keyboard-trap-modal/index.html --no-llm; echo $?` → **1** |
+
+**Start here:** [demo video (4:41)](video/a11yforge-demo.mp4) · [full report](docs/report.html) ·
+[agent trajectories](docs/trajectories/) · [statistics & limitations](docs/results/STATISTICS.md) ·
+[how to reproduce](REPRODUCE.md)
+
 ## Who this is for, and what's blocking them
 
 **The user we build for** is the developer or team who owns a web product and is accountable for
@@ -145,7 +157,7 @@ the 24 axe-clean pages still fail Layer B/C — **95.8%**. The corpus is *advers
 ## Reproduce it (one command, offline, no API key)
 
 ```bash
-npm ci && npm run eval          # → out/metrics.json (Node 22)
+npm ci && npx playwright install chromium && npm run eval          # → out/metrics.json (Node 22)
 ```
 
 or with only Docker:

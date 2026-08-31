@@ -1,5 +1,11 @@
 # A11yForge — Build Log
 
+> **Scope: steps 1–10 only, and counts are as-of those steps.** This log ends before the production
+> CLI, the GitHub Action, the 45-page wide corpus and the demo video. For steps 11–13 see
+> [`WORK_TRAJECTORY.md`](WORK_TRAJECTORY.md). The "103 passed (9 files)" figure below is the suite as
+> it stood at step 10; the shipped suite is **157 passed (13 files)**.
+
+
 Chronological record of each build step: what was done and how it was verified.
 
 ---

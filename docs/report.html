@@ -49,6 +49,8 @@ code{background:#eef0f3;padding:1px 5px;border-radius:4px;font-size:13px}
 .toc a{color:var(--brand);text-decoration:none;white-space:nowrap}
 .toc a:hover{text-decoration:underline}
 html{scroll-behavior:smooth}
+  /* An accessibility report must not force motion on someone who asked for less of it. */
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 :target{scroll-margin-top:52px}
 </style>
 </head>
@@ -68,12 +70,15 @@ html{scroll-behavior:smooth}
 <nav class="toc" aria-label="Report sections">
   <a href="#why">Problem</a>
   <a href="#numbers">Evidence</a>
+  <a href="#sensitivity">Sensitivity</a>
+  <a href="#judgescope">Layer C scope</a>
   <a href="#ablation">Ablation</a>
   <a href="#wild">Real sites</a>
   <a href="#hearit">Hear it</a>
   <a href="#seeit">See it</a>
   <a href="#sig">Claim hierarchy</a>
   <a href="#narration">Narration diff</a>
+  <a href="#hottake">Hot take</a>
   <a href="#related">Related work</a>
   <a href="#traces">Traces</a>
   <a href="#reproduce">Reproduce</a>
