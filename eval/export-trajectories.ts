@@ -18,6 +18,11 @@ import type { Finding } from "../src/types.js";
 
 const BUCKETS = ["adversarial", "injected"];
 const OUT = join(process.cwd(), "docs", "trajectories");
+/** Read-only: the scored results, used to state where the agent did worse than the baseline. */
+const METRICS = join(process.cwd(), "docs", "results", "metrics.json");
+const scored: { perPage?: { page: string; baseline?: any; advanced?: any }[] } = existsSync(METRICS)
+  ? JSON.parse(readFileSync(METRICS, "utf8"))
+  : {};
 
 const short = (f: Finding) => ({ layer: f.layer, wcag: f.wcag, selector: f.selector, message: f.message });
 
@@ -97,6 +102,23 @@ async function main(): Promise<void> {
       md.push(`**checkpoint** = escalated to a human instead of guessed. Every candidate passes a`);
       md.push(`regression **guard** (rejects deleting or hiding content) and then a **verify** re-scan;`);
       md.push(`only a candidate that resolves its target and adds no new findings is committed.\n`);
+      // A trace that shows decisions but not the instructions behind them is only half a trace, and
+      // every one of these files previously dead-ended at the index. Link the actual prompts.
+      md.push(`**The instructions behind these decisions.** Fixer system prompt:`);
+      md.push(`[\`src/agents/fix-prompt.ts\`](../../src/agents/fix-prompt.ts) · routing table:`);
+      md.push(`[\`src/agents/router.ts\`](../../src/agents/router.ts) (\`DECISION_TABLE\`) · Layer-C judge`);
+      md.push(`prompt: [\`src/layers/layerC-judge.ts\`](../../src/layers/layerC-judge.ts) (\`JUDGE_SYSTEM\`),`);
+      md.push(`whose own verdicts are traced in [\`judge-verdicts.md\`](judge-verdicts.md).\n`);
+      // The two "start here" picks dead-ended at the shallow version while the file holding the real
+      // model request/response sat unlinked. Point at it from the page a reader opens first.
+      const deeperDive: Record<string, string> = {
+        "icon-only-control": "reflexion-icon-only-control.md",
+        "alt-generic": "contrast-alt-generic.md",
+      };
+      if (deeperDive[slug]) {
+        md.push(`**Deeper dive:** [\`${deeperDive[slug]!.replace(/\.md$/, "")}\`](${deeperDive[slug]}) quotes the actual`);
+        md.push(`model request and response behind these decisions.\n`);
+      }
       md.push(`**Detected issues (A/B/C tool output):**\n`);
       if (before.A.length + before.B.length + before.C.length === 0) {
         md.push(`_None. All three layers scanned this page and found nothing to fix, so the agent`);
@@ -167,16 +189,19 @@ async function main(): Promise<void> {
   // Steer by VARIETY, not just score: show each distinct capability once rather than the same
   // pattern twice. A judge skimming four traces should see four different things — including the
   // one where the agent declined and said why, which is our most honest artifact.
-  const kindOf = (h: Highlight) =>
+  // Capabilities as a SET, not a concatenated string. Joining them made "escalated+memory" and
+  // "escalated" read as different kinds, so two picks demonstrated the identical capability on the
+  // identical rule. A pick now has to bring at least one capability not already on the list.
+  const capsOf = (h: Highlight) =>
     [["regression guard", "guard"], ["reflexion", "reflexion"], ["unresolved", "declined"], ["escalated", "escalated"], ["memory hit", "memory"]]
       .filter(([needle]) => h.notes.some((n) => n.includes(needle as string)))
-      .map(([, label]) => label).join("+");
-  const seenKind = new Set<string>();
+      .map(([, label]) => label as string);
+  const seenCaps = new Set<string>();
   const pick: Highlight[] = [];
   for (const h of [...highlights].filter((h) => score(h) > 0).sort((a, b) => score(b) - score(a))) {
-    const k = kindOf(h);
-    if (seenKind.has(k)) continue;
-    seenKind.add(k);
+    const caps = capsOf(h);
+    if (caps.length > 0 && caps.every((c) => seenCaps.has(c))) continue;
+    caps.forEach((c) => seenCaps.add(c));
     pick.push(h);
     if (pick.length === 4) break;
   }
@@ -186,6 +211,15 @@ async function main(): Promise<void> {
     guardPages === 0
       ? `**Honest gap — what these traces do NOT show:** none of the ${highlights.length} traces contains a *regression-guard rejection*. In this run the advanced agent's own candidates never tried to delete or hide content, so the guard never had to fire. The guard's value is evidenced two other ways. Indirectly, in the scored eval: the single-shot baseline shipped **6 regressions**, the guarded advanced agent shipped **0** (see [\`metrics.json\`](../results/metrics.json)). Directly, in [\`test/regression-guard.test.ts\`](../../test/regression-guard.test.ts): adversarial candidates prove the gate **rejects** four cheat classes — deleting an informative image, demoting a real control to a non-focusable element, removing visible text, and emptying an informative image to \`alt=""\` — each with its reason string asserted, while **accepting** four legitimate fixes (adding an aria-label, grounding generic alt, upgrading \`div[role=button]\` to a real \`<button>\`, and empty alt where a descriptive \`<figcaption>\` already carries the alternative). Two further tests, originally written to characterize a blind spot, now prove it closed. Distinguishing *missed by the gate but caught downstream* from *not caught anywhere*, per class: **deletion / removed control / removed text** is caught by the gate itself (tested directly); **alt emptying** is caught by the gate inside a figure, and outside one by the **Layer C deterministic backstop** (rule informative-emptied, no LLM) whenever the image is in a figure or its src looks content-bearing (chart|graph|plot|diagram|figure|infographic|map|emission|revenue|data) — residual: a bare, generically-named img outside a figure is covered by neither; **CSS hiding (display:none / visibility:hidden / the hidden attribute) and risky aria-hidden** are **now rejected by the gate** — previously uncovered by the whole stack, and worse than one missed gate because Layer B's visibility filter *drops hidden elements*, so hiding an offending control made its violation "resolve". The snapshot now counts markup-level hiding and rejects any increase, with aria-hidden classified risky (focusable / contains a control / carries text — rejected) vs decorative (text-free non-focusable glyph inside a labelled control — accepted, the recommended pattern our own fixer emits); proven in [test/regression-guard.test.ts](../../test/regression-guard.test.ts), where the two tests that used to document the gap now assert the rejection. Residual, so this isn't read as catching everything: the gate reads markup, not computed style, so hiding via an external stylesheet class would still pass, and the bare generically-named img alt case remains uncovered. Independently, [test/no-hidden-content.test.ts](../../test/no-hidden-content.test.ts) measures **zero** hiding artifacts in our reported numbers — all 27 scored pages and all 85 LLM candidates. We would rather point all of that out than let a reader assume the traces prove something they don't.`
       : `The regression guard fired on **${guardPages}** page(s) below — those traces show a content-destroying candidate being rejected before commit.`;
+
+  // The traces show what the agent DID; they don't show where it did less than the baseline. That
+  // asymmetry is in metrics.json but not where the traces are read, so state it here too.
+  const lostPages = (scored.perPage ?? [])
+    .filter((p: any) => p.baseline?.trueFix && !p.advanced?.trueFix && (p.advanced?.after?.a ?? 0) > 0)
+    .map((p: any) => p.page as string);
+  const coverageNote = lostPages.length
+    ? `\n\n**Honest gap — where we did worse than the baseline.** On ${lostPages.map((s: string) => `\`${s}\``).join(" and ")} the single-shot baseline shipped a page clean while the advanced agent left it visibly failing Layer A. That is the cost side of the abstention trade-off, and it is a real loss rather than a rounding error: per [\`metrics.json\`](../results/metrics.json) the baseline true-fixed those pages and we did not. Read these traces knowing the verified agent fixes fewer issues on purpose, and that on these ${lostPages.length} pages "fewer" meant "none".`
+    : "";
 
   writeFileSync(
     join(OUT, "README.md"),
@@ -201,8 +235,10 @@ JSONL for **every one of the ${highlights.length} pages the scored eval runs** (
 including the boring ones, labelled as such. Memory is shared within a bucket, exactly as in the
 scored eval, so these traces reflect what the eval actually did.
 
-**Start here** — the traces that prove the thesis:
+**Start here** — the traces that prove the thesis, one per distinct capability:
 ${pick.map((h) => `- [\`${h.slug}\`](${h.slug}.md) — ${h.notes.join("; ")}`).join("\n")}
+${pick.length < 4 ? `
+_${pick.length} entries, not four: each has to show a capability the ones above it do not, and in this run the regression guard never fired — see the honest gap below._` : ""}
 
 **All ${highlights.length} pages:**
 
@@ -210,7 +246,7 @@ ${pick.map((h) => `- [\`${h.slug}\`](${h.slug}.md) — ${h.notes.join("; ")}`).j
 |---|---|---|---|---|
 ${highlights.map((h) => `| [\`${h.slug}\`](${h.slug}.md) · [jsonl](${h.slug}.jsonl) | ${h.bucket} | ${h.detected} | ${h.notes.join("; ")} | ${h.outcomes.join(", ") || "—"} |`).join("\n")}
 
-${guardNote}
+${guardNote}${coverageNote}
 
 **Reading a "memory hit":** memory recalls the previously-verified **strategy** (the routing
 decision) for a repeat signature — not the patch itself. So a recalled fix can still take more than
@@ -237,6 +273,12 @@ Every fixer/judge call is recorded to a content-hashed cassette under
 \`{model, temperature, seed, messages}\` and the model's \`response\`. **These ARE the raw model
 I/O** — the whole evaluation replays from them offline (\`A11YFORGE_MODE=replay\`, no API key).
 Fixer = \`anthropic/claude-sonnet-5\`; judge = \`openai/gpt-4o-mini\` (different families).
+
+151 hash-named files are not a trace a reader can follow, so the judge has a readable one:
+[\`judge-verdicts.md\`](judge-verdicts.md) — its system prompt, six real verdicts quoted from those
+cassettes with the gate decision each produced, its κ calibration with the scope limit spelled out,
+and **the one anchor item where the judge disagreed with the expert label**, shown rather than
+summarised.
 
 ## 3. Coding agents — how the repo was built
 

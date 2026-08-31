@@ -9,6 +9,12 @@ Strategies: **rule** = deterministic code fix · **llm** = model-generated fix �
 regression **guard** (rejects deleting or hiding content) and then a **verify** re-scan;
 only a candidate that resolves its target and adds no new findings is committed.
 
+**The instructions behind these decisions.** Fixer system prompt:
+[`src/agents/fix-prompt.ts`](../../src/agents/fix-prompt.ts) · routing table:
+[`src/agents/router.ts`](../../src/agents/router.ts) (`DECISION_TABLE`) · Layer-C judge
+prompt: [`src/layers/layerC-judge.ts`](../../src/layers/layerC-judge.ts) (`JUDGE_SYSTEM`),
+whose own verdicts are traced in [`judge-verdicts.md`](judge-verdicts.md).
+
 **Detected issues (A/B/C tool output):**
 
 - `B` [2.1.1] Custom control (role="button") is focusable but has no keyboard activation handler (click only), so Enter/Space do nothing. — `body > main > div > div:nth-of-type(1) > div:nth-of-type(1)`
@@ -20,10 +26,10 @@ only a candidate that resolves its target and adds no new findings is committed.
 ### B [2.1.1] `body > main > div > div:nth-of-type(1) > div:nth-of-type(1)` → **true-fix** (llm)
 - attempt 1: LLM targeted fix → guard ok · verify: target resolved, new findings [none] → **ACCEPT**
 
-### B [2.1.1] `body > main > div > div:nth-of-type(2) > div:nth-of-type(1)` → **true-fix** (rule)
+### B [2.1.1] `body > main > div > div:nth-of-type(2) > div:nth-of-type(1)` → **true-fix** (no fix of its own — cleared by an earlier change)
 - resolved by an earlier fix
 
-### B [2.1.1] `body > main > div > div:nth-of-type(3) > div:nth-of-type(1)` → **true-fix** (rule)
+### B [2.1.1] `body > main > div > div:nth-of-type(3) > div:nth-of-type(1)` → **true-fix** (no fix of its own — cleared by an earlier change)
 - resolved by an earlier fix
 
 **Shipped result:** Layer A 0 · Layer B 0 · Layer C 0

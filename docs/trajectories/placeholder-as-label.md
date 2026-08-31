@@ -9,6 +9,12 @@ Strategies: **rule** = deterministic code fix · **llm** = model-generated fix �
 regression **guard** (rejects deleting or hiding content) and then a **verify** re-scan;
 only a candidate that resolves its target and adds no new findings is committed.
 
+**The instructions behind these decisions.** Fixer system prompt:
+[`src/agents/fix-prompt.ts`](../../src/agents/fix-prompt.ts) · routing table:
+[`src/agents/router.ts`](../../src/agents/router.ts) (`DECISION_TABLE`) · Layer-C judge
+prompt: [`src/layers/layerC-judge.ts`](../../src/layers/layerC-judge.ts) (`JUDGE_SYSTEM`),
+whose own verdicts are traced in [`judge-verdicts.md`](judge-verdicts.md).
+
 **Detected issues (A/B/C tool output):**
 
 - `A` [1.3.1] This form field should be labelled in some way. Use the label element (either with a "for" attribute or wrapped around the form field), or "title", "aria-label" or "aria-labelledby" attributes as appropriate. — `html > body > main > form > div > input:nth-child(1)`
@@ -25,19 +31,19 @@ only a candidate that resolves its target and adds no new findings is committed.
 ### A [1.3.1] `html > body > main > form > div > input:nth-child(1)` → **true-fix** (rule)
 - attempt 1: deterministic rule fix → guard ok · verify: target resolved, new findings [none] → **ACCEPT**
 
-### A [4.1.2] `html > body > main > form > div > input:nth-child(1)` → **true-fix** (rule)
+### A [4.1.2] `html > body > main > form > div > input:nth-child(1)` → **true-fix** (no fix of its own — cleared by an earlier change)
 - resolved by an earlier fix
 
 ### A [1.3.1] `html > body > main > form > div > input:nth-child(2)` → **true-fix** (rule) · memory-hit (strategy recalled from an earlier verified fix)
 - attempt 1: deterministic rule fix → guard ok · verify: target resolved, new findings [none] → **ACCEPT**
 
-### A [4.1.2] `html > body > main > form > div > input:nth-child(2)` → **true-fix** (rule)
+### A [4.1.2] `html > body > main > form > div > input:nth-child(2)` → **true-fix** (no fix of its own — cleared by an earlier change)
 - resolved by an earlier fix
 
 ### A [1.3.1] `html > body > main > form > input:nth-child(1)` → **true-fix** (rule) · memory-hit (strategy recalled from an earlier verified fix)
 - attempt 1: deterministic rule fix → guard ok · verify: target resolved, new findings [none] → **ACCEPT**
 
-### A [4.1.2] `html > body > main > form > input:nth-child(1)` → **true-fix** (rule)
+### A [4.1.2] `html > body > main > form > input:nth-child(1)` → **true-fix** (no fix of its own — cleared by an earlier change)
 - resolved by an earlier fix
 
 ### A [4.1.2] `html > body > main > form > input:nth-child(2)` → **true-fix** (rule)
