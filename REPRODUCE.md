@@ -12,7 +12,7 @@ whole thesis: a page every automated scanner passes, that a keyboard user cannot
 
 ```bash
 git clone https://github.com/sri11223/a11yforge.git && cd a11yforge
-npm ci && npx playwright install chromium && npm run build
+npm ci && npx playwright install chromium chromium-headless-shell && npm run build
 node dist/src/cli/audit.js audit corpus/adversarial/keyboard-trap-modal/index.html --no-llm; echo $?
 ```
 
@@ -96,7 +96,7 @@ replayed instantly). **Cost:** $0 (no key).
 git clone https://github.com/sri11223/a11yforge.git
 cd a11yforge
 npm ci                 # pinned deps (package-lock.json)
-npx playwright install chromium
+npx playwright install chromium chromium-headless-shell
 npm run eval           # → out/metrics.json   (one command; make eval also works)
 ```
 

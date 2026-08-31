@@ -12,7 +12,7 @@ careful agent and a careless one becomes a number.
 | --- | --- |
 | **Problem** | A page can pass every automated scanner and still trap a keyboard user. Scanners check the mechanically-checkable subset of WCAG; agents that optimise against them ship fixes that are worse than the bug. |
 | **Result** | Same model, same prompt, only the verify-loop differs: **8 harmful changes → 0** on the sealed 27-page corpus. Of those 8, 3 are a measurement artifact we document rather than hide ([sensitivity analysis](docs/results/STATISTICS.md)) — excluding them it is 5 → 0. |
-| **Reproduce** | Offline, no API key, ~60 seconds:<br>`npm ci && npx playwright install chromium`<br>`node dist/src/cli/audit.js audit corpus/adversarial/keyboard-trap-modal/index.html --no-llm; echo $?` → **1** |
+| **Reproduce** | Offline, no API key, ~60 seconds:<br>`npm ci && npx playwright install chromium chromium-headless-shell`<br>`node dist/src/cli/audit.js audit corpus/adversarial/keyboard-trap-modal/index.html --no-llm; echo $?` → **1** |
 
 **Start here:** [demo video (4:41)](video/a11yforge-demo.mp4) · [full report](docs/report.html) ·
 [runtime agent traces](docs/builder-trajectories/) · [coding-agent trajectories](coding-agent-trajectories/) · [statistics & limitations](docs/results/STATISTICS.md) ·
@@ -46,7 +46,7 @@ is the whole of what A11yForge does.
   ```bash
   git clone https://github.com/sri11223/a11yforge && cd a11yforge
   npm ci
-  npx playwright install chromium        # required — see the note below
+  npx playwright install chromium chromium-headless-shell        # required — see the note below
   npm run audit -- <url|path>            # → Layer A/B/C gap report; exit 1 if scanner-clean-but-broken
   ```
   **Why the explicit browser step:** `playwright@1.62.1` ships **no postinstall**, so installing this
@@ -157,7 +157,7 @@ the 24 axe-clean pages still fail Layer B/C — **95.8%**. The corpus is *advers
 ## Reproduce it (one command, offline, no API key)
 
 ```bash
-npm ci && npx playwright install chromium && npm run eval          # → out/metrics.json (Node 22)
+npm ci && npx playwright install chromium chromium-headless-shell && npm run eval          # → out/metrics.json (Node 22)
 ```
 
 or with only Docker:
