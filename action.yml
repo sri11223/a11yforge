@@ -29,6 +29,16 @@ inputs:
     required: false
     default: ""
 
+outputs:
+  exit-code:
+    # Exposed so a caller can assert on what the audit ACTUALLY returned rather than on
+    # step outcome. `outcome` is 'failure' for any reason at all — including this action
+    # failing to load or build — so asserting on it lets an infrastructure error pass as
+    # "the gate caught the bug". 0 = nothing a scanner misses · 1 = gaps found ·
+    # 2 = usage/fetch error.
+    description: "The audit's exit code (0 clean, 1 gaps found, 2 usage/fetch error)."
+    value: ${{ steps.audit.outputs.exit-code }}
+
 runs:
   using: "composite"
   steps:
