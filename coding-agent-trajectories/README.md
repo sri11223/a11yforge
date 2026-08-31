@@ -131,8 +131,10 @@ Jump straight to the loop working. Line numbers are into `23af0c63.jsonl`, the m
 ## Files
 
 - [`23af0c63.jsonl`](23af0c63.jsonl) — 3413 turns extracted from 12352 source records
-- [`3d7683a8.jsonl`](3d7683a8.jsonl) — 2 turns extracted from 12 source records
-- [`405680cd.jsonl`](405680cd.jsonl) — 2 turns extracted from 11 source records
+
+This is the build session. Two other sessions existed in the same project directory but held
+2 extracted turns each (a false start and a one-off check); they carried nothing the build
+depended on, so they are not published rather than padding the folder with stubs.
 
 One JSON object per line: `{ts, role, text?, toolCalls?}`. `role: "user"` is the orchestrator,
 `role: "assistant"` is the builder.
