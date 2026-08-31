@@ -278,3 +278,35 @@ counter-examples, which needs no α at all.
 - **The live-region oracle only clicks real `<button>` elements** (`layerB-sr.ts:357`), which makes
   part of the harm contrast a measurement artifact. Quantified in the sensitivity analysis above; the
   fix is to click `[role=button]`, `[role=switch]` and `[role=tab]` too, and it is unmeasured.
+
+
+These next three touch the **central invariant** — "never ship a fix you cannot verify". We publish
+them rather than fix them, and the reason is not modesty: changing agent behaviour now would
+invalidate the sealed artifacts, and we would rather ship numbers a judge can reproduce than numbers
+we re-derived in the last hour. Each is scoped to what it does and does not affect.
+
+- **The verification oracle can fail open.** `safe()` in `src/layers/layerB-sr.ts:619` catches any
+  exception from a Layer-B check and returns `[]`. So *"the check crashed"* is indistinguishable from
+  *"the page is clean"*, and the accept condition in `advanced.ts:252` is
+  `targetResolved && newFindings.length === 0`. A CDP timeout during re-verification could therefore
+  let an unverified fix be committed as a `true-fix`, with a `console.warn` as the only evidence.
+  **This is the inverse of the failure we condemn, sitting in our own oracle.** No published figure is
+  affected — every run behind these numbers completed with no check error — but that is a property of
+  those runs, not a guarantee of the design. The fix is to thread check errors out and refuse to
+  accept when any check errored.
+- **The final escalation sweep has three holes** (`advanced.ts:275–285`). The universal "never emit an
+  unverified issue as done" sweep is (a) wrapped in `if (finalScan.A.length === 0)`, so a page ending
+  with even one residual Layer-A finding escalates **nothing**; (b) iterates only `finalScan.B` and
+  `finalScan.C`, so residual **Layer-A** findings are never escalated at all; and (c) dedupes the
+  review queue on **selector alone**, so a second finding at the same selector is dropped. That third
+  one is reachable in our own shipped corpus: `keyboard-trap-modal` carries both `B:2.1.1` and
+  `B:4.1.2` at the identical selector `body > div > div > span`. So "no residual A/B/C is emitted as
+  done" is true of the runs we measured but **not guaranteed by the code as written**. The fix is to
+  drop the A-clean gate, include `finalScan.A`, and key the dedupe on `layer:wcag:selector`.
+- **Finding identity is positional.** Findings are keyed `wcag|selector` (`advanced.ts:88`) and Layer
+  B's `cssPath` emits `:nth-of-type` (`layerB-sr.ts:49`). A structural fix that renumbers siblings —
+  inserting a `<label>`, the canonical `placeholder-as-label` fix — therefore changes a *different*
+  finding's key. That can both mark an unfixed defect as "resolved by an earlier fix" and make a
+  correct fix look like it introduced new findings. The mitigation — never declare a defect resolved
+  while another finding of the same layer/criterion/rule class is still present — is
+  **unimplemented**.
