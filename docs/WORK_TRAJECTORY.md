@@ -94,8 +94,11 @@ decision that shaped the next step.**
     rule to a universal invariant, **proved byte-identical on the sealed 27** (fix is a no-op
     there), then re-ran wide: harmful pages 2→0, ablation 38→13→0, gap 97.4%. Reported the
     significance honestly (harmful-pages p=0.041 *on our own corpus, a byproduct of the fix*) and
-    the cost of conservatism (baseline true-fixes 7 the advanced escalates, p=0.023 in the
-    baseline's favour). Kept 27 as the headline; added a "Robustness at scale" section.
+    the cost of conservatism (baseline true-fixes 6 the advanced escalates, p=0.041 χ² / 0.031
+    exact, in the baseline's favour). Kept 27 as the headline; added a "Robustness at scale"
+    section. *(Corrected: this line previously read 7 and p=0.023, which matched neither
+    `metrics-wide.json` — `mcnemar.trueFix.b = 6`, `p = 0.0412` — nor any other document. It was
+    the only place those figures appeared.)*
 
 ## The honest self-catches (the part we're proudest of)
 

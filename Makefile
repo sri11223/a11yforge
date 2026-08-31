@@ -1,4 +1,4 @@
-.PHONY: install build test eval ablation report trajectories determinism docker-eval docker-determinism
+.PHONY: install build test eval ablation audit trajectories determinism docker-eval docker-determinism
 
 # --- local (Node 22) ---
 install:            ## install pinned deps
@@ -11,8 +11,8 @@ eval:              ## ONE COMMAND: offline baseline-vs-advanced eval -> out/metr
 	npm run eval
 ablation:          ## gated {A}/{A,B}/{A,B,C} ablation -> out/ablation.json
 	npm run ablation
-report:            ## build docs/report.html from committed results
-	npm run report
+audit:             ## run the solution on one page: make audit TARGET=<url|path>
+	npm run audit -- $(TARGET) --no-llm
 trajectories:      ## export runtime agent trajectories -> docs/trajectories/
 	npm run trajectories
 determinism:       ## 3x byte-identical determinism proof -> docs/results/DETERMINISM.md
