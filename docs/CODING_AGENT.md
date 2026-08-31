@@ -6,9 +6,12 @@ together — including an experiment we tried and **removed**.
 ## Agents & tools used
 
 **Coding agent (built this repo):** Claude Code (Anthropic Claude Opus 5, model id `anthropic/claude-opus-5`). It wrote the code,
-tests, corpus, and docs, ran the toolchain, and drove git. The build was orchestrated
-step-by-step (brainstorm → scaffold → layers → agents → metrics → report), with each step
-verified (tsc + tests green) before the next.
+tests, corpus, and docs, ran the toolchain, and drove git. **Two** Claude Code sessions ran the
+build as a loop: an **orchestrator** that held the plan, sent one step at a time and independently
+verified each result against the real files, and a **builder** that did all the work in the repo.
+The step sequence was brainstorm → scaffold → layers → agents → metrics → report, with each step
+verified (tsc + tests green) before the next. The narrative side of that loop, step by step with
+commits, is [`WORK_TRAJECTORY.md`](WORK_TRAJECTORY.md).
 
 **Attribution caveat, stated because this document is the disclosure.** The coding-agent
 attribution above is **author-asserted, not machine-verifiable**: the Co-Authored-By trailers that
@@ -19,9 +22,14 @@ which *is* provable — every model call is replayable from the 151 content-addr
 - **Fixer = `anthropic/claude-sonnet-5`** — generates behavioral (Layer B) fixes for both the
   baseline (single-shot) and the advanced agent (targeted, inside the verify-loop).
 - **Judge = `openai/gpt-4o-mini`** — Layer C semantic judge, a **different model family** from
-  the fixer so it never grades its own dialect. Calibrated to Cohen's κ = 0.98 (hard gate ≥ 0.6).
-  Scope, stated honestly: that κ is judge-vs-expert-labels agreement on a single-annotator,
-  team-authored 64-item anchor set — a calibration check, not an inter-annotator reliability study.
+  the fixer so it never grades its own dialect. Calibrated to Cohen's κ = 0.9792 (hard gate ≥ 0.6).
+  Scope, stated honestly, twice over: that κ is judge-vs-expert-labels agreement on a
+  single-annotator, team-authored 64-item anchor set — a calibration check, not an inter-annotator
+  reliability study. **And the published numbers do not run this judge at all:**
+  `src/harness/scan-all.ts:46` defaults `useJudge` to `false` and no eval caller overrides it, so in
+  `run-eval` and the ablation Layer C is the **deterministic backstops only**. The calibrated judge
+  runs in the CLI (`a11yforge audit`) and the 20-site field audit. That is why the headline replays
+  byte-identically with no API key — it depends on no LLM judgement.
 
 **Deterministic tooling (no LLM):** axe-core + pa11y (Layer A), Guidepup
 virtual-screen-reader + Chrome DevTools Protocol AX tree (Layer B), cheerio (Layer C
