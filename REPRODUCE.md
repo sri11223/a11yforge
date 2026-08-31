@@ -4,7 +4,41 @@ Everything below runs **offline in replay mode** — it replays committed, conte
 cassettes, so it needs **no OpenRouter API key**, makes **no network LLM calls**, and costs
 **≈ $0**. A judge on a clean machine gets the same numbers we report.
 
+
+## The 60-second version (start here)
+
+The fastest currently-documented path is 20–35 minutes. This one is about a minute and it is the
+whole thesis: a page every automated scanner passes, that a keyboard user cannot escape.
+
+```bash
+git clone https://github.com/sri11223/a11yforge.git && cd a11yforge
+npm ci && npx playwright install chromium && npm run build
+node dist/src/cli/audit.js audit corpus/adversarial/keyboard-trap-modal/index.html --no-llm; echo $?
+```
+
+Expect: `Automated scanner (Layer A): 0 violations — 'clean'`, then three issues a scanner cannot
+see, then **`1`** from `echo $?`. That non-zero exit is what a CI gate turns into a failed check.
+
+## Prerequisites
+
+| | |
+| --- | --- |
+| **Node** | 22.x (see `.nvmrc`; `engines` is `>=22 <23`) with npm 10+ |
+| **or Docker** | with Compose **V2** — the commands below use `docker compose`, not `docker-compose` |
+| **Network** | the npm registry, plus the Chrome-for-Testing CDN. pa11y's Puppeteer pulls its own Chrome (~180 MB) unless you set `A11YFORGE_PA11Y_CHROMIUM=1` to reuse the Playwright build |
+| **API key** | **none, at any point**, for everything under this heading |
+| **Disk** | ≈ 50 MB clone + ~700 MB `node_modules` + ~150 MB Playwright Chromium + ~180 MB pa11y Chrome — or ~2–3 GB for the Docker image |
+| **Working dir** | run every command from the repo root: cassette and corpus paths resolve from `process.cwd()` |
+| **Verified on** | Windows 11 with Node 22.22.3. Other platforms and Node minors are untested — we do not claim them. |
+
 ## Option A — Docker (only Docker required)
+
+> **Status of this path.** `Dockerfile` previously ran `npm ci` while `package.json` had
+> `"prepare": "npm run build"`, so tsc ran before the source was copied and failed the install. That
+> is now `npm ci --ignore-scripts`. **We have not re-verified the in-container byte-match since that
+> fix** — no Docker daemon was available on the authoring machine. The last confirmed in-container
+> reproduction predates the `prepare` script; the local path in Option B is the one verified from a
+> fresh clone (see below).
 
 ```bash
 git clone https://github.com/sri11223/a11yforge.git
@@ -166,6 +200,49 @@ separately by `npx playwright install chromium`, Node v22.22.3. `npm run eval` p
 What was cold: the clone, `node_modules`, `dist/`, and the Playwright browser cache. What was
 **not** varied: the same machine, the same OS (Windows) and the same Node version. We have not
 tested cross-platform or cross-machine reproduction and do not claim it.
+
+
+### Did you get *our* numbers?
+
+`npm run determinism` compares three consecutive runs **against each other**, which passes even if
+the pipeline has drifted away from every published number. To check your run against what we
+published:
+
+```bash
+sha256sum out/metrics.json docs/results/metrics.json
+sha256sum out/ablation.json docs/results/ablation.json
+```
+
+Both pairs must match. The committed values are:
+
+```
+metrics.json   071387c287b8ba042e6645afaeaffd95a61ea976b881cb08e8d13f23e722f3a6
+ablation.json  93d88b2305a6b9595aebbdf53b88867da961ede2f33e9fab795c474128de16d2
+```
+
+`eval/determinism-proof.ts` now asserts this equality too, so a drifted pipeline fails the proof
+instead of passing it.
+
+### Commands for numbers that had none
+
+| Number | Command | Notes |
+| --- | --- | --- |
+| n=45 column, ablation **38 → 13 → 0** | `A11YFORGE_WIDE=1 npm run eval` then `A11YFORGE_WIDE=1 npm run ablation` | writes `out/metrics-wide.json` / `out/ablation-wide.json`; roughly 1.7× the n=27 runtimes |
+| gated ablation runtime | `npm run ablation` | three gated passes, so ≈ 3× the eval — budget ~60–105 min |
+| κ = **0.9792** | `A11YFORGE_MODE=replay JUDGE_MODEL=openai/gpt-4o-mini node dist/eval/calibrate-judge.js` | offline from committed judge cassettes. `JUDGE_MODEL` has **no default** here, so the bare command throws. It rewrites the tracked `corpus/anchor-set/kappa.json`. |
+| **206** real-site barriers | `npx tsc && node dist/eval/audit-real-20.js` (no npm script) | **live, key-requiring, dated and non-deterministic** — deliberately outside the reproducible offline path. `audit-real`/`snapshot-real` cannot run from a fresh clone: `corpus/real/**/index.html` is gitignored. |
+| `docs/trajectories/*.md` + `narration-diff.*` | `npm run trajectories` | needs Chromium; ~18 min |
+| `docs/trajectories/judge-verdicts.md` | `node eval/export-judge-trajectory.mjs` | reads cassettes only; instant |
+
+### One exception to the offline guarantee
+
+`src/cli/audit.ts` sets `A11YFORGE_MODE ??= "live"` when **both** `OPENROUTER_API_KEY` and
+`JUDGE_MODEL` are in the environment. If you have a key in your shell profile, the `audit` examples
+above will make **billed live calls**. Pass `--no-llm`, or unset the key, to stay offline.
+
+`docker-compose.yml` mounts `./docs/results` read-write for the determinism service, so that run
+**overwrites the committed `DETERMINISM.md`** and dirties your tree. Expected; `git checkout
+docs/results/DETERMINISM.md` restores it.
 
 ## Expected numbers (the committed reference)
 
