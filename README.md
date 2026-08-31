@@ -251,9 +251,21 @@ ships** (a) a screen-reader-transcript verification layer inside the fix loop, (
 
 ## Deliverables
 
-- **Code + improvement changelog:** this repo · [`docs/CHANGELOG.md`](docs/CHANGELOG.md)
+- **Solution video (4:41):** [`video/a11yforge-demo.mp4`](video/a11yforge-demo.mp4) — narrated. Opens
+  on the failure, states the result inside the first 30 seconds, walks one real execution, tours the
+  evidence with its caveats, and shows how the repo itself was built. Script:
+  [`docs/READ-ALONG.md`](docs/READ-ALONG.md). Every figure on screen is read from the committed
+  artifacts; nothing is retyped for the camera.
+- **Code + improvement changelog:** this repo · [`docs/CHANGELOG.md`](docs/CHANGELOG.md) (results and
+  evidence) · [`docs/WORK_TRAJECTORY.md`](docs/WORK_TRAJECTORY.md) (the iteration-by-iteration record,
+  each step tied to the evidence that drove the next decision, each backed by a commit)
 - **Reproduction guide:** [`REPRODUCE.md`](REPRODUCE.md)
 - **End-to-end report:** [`docs/report.html`](docs/report.html) (self-contained)
+- **The instructions that shape each agent:** [`src/agents/fix-prompt.ts`](src/agents/fix-prompt.ts)
+  (fixer system prompt + the targeted-fix message builder) ·
+  [`src/agents/router.ts`](src/agents/router.ts) (the routing decision table, with a rationale per
+  class) · [`src/layers/layerC-judge.ts`](src/layers/layerC-judge.ts) (`JUDGE_SYSTEM`, the semantic
+  judge's prompt and its deterministic backstops)
 - **Agent trajectories:** [`docs/trajectories/`](docs/trajectories/) — "Traces for every agent we
   used": runtime decision traces (readable + raw JSONL), a [reflexion deep-dive](docs/trajectories/reflexion-icon-only-control.md)
   and a [baseline-vs-advanced contrast](docs/trajectories/contrast-alt-generic.md) quoting the

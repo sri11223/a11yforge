@@ -1,7 +1,9 @@
 # Read-along script — one continuous take
 
 For reading on a phone while the video plays on a laptop.
-Video: **`out/video/a11yforge-demo.mp4`** — **4:39.7**. Timecodes below match it exactly.
+Video: **[`video/a11yforge-demo.mp4`](../video/a11yforge-demo.mp4)** — the narrated cut, **4:41.2**.
+The timecodes below are the ones this narration was read against (the silent cut was 4:39.7; the end
+card is held 1.5s longer in the narrated version so the closing line has room to land).
 
 **Before you start:** start the recorder **first**, then hit play, and say nothing for the first
 second. That silent gap is my sync point — I align your first word to 0:00 and everything after it
