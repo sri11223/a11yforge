@@ -67,8 +67,16 @@ const PRIVATE = [
   [/\/c\/Users\/Srikrishna/gi, "~"],
   [/Srikrishna/gi, "~user"],
   [/SRIKRI~1/gi, "~user"],
-  [/afterexperts|silver-tasks|react-typescript-ui|ecomerce-node|seller-auth-credential-repair|pluto-task[s]?/gi,
+  // `pluto-task[s]?` required the suffix, so a bare `pluto` slipped through a whole pass. Match the
+  // bare name. CALIBRATION.md is another project's file (not in this repo or its history) — matched
+  // WITH the .md suffix so this repo's legitimate kappa-"calibration" prose is untouched.
+  // NOTE: this export is self-referential — the audit conversation about it becomes part of the next
+  // export's input. Each name mentioned while reviewing has to be added here or it reappears. It
+  // converges, but the list must include names that only ever came up during review.
+  [/afterexperts|silver-tasks|react-typescript-ui|ecomerce-node|seller-auth-credential-repair|pluto/gi,
    "<unrelated-project>"],
+  [/fitplan|odessy|handshakeai|dynamo/gi, "<unrelated-project>"],
+  [/CALIBRATION\.md/g, "<unrelated-project-file>"],
 ];
 const redact = (v) => {
   if (typeof v !== "string") return v;
@@ -230,6 +238,33 @@ reasoning as our alt path: don't scrub dangerous input, never admit it.
 Secrets, the local username and unrelated project names are additionally redacted in what *is*
 included, and the exporter **re-scans its own output and refuses to write anything** if a single
 pattern survives. It is meant to be structurally incapable of emitting a credential.
+
+## Redaction, verified rather than asserted
+
+The exporter re-scans its own serialized output for every pattern in its redaction list — secrets,
+the local username, and unrelated project names — and **throws without writing anything** if a single
+one survives. These gates all returned zero on the export that produced the files in this folder:
+
+\`\`\`
+sk-[A-Za-z0-9_-]{20,}        0     -----BEGIN ... PRIVATE KEY   0
+gh[pousr]_[A-Za-z0-9]{20,}   0     _authToken=<value>           0
+github_pat_[A-Za-z0-9_]{20,} 0     x-api-key: <value>           0
+Bearer [A-Za-z0-9._-]{20,}   0     local username               0
+API_KEY=<value>              0     unrelated project names      0
+\`\`\`
+
+**Why the exclusion is structural, not a scrub.** \`tool_result\` bodies are never copied in the first
+place. That is where credentials and unrelated-project data live — the raw session records carry an
+API key in the stdout of a command that echoed it, 133 \`OPENROUTER_API_KEY\` mentions, and a tail of
+\`_authToken\`, \`PRIVATE KEY\`, \`GITHUB_TOKEN\` and \`npmrc\` references. A regex deny-list over that
+text can only remove what it already knows to look for. An allow-list of copied fields cannot emit
+what it never read. It is the same reasoning as this project's alt path, which routes semantic alt to
+a deterministic rule or a human rather than asking a model not to hallucinate: don't sanitise
+dangerous input, never admit it.
+
+Any string still matching a secret pattern in these files is **our own security discussion** — the
+instruction that named the patterns and the reply that refused to publish the raw transcripts. Those
+are pattern names, not values.
 
 ## Counts (derived at export time, not asserted)
 

@@ -34,17 +34,44 @@ Secrets, the local username and unrelated project names are additionally redacte
 included, and the exporter **re-scans its own output and refuses to write anything** if a single
 pattern survives. It is meant to be structurally incapable of emitting a credential.
 
+## Redaction, verified rather than asserted
+
+The exporter re-scans its own serialized output for every pattern in its redaction list — secrets,
+the local username, and unrelated project names — and **throws without writing anything** if a single
+one survives. These gates all returned zero on the export that produced the files in this folder:
+
+```
+sk-[A-Za-z0-9_-]{20,}        0     -----BEGIN ... PRIVATE KEY   0
+gh[pousr]_[A-Za-z0-9]{20,}   0     _authToken=<value>           0
+github_pat_[A-Za-z0-9_]{20,} 0     x-api-key: <value>           0
+Bearer [A-Za-z0-9._-]{20,}   0     local username               0
+API_KEY=<value>              0     unrelated project names      0
+```
+
+**Why the exclusion is structural, not a scrub.** `tool_result` bodies are never copied in the first
+place. That is where credentials and unrelated-project data live — the raw session records carry an
+API key in the stdout of a command that echoed it, 133 `OPENROUTER_API_KEY` mentions, and a tail of
+`_authToken`, `PRIVATE KEY`, `GITHUB_TOKEN` and `npmrc` references. A regex deny-list over that
+text can only remove what it already knows to look for. An allow-list of copied fields cannot emit
+what it never read. It is the same reasoning as this project's alt path, which routes semantic alt to
+a deterministic rule or a human rather than asking a model not to hallucinate: don't sanitise
+dangerous input, never admit it.
+
+Any string still matching a secret pattern in these files is **our own security discussion** — the
+instruction that named the patterns and the reply that refused to publish the raw transcripts. Those
+are pattern names, not values.
+
 ## Counts (derived at export time, not asserted)
 
 ```json
 {
   "sessions": 3,
-  "turns": 3379,
-  "orchestratorInstructions": 168,
-  "builderTurns": 3211,
-  "toolCalls": 1957,
+  "turns": 3402,
+  "orchestratorInstructions": 169,
+  "builderTurns": 3233,
+  "toolCalls": 1969,
   "toolCallsByTool": {
-    "Bash": 1062,
+    "Bash": 1074,
     "Edit": 291,
     "Write": 170,
     "Read": 158,
@@ -64,15 +91,15 @@ pattern survives. It is meant to be structurally incapable of emitting a credent
     "AskUserQuestion": 1,
     "SendMessage": 1
   },
-  "gitCommits": 72,
+  "gitCommits": 73,
   "firstTurn": "2026-08-28T18:33:56.300Z",
-  "lastTurn": "2026-08-31T17:16:34.243Z"
+  "lastTurn": "2026-08-31T17:22:48.845Z"
 }
 ```
 
 ## Files
 
-- [`23af0c63.jsonl`](23af0c63.jsonl) — 3375 turns extracted from 12231 source records
+- [`23af0c63.jsonl`](23af0c63.jsonl) — 3398 turns extracted from 12305 source records
 - [`3d7683a8.jsonl`](3d7683a8.jsonl) — 2 turns extracted from 12 source records
 - [`405680cd.jsonl`](405680cd.jsonl) — 2 turns extracted from 11 source records
 
