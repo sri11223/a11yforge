@@ -2,7 +2,7 @@
 
 This is the honest trajectory of the **coding agents** that built A11yForge (the required
 "agent trajectories for every agent you used" deliverable, coding-agent side). The runtime
-agent's own traces are in [`trajectories/`](trajectories/); the tool disclosure is in
+agent's own traces are in [`builder-trajectories/`](builder-trajectories/); the tool disclosure is in
 [`CODING_AGENT.md`](CODING_AGENT.md).
 
 > **The machine-checkable counterpart to this narrative** is
