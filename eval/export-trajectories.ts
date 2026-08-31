@@ -9,7 +9,7 @@ import type { Finding } from "../src/types.js";
  * Export the runtime agent's decision trajectories: the detected issues (A/B/C tool
  * output) → per-fix route/attempt → verify verdicts → accept/escalate decision → final
  * outcome. Emits raw JSONL (machine) + Markdown (human) for EVERY page in the eval corpus,
- * plus a navigational index. Run from dist/ (uses Layer B). Writes docs/trajectories/ ONLY —
+ * plus a navigational index. Run from dist/ (uses Layer B). Writes docs/builder-trajectories/ ONLY —
  * it never touches docs/results/, metrics.json or ablation.json.
  *
  * Buckets and per-bucket shared fix-memory mirror eval/run-eval.ts, so a trace reflects what
@@ -17,7 +17,7 @@ import type { Finding } from "../src/types.js";
  */
 
 const BUCKETS = ["adversarial", "injected"];
-const OUT = join(process.cwd(), "docs", "trajectories");
+const OUT = join(process.cwd(), "docs", "builder-trajectories");
 /** Read-only: the scored results, used to state where the agent did worse than the baseline. */
 const METRICS = join(process.cwd(), "docs", "results", "metrics.json");
 const scored: { perPage?: { page: string; baseline?: any; advanced?: any }[] } = existsSync(METRICS)
@@ -345,7 +345,7 @@ refuses to write if any pattern survives. Regenerate with
 `,
     "utf8",
   );
-  console.log("Wrote docs/trajectories/");
+  console.log("Wrote docs/builder-trajectories/");
 }
 
 main().catch((err: unknown) => {

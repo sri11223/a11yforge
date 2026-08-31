@@ -207,7 +207,7 @@ for (let i = 0; i < all.length - 1 && showcase.length < 4; i++) {
 
 writeFileSync(join(OUT, "README.md"), `# Coding-agent trajectory — the two-agent build loop
 
-_Runtime-agent traces: [\`docs/trajectories/\`](../docs/trajectories/) · narrative counterpart: [\`docs/WORK_TRAJECTORY.md\`](../docs/WORK_TRAJECTORY.md) · tool disclosure: [\`docs/CODING_AGENT.md\`](../docs/CODING_AGENT.md)_
+_Runtime-agent traces: [\`docs/builder-trajectories/\`](../docs/builder-trajectories/) · narrative counterpart: [\`docs/WORK_TRAJECTORY.md\`](../docs/WORK_TRAJECTORY.md) · tool disclosure: [\`docs/CODING_AGENT.md\`](../docs/CODING_AGENT.md)_
 
 **In one sentence:** the complete conversation and tool calls of the two Claude Code (Opus 5) agents
 that built this repository — an **orchestrator** that planned and verified, and a **builder** that did
@@ -215,7 +215,7 @@ the work.
 
 This is the *coding*-agent deliverable. The agent that **runs** — the one that finds and fixes
 accessibility barriers — has its own traces in
-[\`docs/trajectories/\`](../docs/trajectories/). This folder is the agents that **built** it.
+[\`docs/builder-trajectories/\`](../docs/builder-trajectories/). This folder is the agents that **built** it.
 [\`docs/WORK_TRAJECTORY.md\`](../docs/WORK_TRAJECTORY.md) tells the same story in prose; these files are
 the underlying data, so the prose can be checked rather than taken on trust.
 

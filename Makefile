@@ -13,7 +13,7 @@ ablation:          ## gated {A}/{A,B}/{A,B,C} ablation -> out/ablation.json
 	npm run ablation
 audit:             ## run the solution on one page: make audit TARGET=<url|path>
 	npm run audit -- $(TARGET) --no-llm
-trajectories:      ## export runtime agent trajectories -> docs/trajectories/
+trajectories:      ## export runtime agent trajectories -> docs/builder-trajectories/
 	npm run trajectories
 determinism:       ## 3x byte-identical determinism proof -> docs/results/DETERMINISM.md
 	npm run determinism

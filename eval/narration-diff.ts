@@ -13,7 +13,7 @@ import { runAdvanced, type FixMemory } from "../src/agents/advanced.js";
  * two real DOMs (original page, then the agent's shipped page). Nothing here is written by hand:
  * hand-authored narration would be exactly the fabrication we accuse overlay vendors of.
  *
- * Writes docs/trajectories/narration-diff.{md,json} ONLY — never docs/results/, metrics.json or
+ * Writes docs/builder-trajectories/narration-diff.{md,json} ONLY — never docs/results/, metrics.json or
  * ablation.json. Run from dist/: node dist/eval/narration-diff.js
  */
 
@@ -22,7 +22,7 @@ const BUNDLE = require.resolve("@guidepup/virtual-screen-reader/browser.js");
 const DATA_URL = "data:text/javascript;base64," + Buffer.from(readFileSync(BUNDLE, "utf8")).toString("base64");
 
 const BUCKETS = ["adversarial", "injected"];
-const OUT = join(process.cwd(), "docs", "trajectories");
+const OUT = join(process.cwd(), "docs", "builder-trajectories");
 
 /** Capture the real spoken-phrase log for a page URL via the virtual screen reader. */
 async function spokenFor(browser: Browser, url: string): Promise<string[]> {
@@ -220,7 +220,7 @@ async function main(): Promise<void> {
   console.log(`\n${changed.length}/${results.length} pages produced an audible diff.`);
   console.log("Top:", ranked.slice(0, 5).map((r) => r.slug).join(", "));
   console.log("Unchanged:", unchanged.map((r) => r.slug).join(", ") || "(none)");
-  console.log("Wrote docs/trajectories/narration-diff.{md,json}");
+  console.log("Wrote docs/builder-trajectories/narration-diff.{md,json}");
 }
 
 main().catch((e: unknown) => { console.error(e); process.exitCode = 1; });

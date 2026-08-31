@@ -2,10 +2,10 @@ import { readFileSync, writeFileSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 /**
- * Emits docs/trajectories/judge-verdicts.md — the Layer-C judge's trajectory.
+ * Emits docs/builder-trajectories/judge-verdicts.md — the Layer-C judge's trajectory.
  *   node eval/export-judge-trajectory.mjs
  *
- * WHY THIS EXISTS: docs/trajectories/README.md promises "traces for every agent we used", and the
+ * WHY THIS EXISTS: docs/builder-trajectories/README.md promises "traces for every agent we used", and the
  * Layer-C judge had none. Its substitute was 151 hash-named cassettes with no manifest, which is not
  * a trace a reader can follow.
  *
@@ -17,7 +17,7 @@ import { join, resolve } from "node:path";
 
 const REPO = resolve(import.meta.dirname, "..");
 const CASS = join(REPO, "cassettes");
-const OUT = join(REPO, "docs", "trajectories", "judge-verdicts.md");
+const OUT = join(REPO, "docs", "builder-trajectories", "judge-verdicts.md");
 
 const rd = (p) => JSON.parse(readFileSync(p, "utf8"));
 const kappa = rd(join(REPO, "corpus", "anchor-set", "kappa.json"));

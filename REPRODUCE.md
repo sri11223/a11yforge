@@ -165,7 +165,7 @@ why `metrics.json` reports both arms side by side.
 ### Other entry points
 
 - `npm test` — the offline suite (157 tests, 13 files; needs Chromium installed as above).
-- `npm run trajectories` — regenerates `docs/trajectories/` (27 traces + index).
+- `npm run trajectories` — regenerates `docs/builder-trajectories/` (27 traces + index).
 - `npm run determinism` — the 3× proof (below).
 
 **About `docs/report.html`.** It is a **hand-authored document**, not a generated one. It cites the
@@ -231,8 +231,8 @@ instead of passing it.
 | gated ablation runtime | `npm run ablation` | three gated passes, so ≈ 3× the eval — budget ~60–105 min |
 | κ = **0.9792** | `A11YFORGE_MODE=replay JUDGE_MODEL=openai/gpt-4o-mini node dist/eval/calibrate-judge.js` | offline from committed judge cassettes. `JUDGE_MODEL` has **no default** here, so the bare command throws. It rewrites the tracked `corpus/anchor-set/kappa.json`. |
 | **206** real-site barriers | `npx tsc && node dist/eval/audit-real-20.js` (no npm script) | **live, key-requiring, dated and non-deterministic** — deliberately outside the reproducible offline path. `audit-real`/`snapshot-real` cannot run from a fresh clone: `corpus/real/**/index.html` is gitignored. |
-| `docs/trajectories/*.md` + `narration-diff.*` | `npm run trajectories` | needs Chromium; ~18 min |
-| `docs/trajectories/judge-verdicts.md` | `node eval/export-judge-trajectory.mjs` | reads cassettes only; instant |
+| `docs/builder-trajectories/*.md` + `narration-diff.*` | `npm run trajectories` | needs Chromium; ~18 min |
+| `docs/builder-trajectories/judge-verdicts.md` | `node eval/export-judge-trajectory.mjs` | reads cassettes only; instant |
 
 ### One exception to the offline guarantee
 

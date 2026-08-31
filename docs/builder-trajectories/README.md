@@ -2,6 +2,11 @@
 
 A11yForge involves several agents; this is the one place to see the complete trace picture.
 
+> **This folder is the agent that RUNS** — A11yForge's own runtime remediation agent, tracing what it
+> detected, routed, attempted, verified and escalated on each page. The agents that **BUILT** this
+> repository have their own record at
+> [`coding-agent-trajectories/`](../../coding-agent-trajectories/).
+
 ## 1. Runtime agent — the advanced remediation agent
 
 Per-page decision traces: **detect** (A/B/C tool output) → **route** → **fix attempt(s)** →

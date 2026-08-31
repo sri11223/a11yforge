@@ -15,7 +15,7 @@ careful agent and a careless one becomes a number.
 | **Reproduce** | Offline, no API key, ~60 seconds:<br>`npm ci && npx playwright install chromium`<br>`node dist/src/cli/audit.js audit corpus/adversarial/keyboard-trap-modal/index.html --no-llm; echo $?` → **1** |
 
 **Start here:** [demo video (4:41)](video/a11yforge-demo.mp4) · [full report](docs/report.html) ·
-[runtime agent traces](docs/trajectories/) · [coding-agent trajectories](coding-agent-trajectories/) · [statistics & limitations](docs/results/STATISTICS.md) ·
+[runtime agent traces](docs/builder-trajectories/) · [coding-agent trajectories](coding-agent-trajectories/) · [statistics & limitations](docs/results/STATISTICS.md) ·
 [how to reproduce](REPRODUCE.md)
 
 ## Who this is for, and what's blocking them
@@ -281,9 +281,9 @@ ships** (a) a screen-reader-transcript verification layer inside the fix loop, (
   [`src/agents/router.ts`](src/agents/router.ts) (the routing decision table, with a rationale per
   class) · [`src/layers/layerC-judge.ts`](src/layers/layerC-judge.ts) (`JUDGE_SYSTEM`, the semantic
   judge's prompt and its deterministic backstops)
-- **Agent trajectories:** [`docs/trajectories/`](docs/trajectories/) — "Traces for every agent we
-  used": runtime decision traces (readable + raw JSONL), a [reflexion deep-dive](docs/trajectories/reflexion-icon-only-control.md)
-  and a [baseline-vs-advanced contrast](docs/trajectories/contrast-alt-generic.md) quoting the
+- **Agent trajectories:** [`docs/builder-trajectories/`](docs/builder-trajectories/) — "Traces for every agent we
+  used": runtime decision traces (readable + raw JSONL), a [reflexion deep-dive](docs/builder-trajectories/reflexion-icon-only-control.md)
+  and a [baseline-vs-advanced contrast](docs/builder-trajectories/contrast-alt-generic.md) quoting the
   actual model I/O from the 151 committed [`cassettes/`](cassettes/). This folder is the agent that **runs**; [`coding-agent-trajectories/`](coding-agent-trajectories/) is the agents that **built** it.
 - **Coding-agent trajectory (how the repo was built):**
   [`coding-agent-trajectories/`](coding-agent-trajectories/) — the machine-extracted record: **3,402

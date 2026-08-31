@@ -426,7 +426,7 @@ announcement-string equivalence.
   transcript (css-reorder read Enterprise→Starter→Team), the confident-hallucination hot
   take, per-page baseline-vs-advanced table, honest small-n significance.
 - `eval/capture-sr.ts` → `docs/results/sr-transcript.json`: verbatim virtual-SR transcripts.
-- `eval/export-trajectories.ts` → `docs/trajectories/*.{md,jsonl}`: the advanced agent's
+- `eval/export-trajectories.ts` → `docs/builder-trajectories/*.{md,jsonl}`: the advanced agent's
   decision traces (detected issues → route → fix → guard+verify verdicts → accept/escalate).
   icon-only-control shows the verify-loop rejecting attempt 1 and accepting attempt 2;
   alt-generic shows the ungrounded hero escalated (alt untouched) while grounded grid images
