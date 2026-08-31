@@ -11,7 +11,10 @@ build as a loop: an **orchestrator** that held the plan, sent one step at a time
 verified each result against the real files, and a **builder** that did all the work in the repo.
 The step sequence was brainstorm → scaffold → layers → agents → metrics → report, with each step
 verified (tsc + tests green) before the next. The narrative side of that loop, step by step with
-commits, is [`WORK_TRAJECTORY.md`](WORK_TRAJECTORY.md).
+commits, is [`WORK_TRAJECTORY.md`](WORK_TRAJECTORY.md); the machine-extracted side — every
+orchestrator instruction and every builder tool call — is
+[`trajectories/coding-agent/`](trajectories/coding-agent/). Tool-result bodies are omitted from that
+export by design, so it records the *loop*, not command output.
 
 **Attribution caveat, stated because this document is the disclosure.** The coding-agent
 attribution above is **author-asserted, not machine-verifiable**: the Co-Authored-By trailers that

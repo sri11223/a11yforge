@@ -5,6 +5,11 @@ This is the honest trajectory of the **coding agents** that built A11yForge (the
 agent's own traces are in [`trajectories/`](trajectories/); the tool disclosure is in
 [`CODING_AGENT.md`](CODING_AGENT.md).
 
+> **The machine-checkable counterpart to this narrative** is
+> [`trajectories/coding-agent/`](trajectories/coding-agent/): every orchestrator instruction and every
+> builder tool call, extracted from the session records. Tool-result bodies are omitted and secrets
+> redacted — see that folder's README for why.
+
 ## The setup
 
 Two Claude **Opus 5** (`anthropic/claude-opus-5`) agents ran a disciplined build loop:

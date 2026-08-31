@@ -333,6 +333,15 @@ summarised.
   step by step, each backed by a commit.
 - [../CODING_AGENT.md](../CODING_AGENT.md) — coding-agent + tool disclosure, and the honest
   experiments we tried and removed.
+
+## 4. Coding agents — the machine-extracted build loop
+
+[\`coding-agent/\`](coding-agent/) — the orchestrator/builder sessions that **built this repo**, one
+JSON object per turn: every orchestrator instruction in full, every builder turn, and every tool call
+with its name and a short argument summary. **Tool-result bodies are omitted entirely**, and secrets,
+the local username and unrelated project names are redacted; the exporter re-scans its own output and
+refuses to write if any pattern survives. Regenerate with
+\`CODING_SESSION_DIR=<dir> node eval/export-coding-trajectory.mjs\`.
 `,
     "utf8",
   );
