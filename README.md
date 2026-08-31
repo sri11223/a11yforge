@@ -123,8 +123,9 @@ Ordered by robustness, not by which number sounds best:
    the baseline left intact, false-fixed where the baseline did not, or regressed where it did not.
    No counter-examples, and it does not hinge on a single pair.
 2. **Categorical harm elimination.** 8 → 0 and 10 → 0 harmful changes; false-fix rate 4.3% → 0% and
-   2.9% → 0%; harmful-page rate 18.5% → 0% and 13.3% → 0%, with **non-overlapping Wilson intervals
-   at n=45**. Counts, not inference.
+   2.9% → 0%; harmful-page rate 18.5% → 0% and 13.3% → 0%. The Wilson 95% intervals **do overlap**
+   at every n (13.3% [6.3, 26.2] vs 0.0% [0.0, 7.9] share [6.3, 7.9]) — which is exactly why the
+   **count** is the claim here and not the interval. Counts, not inference.
 3. **Dose-response.** False-fix pages fall monotonically with verification depth — 23 → 9 → 0 and
    38 → 13 → 0, same shape on both sets, independent of discordant-pair counts. (A pattern, not a
    formal trend test.)

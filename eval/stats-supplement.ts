@@ -92,7 +92,9 @@ Ordered by robustness, not by which number sounds best:
 2. **Categorical harm elimination.** Harmful changes ${m27.harm.harmfulChanges.baseline} → ${m27.harm.harmfulChanges.advanced} (n=${n27}) and
    ${m45.harm.harmfulChanges.baseline} → ${m45.harm.harmfulChanges.advanced} (n=${n45}); false-fix rate ${m27.falseFixRate.baseline} → ${m27.falseFixRate.advanced} and
    ${m45.falseFixRate.baseline} → ${m45.falseFixRate.advanced}; harmful-page rate ${m27.harm.harmfulPageRate.baseline} → ${m27.harm.harmfulPageRate.advanced} and
-   ${m45.harm.harmfulPageRate.baseline} → ${m45.harm.harmfulPageRate.advanced} — **non-overlapping Wilson intervals at n=${n45}**. Counts, not inference.
+   ${m45.harm.harmfulPageRate.baseline} → ${m45.harm.harmfulPageRate.advanced}. The Wilson 95% intervals **do overlap** — [6.3, 26.2] and
+   [0.0, 7.9] share [6.3, 7.9], and the false-fix pair shares [0.8, 5.3] — so the interval is *not*
+   the claim being made. Counts, not inference: harm went to zero and stayed there.
 3. **Dose-response across nested verification layers** (§6): ${a27.rows["{A}"].falseFixPages}→${a27.rows["{A,B}"].falseFixPages}→${a27.rows["{A,B,C}"].falseFixPages} and
    ${a45.rows["{A}"].falseFixPages}→${a45.rows["{A,B}"].falseFixPages}→${a45.rows["{A,B,C}"].falseFixPages}, the same monotone shape on both sets, independent of discordant-pair counts.
 4. **The significance test, last** (§3), with its fragility inline.
@@ -179,7 +181,11 @@ And the coverage contrast is **significant against us** at n=45 — see §5.
 The "pages per harm avoided" figure is an NNT-style reading: put roughly **${(1 / arr45).toFixed(0)} pages**
 through the single-shot baseline and you would expect one additional harmed page relative to the
 verified agent. Wilson 95% intervals are shown because at these n the point estimates are soft —
-note the baseline and advanced intervals do **not** overlap at n=45.
+and note that the baseline and advanced intervals **do overlap**, at n=45 as at n=27
+([6.3, 26.2] against [0.0, 7.9] share [6.3, 7.9]). We state that plainly rather than lean on the
+intervals: with 45 pages they are too wide to separate, which is precisely why the load-bearing
+evidence here is the count (10 harmful changes → 0, with no counter-example anywhere in the set)
+and not an inferential claim about rates.
 
 ## 5. The coverage trade-off, stated with its accounting
 

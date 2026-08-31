@@ -17,7 +17,9 @@ Ordered by robustness, not by which number sounds best:
 2. **Categorical harm elimination.** Harmful changes 8 → 0 (n=27) and
    10 → 0 (n=45); false-fix rate 4.3% [1.2, 14.5] → 0.0% [0.0, 7.7] and
    2.9% [0.8, 10.1] → 0.0% [0.0, 5.3]; harmful-page rate 18.5% [8.2, 36.7] → 0.0% [0.0, 12.5] and
-   13.3% [6.3, 26.2] → 0.0% [0.0, 7.9] — **non-overlapping Wilson intervals at n=45**. Counts, not inference.
+   13.3% [6.3, 26.2] → 0.0% [0.0, 7.9]. The Wilson 95% intervals **do overlap** — [6.3, 26.2] and
+   [0.0, 7.9] share [6.3, 7.9], and the false-fix pair shares [0.8, 5.3] — so the interval is *not*
+   the claim being made. Counts, not inference: harm went to zero and stayed there.
 3. **Dose-response across nested verification layers** (§6): 23→9→0 and
    38→13→0, the same monotone shape on both sets, independent of discordant-pair counts.
 4. **The significance test, last** (§3), with its fragility inline.
@@ -110,7 +112,11 @@ And the coverage contrast is **significant against us** at n=45 — see §5.
 The "pages per harm avoided" figure is an NNT-style reading: put roughly **8 pages**
 through the single-shot baseline and you would expect one additional harmed page relative to the
 verified agent. Wilson 95% intervals are shown because at these n the point estimates are soft —
-note the baseline and advanced intervals do **not** overlap at n=45.
+and note that the baseline and advanced intervals **do overlap**, at n=45 as at n=27
+([6.3, 26.2] against [0.0, 7.9] share [6.3, 7.9]). We state that plainly rather than lean on the
+intervals: with 45 pages they are too wide to separate, which is precisely why the load-bearing
+evidence here is the count (10 harmful changes → 0, with no counter-example anywhere in the set)
+and not an inferential claim about rates.
 
 ## 5. The coverage trade-off, stated with its accounting
 
