@@ -45,9 +45,19 @@ jobs:
       - name: Assert the gap was caught (this is the merge-blocking behavior)
         shell: bash
         run: |
-          if [ "${{ steps.gap.outcome }}" = "failure" ]; then
-            echo "✅ A11yForge failed on a scanner-clean-but-broken page — a real PR would be blocked here."
+          # Assert on the audit's OWN exit code, never on step outcome.
+          # `outcome` is 'failure' for any reason at all — including the action failing to
+          # load or build — so asserting on it would let an infrastructure error masquerade
+          # as "the gate caught the bug". That is precisely the false green this project
+          # exists to condemn, so the demo must not be able to produce one.
+          code="${{ steps.gap.outputs.exit-code }}"
+          echo "audit exit code: '${code:-<empty>}'"
+          if [ "$code" = "1" ]; then
+            echo "✅ A11yForge exited 1 on a scanner-clean-but-broken page — a real PR would be blocked here."
+          elif [ -z "$code" ]; then
+            echo "::error::The audit never ran — no exit code was reported. The action failed to load or build, so nothing was verified."
+            exit 1
           else
-            echo "::error::Expected A11yForge to FAIL on the keyboard-trap page (scanner-clean but unusable), but it did not."
+            echo "::error::Expected exit 1 on the keyboard-trap page (scanner-clean but unusable); got exit $code."
             exit 1
           fi

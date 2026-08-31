@@ -25,7 +25,7 @@ inputs:
     required: false
     default: "false"
   github-token:
-    description: "Token used to post the PR comment when `comment` is true. Usually ${{ github.token }}."
+    description: "Token used to post the PR comment when `comment` is true. Usually the workflow's own `github.token`."
     required: false
     default: ""
 
