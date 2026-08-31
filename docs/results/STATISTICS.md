@@ -218,6 +218,40 @@ studies — see the caveat in §3.)
 - **No human-user validation.** Layer B is a deterministic virtual-screen-reader simulation, not a
   study with screen-reader users.
 
+
+### Multiplicity: eight uncorrected tests, and what survives correction
+
+We report **eight** McNemar tests — four contrasts (harmful pages, regressions, false-fix,
+true-fix/coverage) on each of two corpora — and every p-value above is **uncorrected**. Stating that
+plainly, with the arithmetic:
+
+| Contrast | n=27 exact | n=45 exact | clears α=0.05? | clears α/8 = 0.00625? |
+|---|---|---|---|---|
+| harmful pages | 0.0625 | **0.0313** | n=45 only | **no** |
+| regressions | 0.2500 | 0.1250 | no | no |
+| false-fix | 0.5000 | 0.5000 | no | no |
+| true-fix (coverage) | 0.5000 | **0.0313** | n=45 only | **no** |
+
+**Two** results clear α=0.05, not one — and one of them (**coverage**) runs *against* us. Neither
+clears a Bonferroni threshold of 0.05/8 = 0.00625; both sit at 0.0313, a factor of five away. So on a
+multiplicity-corrected reading, **nothing here is significant**, in either direction.
+
+Two honest qualifiers on that, in both directions:
+
+- **Bonferroni is conservative here, because the tests are not independent.** The n=45 set *contains*
+  the n=27 set — it is a superset, not a replication — so the two columns are correlated by
+  construction and correcting as though they were eight independent tests over-penalises. We do not
+  know the effective number of independent tests, and we are not going to estimate one to make a
+  number look better.
+- **It does not rescue the coverage row either.** The result that goes against us fails correction on
+  exactly the same arithmetic as the one that favours us. We are not applying a correction selectively.
+
+This is the third independent reason the **count** is our claim and the p-value is not: the corpus
+cannot reach α=0.05 at n=27 by construction (α-floor 0.0625), significance at n=45 rests on a single
+additional discordant pair, and eight uncorrected tests would not survive correction anyway. The
+load-bearing evidence is **c = 0 on every harm contrast across all 45 pages** — zero
+counter-examples, which needs no α at all.
+
 ## 8. Traceability
 
 | Claim | Source |
