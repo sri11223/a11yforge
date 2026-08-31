@@ -17,7 +17,7 @@ Automated scanners are cheap, fast and CI-friendly, and they catch roughly **13�
 issues. Everything they miss — keyboard traps, scrambled reading order, a label that exists but
 means nothing — needs a human with a screen reader, which does not scale to every pull request. So
 teams ship a green check and an unusable page. Overlay widgets promise to close that gap and
-[don't](https://www.ftc.gov/news-events/news/press-releases/2025/01/ftc-takes-action-against-accessibe-deceiving-consumers-about-its-ai-powered-web-accessibility-tool):
+[don't](https://www.ftc.gov/news-events/news/press-releases/2025/01/ftc-order-requires-online-marketer-pay-1-million-deceptive-claims-its-ai-product-could-make-websites):
 the FTC fined accessiBe **$1M** in 2025 for compliance claims built on exactly that kind of output.
 And when a team hands the job to an LLM instead, they get a new failure — fixes that *look* right,
 pass the scanner, and are worse than the bug, because nothing in the loop can tell the difference.
@@ -216,7 +216,11 @@ Locally, the same check: `npm run audit -- <url|path> [--ci] [--no-llm] [--html 
   judge-vs-expert-labels agreement on a single-annotator, team-authored anchor set — a
   calibration check, not inter-annotator reliability.* Deterministic backstops keep the finding
   alive even when the judge is weak. **Alt is never LLM-invented** —
-  grounded rule-fix or human checkpoint, so confident hallucination is structurally impossible.
+  grounded rule-fix or human checkpoint. No LLM is ever asked to write alt text, so there is no
+  alt-writing prompt to jailbreak. Stated precisely rather than absolutely: a *behavioural* fix
+  returns a whole document and the regression guard gates deletion, hiding and alt-emptying but not
+  alt *invention*, so an invented alt riding along with a behavioural fix is routed around rather
+  than blocked — we have not observed one, and we do not claim it is impossible.
 
 ## Agents
 

@@ -60,18 +60,25 @@ runs:
       shell: bash
       env:
         A11YFORGE_PA11Y_CHROMIUM: "1"
+        # Inputs go through env, NEVER inline ${{ }}: expression substitution happens before bash
+        # parses the script, so a target sourced from an issue body or PR title would otherwise run
+        # as shell with the job's token. Quoted "$VAR" expansion cannot inject.
+        TARGET: ${{ inputs.target }}
+        CI_FLAG: ${{ inputs.ci }}
+        NO_LLM: ${{ inputs.no-llm }}
+        HTML_REPORT: ${{ inputs.html-report }}
       run: |
         cd "$GITHUB_WORKSPACE"
         flags=()
-        [ "${{ inputs.ci }}" = "true" ] && flags+=(--ci)
-        [ "${{ inputs.no-llm }}" = "true" ] && flags+=(--no-llm)
-        [ -n "${{ inputs.html-report }}" ] && flags+=(--html "${{ inputs.html-report }}")
+        [ "$CI_FLAG" = "true" ] && flags+=(--ci)
+        [ "$NO_LLM" = "true" ] && flags+=(--no-llm)
+        [ -n "$HTML_REPORT" ] && flags+=(--html "$HTML_REPORT")
         set +e
-        node "$GITHUB_ACTION_PATH/dist/src/cli/audit.js" audit "${{ inputs.target }}" "${flags[@]}" | tee "$RUNNER_TEMP/a11yforge.out"
+        node "$GITHUB_ACTION_PATH/dist/src/cli/audit.js" audit "$TARGET" "${flags[@]}" | tee "$RUNNER_TEMP/a11yforge.out"
         code=${PIPESTATUS[0]}
         set -e
         {
-          echo "## A11yForge gap check — \`${{ inputs.target }}\`"
+          echo "## A11yForge gap check — \`$TARGET\`"
           echo ""
           if [ "$code" = "0" ]; then echo "✅ No scanner-clean-but-broken issues found."; \
           elif [ "$code" = "1" ]; then echo "⚠️ **Scanner-clean ≠ usable** — issues a scanner cannot see were found. This check blocks the false-green."; \
@@ -89,16 +96,19 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
+        TARGET: ${{ inputs.target }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        EXIT_CODE: ${{ steps.audit.outputs.exit-code }}
       run: |
         body="$RUNNER_TEMP/a11yforge-comment.md"
         {
-          echo "### A11yForge gap check — \`${{ inputs.target }}\`"
+          echo "### A11yForge gap check — \`$TARGET\`"
           echo ""
           echo '```'
           cat "$RUNNER_TEMP/a11yforge.out"
           echo '```'
           echo ""
-          echo "_Exit ${{ steps.audit.outputs.exit-code }} · scanner-clean ≠ usable is the whole point._"
+          echo "_Exit $EXIT_CODE · scanner-clean ≠ usable is the whole point._"
         } > "$body"
-        gh pr comment "${{ github.event.pull_request.number }}" --body-file "$body" || \
+        gh pr comment "$PR_NUMBER" --body-file "$body" || \
           echo "::warning::could not post PR comment (check token permissions: pull-requests: write)"

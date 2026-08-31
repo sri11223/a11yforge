@@ -232,7 +232,7 @@ html{scroll-behavior:smooth}
   universities, docs, reference). This is <strong>dated, live</strong> evidence (sites change and
   the LLM judge runs live) — kept separate from the sealed, reproducible-replay eval — and
   strictly <strong>detection-only</strong>: we never modify or publish fixes to sites we don't own.
-  Snapshot: <code>2026-08-30</code>. Full data:
+  Snapshot: <code>2026-08-29</code>. Full data:
   <a href="results/real-world-20.md">real-world-20.md</a> ·
   <a href="results/real-world-20.json">real-world-20.json</a>. (This run added a CSP-safe Layer-B
   injection — see the caveat below — so 4 previously CSP-blocked sites are now measured.)</p>
@@ -353,7 +353,7 @@ html{scroll-behavior:smooth}
   backstops pass it, and even a second LLM judge — also blind to the image — rates it plausible.
   <strong>Every automated layer waves it through.</strong> A11yForge's advanced agent never lets
   the LLM write alt: it writes alt only from grounding present in the page, and otherwise
-  escalates to a human. Hallucination is made structurally impossible, not merely discouraged.</p>
+  escalates to a human. No LLM is ever asked to write alt text, so there is no alt-writing prompt to jailbreak. We stop short of "impossible": a behavioural fix returns a whole document, and the regression guard screens deletion, hiding and alt-emptying but not alt <em>invention</em> — so that path is routed around, not sealed.</p>
   </div>
 </section>
 

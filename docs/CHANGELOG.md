@@ -93,7 +93,7 @@ the other **28** are in classes an automated scanner *structurally cannot* detec
 So **28 of 30** corpus barriers — and 206 of the real-site findings — are beyond axe entirely.
 (*Layer B = 109 includes 65 from stripe.com alone, all one class — WCAG 4.1.3 dynamic-content-
 without-live-region on its animated homepage; excluding it, Layer B = 44 / hidden = 141 across the
-other 19 sites. Real-site totals are a 2026-08-30 live snapshot.)
+other 19 sites. Real-site totals are a 2026-08-29 live snapshot.)
 *Honest limits:* these are per-layer **class** counts (from the committed corpus manifests + the
 20-site run); the committed data does not split Layer A into axe-vs-pa11y or Layer C into
 backstop-vs-judge at the finding level, so we don't claim those sub-splits. *Layer B on real sites
@@ -204,7 +204,7 @@ reliability study._
 
 - **Layer C → LLM fixes.** An early advanced router sent semantic alt to the LLM; it
   cheerfully invented descriptions for images it couldn't see. We removed it and made alt
-  **rule-from-grounding-or-escalate**, so hallucination is structurally impossible, not
+  **rule-from-grounding-or-escalate**, so no LLM is asked to write alt at all — routed around rather than merely discouraged, and short of impossible because a behavioural fix returns a whole document the guard does not screen for invented alt. Not
   merely discouraged.
 - **pa11y warnings/notices in Layer A.** They fired spuriously on the scanner-invisible
   pages and would have destroyed the gap proof; Layer A counts definite failures only.

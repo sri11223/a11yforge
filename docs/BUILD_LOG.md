@@ -324,7 +324,7 @@ announcement-string equivalence.
   write alt text. Alt is either GROUNDED in the page's own markup (figcaption / aria-labelledby
   / wrapping link / a heading inside a small card) — in which case an empty alt is written
   because the alternative already exists — or, when it cannot be grounded, ESCALATED to
-  needs-review. This makes the confident-hallucination failure mode structurally impossible,
+  needs-review. This routes the confident-hallucination failure mode out of the alt path entirely (no LLM is asked to write alt),
   which is the Hot Take enforced in code (an early version routed C→LLM and the model
   cheerfully invented descriptions — caught and fixed).
 - Regression guard runs on every candidate before commit; verify re-runs the full harness.
@@ -425,7 +425,7 @@ announcement-string equivalence.
   icon-only-control shows the verify-loop rejecting attempt 1 and accepting attempt 2;
   alt-generic shows the ungrounded hero escalated (alt untouched) while grounded grid images
   are rule-fixed.
-- `docs/CODING_AGENT.md`: tool disclosure (Claude Code/Opus 4.8 as coding agent; OpenRouter
+- `docs/CODING_AGENT.md`: tool disclosure (Claude Code/Claude Opus 5 as coding agent; OpenRouter
   fixer=claude-sonnet-5 + judge=gpt-4o-mini for runtime) + honest build arc + removed
   experiments (C→LLM alt hallucination, pa11y warnings, axe best-practice).
 

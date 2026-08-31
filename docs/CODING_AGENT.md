@@ -5,10 +5,15 @@ together — including an experiment we tried and **removed**.
 
 ## Agents & tools used
 
-**Coding agent (built this repo):** Claude Code (Anthropic Opus 4.8). It wrote the code,
+**Coding agent (built this repo):** Claude Code (Anthropic Claude Opus 5, model id `anthropic/claude-opus-5`). It wrote the code,
 tests, corpus, and docs, ran the toolchain, and drove git. The build was orchestrated
 step-by-step (brainstorm → scaffold → layers → agents → metrics → report), with each step
 verified (tsc + tests green) before the next.
+
+**Attribution caveat, stated because this document is the disclosure.** The coding-agent
+attribution above is **author-asserted, not machine-verifiable**: the Co-Authored-By trailers that
+would have evidenced it were stripped in a history rewrite. Contrast the runtime disclosure below,
+which *is* provable — every model call is replayable from the 151 content-addressed cassettes.
 
 **Runtime LLMs (used by A11yForge itself), via OpenRouter, temperature 0, fixed seed:**
 - **Fixer = `anthropic/claude-sonnet-5`** — generates behavioral (Layer B) fixes for both the
@@ -51,7 +56,7 @@ numbers. See [`README`](../README.md) and [`BUILD_LOG.md`](BUILD_LOG.md).
   plausible. We caught it in the trajectories, removed the LLM-alt path entirely, and made
   alt **rule-from-grounding-or-escalate**: the agent writes alt only from text already in the
   page, and otherwise flags it for a human. This turned our hot take into an enforced
-  invariant — hallucination is now structurally impossible, not merely discouraged. It is the
+  invariant — the alt path no longer calls the LLM at all, so there is no alt-writing prompt to jailbreak. Not "impossible": a behavioural fix returns a whole document and the guard screens deletion, hiding and alt-emptying, not alt invention. It is the
   single most important decision in the build.
 - **pa11y warnings/notices in Layer A (removed).** They fired spuriously on the
   scanner-invisible pages and would have destroyed the gap proof; Layer A counts definite
